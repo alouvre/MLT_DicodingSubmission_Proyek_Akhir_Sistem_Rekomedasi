@@ -6,11 +6,15 @@
 
 ### Latar Belakang
 
-Seiring dengan perkembangan teknologi dan ketersediaan data dalam...
+Industri pariwisata merupakan salah satu sektor penting yang mendukung pertumbuhan ekonomi, baik secara lokal maupun global. Seiring berkembangnya teknologi dan meningkatnya akses informasi, wisatawan kini dihadapkan pada banyaknya pilihan destinasi wisata yang tersedia secara daring. Hal ini menciptakan tantangan baru, yaitu kesulitan dalam menentukan destinasi yang paling sesuai dengan preferensi pribadi. Ketika pengguna tidak memiliki informasi atau referensi yang cukup, mereka cenderung memilih tempat yang sudah populer, sehingga mengurangi potensi destinasi lainnya yang tidak kalah menarik namun kurang terekspos `(Yulianto et al., 2023)`.
 
-Sejumlah studi sebelumnya telah mengeksplorasi penerapan machine learning untuk meningkatkan...
+Untuk mengatasi permasalahan ini, pengembangan sistem rekomendasi destinasi wisata menjadi sangat penting. Sistem ini bertujuan untuk memberikan saran yang relevan dan personalisasi berdasarkan preferensi, riwayat, atau pola perilaku pengguna. Dengan demikian, pengguna tidak perlu menelusuri semua pilihan secara manual, melainkan dapat langsung mendapatkan rekomendasi destinasi yang sesuai dengan keinginan mereka.
 
-Berdasarkan temuan-temuan tersebut, proyek ini mempertimbangkan algoritma ....
+Menurut riset yang dilakukan oleh `Goel & Rizvi (2024)`, implementasi sistem rekomendasi menggunakan algoritma hybrid (gabungan content-based filtering dan collaborative filtering) dapat meningkatkan relevansi saran destinasi dan mengurangi cold start problem yang sering terjadi pada sistem rekomendasi berbasis pengguna baru atau item baru.
+
+Penelitian lain yang dilakukan oleh `Syakura (2024)` menunjukkan bahwa sistem rekomendasi destinasi wisata berbasis content-based dapat membantu wisatawan untuk menemukan tempat yang relevan meskipun mereka belum memberikan banyak rating sebelumnya. Sementara itu, sistem berbasis collaborative filtering yang dikembangkan di Semarang terbukti efektif dalam merekomendasikan tempat wisata baru yang belum populer tetapi sesuai dengan pola pengguna lain `(Cholil et al., 2023)`.
+
+Melalui proyek ini, diharapkan sistem yang dibangun tidak hanya mempermudah wisatawan dalam merencanakan perjalanan, tetapi juga memberikan dampak positif bagi sektor pariwisata lokal dengan memperkenalkan lebih banyak destinasi kepada pengguna. Dengan memanfaatkan data dan teknologi, sistem rekomendasi menjadi solusi cerdas dan adaptif di era digital untuk meningkatkan pengalaman wisata yang lebih personal dan efisien.
 
 ## Business Understanding
 
@@ -18,21 +22,76 @@ Berdasarkan temuan-temuan tersebut, proyek ini mempertimbangkan algoritma ....
 
 Berdasarkan latar belakang di atas, berikut ini merupakan rincian masalah yang dapat diselesaikan pada proyek ini:
 
-- ...
+- **Bagaimana cara memberikan rekomendasi destinasi wisata yang relevan berdasarkan deskripsi dan kategori konten?**
+
+  Masalah ini berfokus pada pemanfaatan informasi terkait karakteristik destinasi, seperti kategori (budaya, alam, dll.) dan deskripsi tempat untuk memberikan rekomendasi yang lebih personal dan relevan bagi pengguna. Dengan pendekatan content-based filtering, sistem harus dapat menganalisis dan menyarankan destinasi yang sesuai dengan preferensi pengguna, berdasarkan kesamaan fitur-fitur tersebut.
+
+- **Bagaimana cara menggunakan data rating pengguna untuk meningkatkan akurasi rekomendasi?**
+
+  Data yang berisi interaksi pengguna terhadap destinasi wisata, seperti rating yang diberikan oleh pengguna, sangat penting untuk meningkatkan kualitas rekomendasi. Dengan menggabungkan teknik content-based dan collaborative filtering, sistem dapat mengatasi kekurangan data pada pengguna baru dan memperbaiki akurasi saran yang diberikan. Sistem ini dapat menyesuaikan rekomendasi dengan pola rating yang diberikan oleh pengguna lain dengan preferensi serupa, meningkatkan relevansi rekomendasi yang disarankan.
+
+- **Bagaimana cara mengukur relevansi rekomendasi agar sistem dapat memberikan hasil yang tepat?**
+
+  Sistem rekomendasi harus mampu memberikan hasil yang sesuai dengan kebutuhan pengguna. Oleh karena itu, diperlukan metrik evaluasi yang efektif untuk memantau dan mengukur sejauh mana sistem mampu menghasilkan rekomendasi yang relevan dan tepat sasaran.
 
 ### Goals
 
-Tujuan utama dari proyek ini adalah untuk membangun sistem..
+Tujuan utama dari proyek ini adalah untuk membangun sistem rekomendasi destinasi wisata yang relevan dan adaptif dengan memanfaatkan informasi konten destinasi serta interaksi pengguna sebelumnya. Sistem ini diharapkan dapat membantu wisatawan dalam menemukan destinasi yang sesuai dengan preferensi mereka secara lebih efisien, mengurangi ketergantungan pada pencarian manual, serta memperluas eksposur terhadap destinasi yang kurang populer namun potensial.
 
 Secara lebih spesifik, tujuan proyek ini meliputi:
 
-- ...
+- **Membangun sistem rekomendasi berbasis konten yang efisien dengan memanfaatkan deskripsi dan kategori destinasi wisata.**
+
+  Sistem ini akan memanfaatkan informasi deskriptif dan klasifikasi destinasi untuk mencocokkan rekomendasi dengan minat pengguna yang sudah pernah mengunjungi tempat wisata tertentu.
+
+- **Mengembangkan sistem rekomendasi destinasi wisata berbasis kolaboratif yang mempertimbangkan pola penilaian pengguna.**
+
+  Dengan menganalisis data rating yang diberikan pengguna terhadap destinasi tertentu, sistem diharapkan dapat menyarankan tempat wisata yang relevan berdasarkan kesamaan pola preferensi antar pengguna.
+
+- **Melakukan evaluasi terhadap performa sistem rekomendasi menggunakan metrik yang sesuai.**
+
+  Evaluasi dilakukan untuk menilai tingkat relevansi dan akurasi rekomendasi yang dihasilkan, guna memastikan bahwa sistem memberikan saran yang tepat sasaran dan bermanfaat bagi pengguna.
 
 ### Solution Statements
 
 Untuk mencapai tujuan proyek, dilakukan serangkaian pendekatan sebagai berikut:
+Untuk mencapai tujuan proyek, dilakukan serangkaian pendekatan sebagai berikut:
 
-- ...
+- **Content-based Filtering**
+
+  Pendekatan ini memanfaatkan informasi tekstual pada deskripsi dan kategori destinasi wisata untuk merekomendasikan tempat yang memiliki karakteristik serupa dengan destinasi yang disukai pengguna sebelumnya. Langkah-langkah yang dilakukan adalah sebagai berikut:
+
+  - Preprocessing
+
+    Deskripsi dan kategori destinasi digabungkan dan dibersihkan, lalu diubah menjadi representasi numerik menggunakan metode TF-IDF Vectorizer.
+
+  - Pembangunan Model
+
+    Kesamaan antar destinasi dihitung menggunakan cosine similarity berdasarkan vektor TF-IDF, sehingga sistem dapat merekomendasikan destinasi yang memiliki konten serupa.
+
+  - Evaluasi
+
+    Kinerja sistem diukur menggunakan metrik Precision@10, yang mengevaluasi proporsi destinasi yang relevan dari 10 rekomendasi teratas.
+
+- **Collaborative Filtering**
+
+  Pendekatan ini mengandalkan data interaksi pengguna berupa rating untuk menyarankan destinasi yang disukai oleh pengguna lain dengan preferensi serupa. Berikut adalah langkah-langkah yang dilakukan:
+
+  - Encoding Data
+
+    ID pengguna dan destinasi dikonversi menjadi indeks numerik untuk mempermudah proses pelatihan dalam model neural network.
+
+  - Normalisasi Rating
+
+    Rating dinormalisasi ke rentang [0,1] guna memastikan stabilitas pembelajaran model.
+
+  - Pembangunan Model
+
+    Model dikembangkan menggunakan embedding layer untuk memetakan pengguna dan destinasi ke dalam representasi vektor, dan menghasilkan prediksi rating untuk pasangan pengguna–destinasi.
+
+  - Evaluasi
+
+    Metrik yang digunakan meliputi Root Mean Square Error (RMSE) dan Mean Absolute Error (MAE), yang menilai akurasi prediksi model terhadap rating aktual.
 
 <br>
 
@@ -61,31 +120,31 @@ Berdasarkan Tabel 1a, Dataset `Indonesia Tourism Destination` yang digunakan pad
 
 Rincian penjelasan mengenai variabel dataset dapat dilihat pada Tabel 1b dan Tabel 1c.
 
-| No. | Variabel     | Deskripsi                                      | Tipe Data |
-|-----|--------------|------------------------------------------------|-----------|
-| 1   | Place_Id     | Identifikasi unik untuk setiap destinasi wisata.| Integer   |
-| 2   | Place_Name   | Nama destinasi wisata.                         | String    |
-| 3   | Description  | Deskripsi singkat tentang destinasi.           | String    |
-| 4   | Category     | Kategori destinasi (misalnya: Budaya, Alam).   | String    |
-| 5   | City         | Kota tempat destinasi berada.                  | String    |
-| 6   | Price        | Harga tiket masuk.                             | Integer   |
-| 7   | Rating       | Rating rata-rata dari pengguna (0-5).          | Float     |
-| 8   | Time_Minutes | Waktu yang dibutuhkan untuk mengunjungi (dalam menit). | Float     |
-| 9   | Coordinate   | Koordinat geografis.                           | String    |
-| 10  | Lat          | Latitude lokasi.                               | Float     |
-| 11  | Long         | Longitude lokasi.                              | Float     |
-| 12  | Unnamed: 11  | Kolom kosong.                                  | Float     |
-| 13  | Unnamed: 12  | Nilai duplikat dari Place_id                   | Integer   |
+| No. | Variabel     | Deskripsi                                       | Tipe Data |
+| --- | ------------ | ----------------------------------------------- | --------- |
+| 1   | Place_Id     | ID unik untuk setiap destinasi wisata.          | Integer   |
+| 2   | Place_Name   | Nama destinasi wisata.                          | String    |
+| 3   | Description  | Deskripsi singkat mengenai destinasi.           | String    |
+| 4   | Category     | Kategori destinasi (misal: Budaya, Alam, dll.). | String    |
+| 5   | City         | Kota tempat destinasi berada.                   | String    |
+| 6   | Price        | Harga tiket masuk destinasi.                    | Integer   |
+| 7   | Rating       | Nilai rating rata-rata pengguna (0-5).          | Float     |
+| 8   | Time_Minutes | Estimasi waktu kunjungan (dalam menit).         | Float     |
+| 9   | Coordinate   | Koordinat geografis destinasi.                  | String    |
+| 10  | Lat          | Garis lintang (latitude) lokasi destinasi.      | Float     |
+| 11  | Long         | Garis bujur (longitude) lokasi destinasi.       | Float     |
+| 12  | Unnamed: 11  | Kolom kosong/tidak digunakan.                   | Float     |
+| 13  | Unnamed: 12  | Salinan duplikat dari Place_Id.                 | Integer   |
 
 Tabel 1b. Deskripsi Variabel File `tourism_with_id.csv`
 
-| No. | Variabel      | Deskripsi                                                   | Tipe Data |
-|-----|---------------|-------------------------------------------------------------|-----------|
-| 1   | User_Id       | Identifikasi unik untuk setiap pengguna                    | Integer   |
-| 2   | Place_Id      | Identifikasi unik untuk setiap destinasi wisata             | Integer   |
-| 3   | Place_Ratings | Rating yang diberikan oleh pengguna terhadap destinasi wisata | Integer (0-5)   |
+| No. | Variabel      | Deskripsi                                                    | Tipe Data     |
+| --- | ------------- | ------------------------------------------------------------ | ------------- |
+| 1   | User_Id       | ID unik untuk setiap pengguna.                               | Integer       |
+| 2   | Place_Id      | ID unik untuk setiap destinasi wisata.                       | Integer       |
+| 3   | Place_Ratings | Rating yang diberikan pengguna untuk destinasi wisata (0-5). | Integer (0-5) |
 
-Tabel 1b. Deskripsi Variabel File `tourism_rating.csv`
+Tabel 1c. Deskripsi Variabel File `tourism_rating.csv`
 
 <br>
 
