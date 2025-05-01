@@ -55,7 +55,6 @@ Secara lebih spesifik, tujuan proyek ini meliputi:
 ### Solution Statements
 
 Untuk mencapai tujuan proyek, dilakukan serangkaian pendekatan sebagai berikut:
-Untuk mencapai tujuan proyek, dilakukan serangkaian pendekatan sebagai berikut:
 
 - **Content-based Filtering**
 
