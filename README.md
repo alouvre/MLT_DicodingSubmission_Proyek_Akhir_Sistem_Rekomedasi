@@ -163,7 +163,7 @@ df_tourism[df_tourism.duplicated('Place_Id', keep=False)]
 | Place_Id | Place_Name | Description | Category | City | Price | Rating | Time_Minutes | Coordinate | Lat | Long | Unnamed: 11 | Unnamed: 12 |
 | -------- | ---------- | ----------- | -------- | ---- | ----- | ------ | ------------ | ---------- | --- | ---- | ----------- | ----------- |
 
-Tabel 1c. Memeriksa data duplikasi pada df_tourism
+Tabel 1c. Memeriksa data duplikasi pada `df_tourism`
 
 ```python
 df_ratings[df_ratings.duplicated(['User_Id', 'Place_Id'], keep=False)]
@@ -185,11 +185,11 @@ df_ratings[df_ratings.duplicated(['User_Id', 'Place_Id'], keep=False)]
 
 \*798 rows × 3 columns
 
-Tabel 1c. Memeriksa data duplikasi pada df_ratings
+Tabel 1c. Memeriksa data duplikasi pada `df_ratings`
 
-Hasil dari pengecekan duplikasi menunjukkan bahwa pada dataset df_tourism (Tabel 1), tidak ditemukan duplikasi baik pada kolom Place_Id maupun Place_Name, sehingga dapat disimpulkan bahwa setiap destinasi wisata memiliki ID dan nama yang tercatat secara unik. Hal ini menunjukkan bahwa data destinasi sudah tersusun dengan baik dan tidak memerlukan tindakan pembersihan terkait duplikasi.
+Hasil dari pengecekan duplikasi menunjukkan bahwa pada dataset `df_tourism`, tidak ditemukan duplikasi baik pada kolom `Place_Id` maupun `Place_Name`, sehingga dapat disimpulkan bahwa setiap destinasi wisata memiliki ID dan nama yang tercatat secara unik. Hal ini menunjukkan bahwa data destinasi sudah tersusun dengan baik dan tidak memerlukan tindakan pembersihan terkait duplikasi.
 
-Sementara itu, pada dataset df_ratings (Tabel 2), ditemukan sebanyak 798 baris duplikasi pada kombinasi kolom User_Id dan Place_Id. Artinya, terdapat sejumlah pengguna yang memberikan lebih dari satu rating untuk destinasi wisata yang sama. Kondisi ini perlu menjadi perhatian pada tahap preprocessing, karena duplikasi semacam ini dapat memengaruhi akurasi sistem rekomendasi yang dibangun.
+Sementara itu, pada dataset `df_ratings`, ditemukan sebanyak `798 baris duplikasi` pada kombinasi kolom `User_Id` dan `Place_Id`. Artinya, terdapat sejumlah pengguna yang memberikan lebih dari satu rating untuk destinasi wisata yang sama. Kondisi ini perlu menjadi perhatian pada tahap preprocessing, karena duplikasi semacam ini dapat memengaruhi akurasi sistem rekomendasi yang dibangun.
 
 #### 1.2.2. Pengecekan Missing Values
 
@@ -211,7 +211,7 @@ Dicek apakah terdapat nilai kosong (missing) pada kolom-kolom penting. Kehadiran
 | 11  | Unnamed: 11  | 437                 |
 | 12  | Unnamed: 12  | 0                   |
 
-Tabel 1c. Memeriksa data missing value pada tourism_with_id.csv
+Tabel 1c. Memeriksa data missing value pada `df_tourism`
 
 | No  | Kolom         | Jumlah Nilai Kosong |
 | --- | ------------- | ------------------- |
@@ -219,17 +219,17 @@ Tabel 1c. Memeriksa data missing value pada tourism_with_id.csv
 | 1   | Place_Id      | 0                   |
 | 2   | Place_Ratings | 0                   |
 
-Tabel 1c. Memeriksa data missing value pada tourism_rating.csv
+Tabel 1c. Memeriksa data missing value pada `df_ratings`
 
-Dapat dilihat pada Tabel 1 bahwa pada dataset df_tourism terdapat missing values pada kolom Time_Minutes sebanyak 232 baris, serta seluruh baris pada kolom Unnamed: 11 kosong. Hal ini menunjukkan bahwa kolom Time_Minutes memerlukan penanganan lebih lanjut seperti imputasi, sedangkan kolom Unnamed: 11 kemungkinan dapat dihapus karena tidak mengandung informasi.
+Dapat dilihat pada Tabel 1 bahwa pada dataset `df_tourism` terdapat missing values pada kolom `Time_Minutes` sebanyak `232 baris`, serta seluruh baris pada kolom `Unnamed: 11` kosong. Hal ini menunjukkan bahwa kolom `Time_Minutes` memerlukan penanganan lebih lanjut seperti imputasi, sedangkan kolom `Unnamed: 11` kemungkinan dapat dihapus karena tidak mengandung informasi.
 
-Sementara itu, berdasarkan Tabel 2, dataset df_ratings tidak memiliki missing values pada seluruh kolomnya. Artinya, data pada df_ratings sudah bersih dan siap digunakan dalam proses analisis atau pemodelan tanpa perlu penanganan terhadap nilai yang hilang.
+Sementara itu, berdasarkan Tabel 2, dataset `df_ratings` tidak memiliki missing values pada seluruh kolomnya. Artinya, data pada `df_ratings` sudah bersih dan siap digunakan dalam proses analisis atau pemodelan tanpa perlu penanganan terhadap nilai yang hilang.
 
 #### 1.2.3. Pengecekan Kolom Yang Tidak Relevan
 
 Kolom yang tidak memuat informasi berguna atau hanya merupakan salinan dari kolom lain dapat menyebabkan redundansi dan memperbesar ukuran dataset secara tidak perlu. Oleh karena itu, perlu dilakukan pemeriksaan lebih lanjut sebelum memutuskan untuk menghapusnya.
 
-Saat meninjau struktur dataset, saya menyadari ada sebuah kolom tambahan bernama Unnamed: 12 yang tampaknya tidak familiar dan sekilas terlihat mirip dengan Place_Id. Hal ini membuat saya penasaran, apakah kolom ini benar-benar memuat informasi baru atau hanya sekadar salinan dari kolom yang sudah ada.
+Saat meninjau struktur dataset, saya menyadari ada sebuah kolom tambahan bernama `Unnamed: 12` yang tampaknya tidak familiar dan sekilas terlihat mirip dengan `Place_Id`. Hal ini membuat saya penasaran, apakah kolom ini benar-benar memuat informasi baru atau hanya sekadar salinan dari kolom yang sudah ada.
 
 Dilakukan pengecekan lebih lanjut dengan membandingkan seluruh isi kedua kolom dengan menggunakan kode berikut:
 
@@ -237,7 +237,7 @@ Dilakukan pengecekan lebih lanjut dengan membandingkan seluruh isi kedua kolom d
 (df_tourism['Place_Id'] == df_tourism['Unnamed: 12']).all()
 ```
 
-Hasil dari pengecekan ini menghasilkan `True`, yang berarti seluruh nilai di `Unnamed: 12` memang 100% identik dengan `Place_Id`.
+Hasil dari pengecekan ini menghasilkan `True`, yang berarti seluruh nilai di `Unnamed: 12` memang 100% identik dengan `Place_Id`. Dengan demikian, dapat disimpulkan bahwa kolom `Unnamed: 12` tidak memuat informasi baru dan dapat dihapus untuk menjaga kebersihan serta efisiensi data.
 
 <br>
 
