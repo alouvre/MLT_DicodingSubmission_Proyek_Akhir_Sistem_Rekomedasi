@@ -156,6 +156,15 @@ Setelah data berhasil dikumpulkan, dilakukan evaluasi kualitas data melalui bebe
 
 Dilakukan pemeriksaan apakah terdapat baris data yang tercatat lebih dari satu kali. Data duplikat dapat memperkenalkan bias dalam pelatihan model dan perlu dihapus.
 
+```
+df_tourism[df_tourism.duplicated('Place_Id', keep=False)]
+```
+
+| Place_Id | Place_Name | Description | Category | City | Price | Rating | Time_Minutes | Coordinate | Lat | Long | Unnamed: 11 | Unnamed: 12 |
+| -------- | ---------- | ----------- | -------- | ---- | ----- | ------ | ------------ | ---------- | --- | ---- | ----------- | ----------- |
+
+Tabel 1c. Memeriksa data duplikasi pada df_tourism
+
 ```python
 df_ratings[df_ratings.duplicated(['User_Id', 'Place_Id'], keep=False)]
 ```
@@ -174,37 +183,41 @@ df_ratings[df_ratings.duplicated(['User_Id', 'Place_Id'], keep=False)]
 | 9978 | 300     | 69       | 3             |
 | 9983 | 300     | 69       | 1             |
 
-*798 rows × 3 columns
+\*798 rows × 3 columns
 
-Hasil dari pengecekan duplikasi menunjukkan bahwa pada dataset df_tourism (Tabel 1), tidak ditemukan duplikasi baik pada kolom Place_Id maupun Place_Name, sehingga dapat disimpulkan bahwa setiap destinasi wisata memiliki ID dan nama yang tercatat secara unik. Hal ini menunjukkan bahwa data destinasi sudah tersusun dengan baik dan tidak memerlukan tindakan pembersihan terkait duplikasi. Sementara itu, pada dataset df_ratings (Tabel 2), ditemukan sebanyak 798 baris duplikasi pada kombinasi kolom User_Id dan Place_Id. Artinya, terdapat sejumlah pengguna yang memberikan lebih dari satu rating untuk destinasi wisata yang sama. Kondisi ini perlu menjadi perhatian pada tahap preprocessing, karena duplikasi semacam ini dapat memengaruhi akurasi sistem rekomendasi yang dibangun.
+Tabel 1c. Memeriksa data duplikasi pada df_ratings
+
+Hasil dari pengecekan duplikasi menunjukkan bahwa pada dataset df_tourism (Tabel 1), tidak ditemukan duplikasi baik pada kolom Place_Id maupun Place_Name, sehingga dapat disimpulkan bahwa setiap destinasi wisata memiliki ID dan nama yang tercatat secara unik. Hal ini menunjukkan bahwa data destinasi sudah tersusun dengan baik dan tidak memerlukan tindakan pembersihan terkait duplikasi.
+
+Sementara itu, pada dataset df_ratings (Tabel 2), ditemukan sebanyak 798 baris duplikasi pada kombinasi kolom User_Id dan Place_Id. Artinya, terdapat sejumlah pengguna yang memberikan lebih dari satu rating untuk destinasi wisata yang sama. Kondisi ini perlu menjadi perhatian pada tahap preprocessing, karena duplikasi semacam ini dapat memengaruhi akurasi sistem rekomendasi yang dibangun.
 
 #### 1.2.2. Pengecekan Missing Values
 
 Dicek apakah terdapat nilai kosong (missing) pada kolom-kolom penting. Kehadiran nilai kosong dapat menurunkan kualitas model dan, jika ditemukan, perlu ditangani melalui imputasi atau penghapusan.
 
-| No  | Kolom          | Jumlah Nilai Kosong |
-| --- | -------------- | ------------------- |
-| 0   | Place_Id       | 0                   |
-| 1   | Place_Name     | 0                   |
-| 2   | Description    | 0                   |
-| 3   | Category       | 0                   |
-| 4   | City           | 0                   |
-| 5   | Price          | 0                   |
-| 6   | Rating         | 0                   |
-| 7   | Time_Minutes   | 232                 |
-| 8   | Coordinate     | 0                   |
-| 9   | Lat            | 0                   |
-| 10  | Long           | 0                   |
-| 11  | Unnamed: 11    | 437                 |
-| 12  | Unnamed: 12    | 0                   |
+| No  | Kolom        | Jumlah Nilai Kosong |
+| --- | ------------ | ------------------- |
+| 0   | Place_Id     | 0                   |
+| 1   | Place_Name   | 0                   |
+| 2   | Description  | 0                   |
+| 3   | Category     | 0                   |
+| 4   | City         | 0                   |
+| 5   | Price        | 0                   |
+| 6   | Rating       | 0                   |
+| 7   | Time_Minutes | 232                 |
+| 8   | Coordinate   | 0                   |
+| 9   | Lat          | 0                   |
+| 10  | Long         | 0                   |
+| 11  | Unnamed: 11  | 437                 |
+| 12  | Unnamed: 12  | 0                   |
 
 Tabel 1c. Memeriksa data missing value pada tourism_with_id.csv
 
-| No  | Kolom          | Jumlah Nilai Kosong |
-| --- | -------------- | ------------------- |
-| 0   | User_Id        | 0                   |
-| 1   | Place_Id       | 0                   |
-| 2   | Place_Ratings  | 0                   |
+| No  | Kolom         | Jumlah Nilai Kosong |
+| --- | ------------- | ------------------- |
+| 0   | User_Id       | 0                   |
+| 1   | Place_Id      | 0                   |
+| 2   | Place_Ratings | 0                   |
 
 Tabel 1c. Memeriksa data missing value pada tourism_rating.csv
 
@@ -279,13 +292,11 @@ Secara umum, fitur-fitur yang berhubungan dengan pendapatan dan aset memiliki ko
 
 Berdasarkan hasil analisis matriks korelasi dan pairplot, dapat disimpulkan bahwa fitur-fitur finansial seperti `income_annum`, `loan_amount`, `luxury_assets_value`, dan `bank_asset_value` memiliki hubungan yang saling berkorelasi erat. Hal ini mengindikasikan bahwa individu dengan pendapatan tinggi cenderung memiliki jumlah pinjaman yang besar serta aset mewah dan simpanan bank yang lebih tinggi. Di sisi lain, fitur seperti `loan_term`, `cibil_score`, dan `no_of_dependents` menunjukkan korelasi yang lemah terhadap fitur numerik lainnya, sehingga kurang memberikan informasi prediktif yang signifikan dalam analisis ini. Selain itu, tidak ditemukan pola non-linear yang kuat maupun outlier yang mencolok, yang menunjukkan bahwa data relatif bersih dan siap untuk dianalisis lebih lanjut menggunakan pendekatan pemodelan regresi atau klasifikasi, terutama jika target analisis berkaitan dengan aspek finansial.
 
-
 ## 🤖 3. Modelling
 
 <br>
 
 ## 📊 4. Evaluation
-
 
 ## 5. Kesimpulan
 
@@ -296,6 +307,7 @@ Pada pendekatan Content-Based Filtering, sistem memberikan rekomendasi berdasark
 Sementara itu, pendekatan Collaborative Filtering digunakan untuk merekomendasikan wisata yang belum pernah dikunjungi oleh pengguna, dengan memperhitungkan pola rating dari pengguna lain yang memiliki preferensi serupa. Evaluasi performa dilakukan menggunakan metrik Root Mean Squared Error (RMSE) dan Mean Absolute Error (MAE). Model Collaborative Filtering yang dibangun menghasilkan RMSE sebesar 0.3642 dan MAE sebesar 0.3145, yang menunjukkan tingkat kesalahan prediksi rating yang relatif rendah, serta potensi model dalam menghasilkan rekomendasi yang akurat berdasarkan data perilaku pengguna.
 
 Dengan demikian, kedua pendekatan yang diterapkan dalam proyek ini telah mampu membangun sistem rekomendasi yang efektif:
+
 - Content-Based Filtering sangat akurat dalam menyarankan destinasi serupa berdasarkan konten,
 - Collaborative Filtering memberikan rekomendasi personalisasi yang relevan dengan mempertimbangkan pola preferensi pengguna secara kolektif.
 
