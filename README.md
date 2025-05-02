@@ -342,11 +342,11 @@ Setelah proses pembersihan dilakukan pada kedua dataset, langkah selanjutnya ada
 
 Penggabungan dilakukan melalui langkah-langkah berikut:
 
-- Menghitung Rata-rata Rating
+- **Menghitung Rata-rata Rating**
 
   Dataset `df_ratings` dikelompokkan berdasarkan kolom `Place_Id`, kemudian dihitung rata-rata dari kolom `Place_Ratings` untuk setiap destinasi. Proses ini menghasilkan dataframe baru yang berisi dua kolom: `Place_Id` dan `Place_Ratings`.
 
-- Penggabungan Dataset
+- **Penggabungan Dataset**
 
   Rata-rata rating yang telah dihitung kemudian digabungkan dengan dataset `df_tourism_cleaned` menggunakan fungsi `pd.merge()` dengan parameter `on='Place_Id'`. Penggabungan dilakukan berdasarkan kolom `Place_Id` yang merupakan kunci unik bagi setiap destinasi wisata.
 
