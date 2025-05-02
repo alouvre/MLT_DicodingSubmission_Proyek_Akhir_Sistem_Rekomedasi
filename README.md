@@ -612,7 +612,6 @@ Berikut hasil rekomendasi:
 
       Dengan hasil ini, dataframe `df_encoded` siap digunakan sebagai input untuk membangun model Collaborative Filtering. Kolom `user` dan `place` akan digunakan sebagai input ke model, sedangkan `Rating` akan menjadi target yang diprediksi.
 
-
 <br>
 
 ## 📊 4. Evaluation
