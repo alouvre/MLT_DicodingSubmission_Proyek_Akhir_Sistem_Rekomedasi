@@ -415,7 +415,7 @@ Pada tahap ini, dua pendekatan sistem rekomendasi yang berbeda dikembangkan, yai
 
 Dalam pendekatan Content-Based Filtering, model dikembangkan berdasarkan informasi yang melekat pada setiap destinasi, seperti deskripsi dan kategori. Proses pembangunan model dilakukan melalui beberapa tahapan utama berikut:
 
-**a. Ekstraksi Fitur Teks dengan TF-IDF**
+#### **a. Ekstraksi Fitur Teks dengan TF-IDF**
 
 Dalam membangun sistem rekomendasi berbasis Content-Based Filtering, representasi numerik dari data teks menjadi kunci dalam mengidentifikasi kemiripan antar destinasi wisata. Salah satu teknik yang digunakan adalah `TF-IDF (Term Frequency–Inverse Document Frequency)`, yang memungkinkan pemetaan teks ke dalam bentuk vektor numerik berdasarkan pentingnya suatu kata dalam dokumen relatif terhadap seluruh korpus.
 
@@ -432,7 +432,7 @@ Untuk masing-masing kolom, dilakukan proses sebagai berikut:
 
 Matriks TF-IDF yang dihasilkan kemudian digunakan sebagai dasar untuk mengukur kesamaan antar destinasi dan mendukung sistem rekomendasi berbasis konten.
 
-**b. Perhitungan Kemiripan dengan Cosine Similarity**
+#### **b. Perhitungan Kemiripan dengan Cosine Similarity**
 
 Setelah data vektor diperoleh, tingkat kemiripan antar destinasi dihitung menggunakan `cosine similarity`. Nilai ini menunjukkan seberapa mirip suatu destinasi dengan destinasi lainnya berdasarkan konten teksnya.
 
@@ -450,13 +450,119 @@ Setelah data vektor diperoleh, tingkat kemiripan antar destinasi dihitung menggu
 
   Proses yang sama diterapkan pada kolom yang hanya memuat deskripsi destinasi tanpa informasi kategori. Tujuannya adalah untuk mengevaluasi seberapa besar pengaruh deskripsi murni terhadap kemiripan antar destinasi.
 
+  ```python
+  similarity_desc = cosine_similarity(vectors_desc, dense_output=True)
+  ```
+
+#### **c. Penyusunan Rekomendasi**
+
+Setelah mendapatkan matriks kesamaan antar destinasi wisata, langkah selanjutnya adalah membangun `sistem rekomendasi berbasis konten (content-based recommendation system)`. Penulis mengembangkan sebuah fungsi bernama `get_content_based_recommendations` yang bertujuan untuk menghasilkan daftar destinasi wisata yang paling relevan atau mirip dengan destinasi yang dipilih pengguna.
+
+Fungsi ini memiliki beberapa parameter penting, yaitu:
+
+- `place_name`: Nama destinasi wisata yang dijadikan acuan pencarian rekomendasi.
+- data: Dataset yang berisi informasi lengkap tentang destinasi wisata.
+- `similarity_matrix`: Matriks kemiripan antar destinasi yang telah dihitung sebelumnya, menggunakan pendekatan seperti TF-IDF dan cosine similarity.
+- `top_n`: Jumlah destinasi wisata yang ingin direkomendasikan, dengan nilai default sebanyak 10.
+
+Rekomendasi diperoleh dengan cara mengurutkan skor kemiripan dari yang tertinggi dan mengabaikan destinasi itu sendiri dalam daftar hasil. Fungsi ini akan mengembalikan daftar `Place_Id` dari destinasi yang dianggap paling mirip dan layak direkomendasikan.
+
+##### Implementasi Fungsi
+
+Berikut implementasi fungsi `get_content_based_recommendations`:
+
 ```python
-similarity_desc = cosine_similarity(vectors_desc, dense_output=True)
+def get_content_based_recommendations(place_name, data, similarity_matrix, top_n=10):
+    # Memastikan destinasi yang diminta ada dalam dataset
+    if place_name not in data['Place_Name'].values:
+        print(f"'{place_name}' tidak ditemukan dalam dataset.")
+        return []
+
+    # Mendapatkan indeks destinasi
+    place_idx = data[data['Place_Name'] == place_name].index[0]
+
+    # Mendapatkan skor similarity
+    place_similarity = similarity_matrix[place_idx].flatten()
+
+    # Mengurutkan skor secara menurun dan menghapus indeks dirinya sendiri
+    similar_indices = place_similarity.argsort()[::-1]
+    similar_indices = similar_indices[similar_indices != place_idx]
+
+    # Mengambil top-n destinasi
+    top_indices = similar_indices[:top_n]
+    recommended_place_ids = data.iloc[top_indices]['Place_Id'].tolist()
+
+    return recommended_place_ids
 ```
 
-**c. Penyusunan Rekomendasi**
+Fungsi tambahan `show_recommendations` digunakan untuk menampilkan hasil rekomendasi dalam bentuk tabel agar lebih informatif bagi pengguna:
 
-Berdasarkan hasil perhitungan kemiripan, sistem menghasilkan daftar destinasi wisata yang paling relevan dan mirip dengan destinasi yang telah disukai atau dikunjungi oleh pengguna.
+```python
+def show_recommendations(place_name, similarity_matrix, df_recommendation, df_tourism_cleaned, source_label=""):
+    recommended_place_ids = get_content_based_recommendations(
+        place_name=place_name,
+        data=df_recommendation,
+        similarity_matrix=similarity_matrix,
+        top_n=10
+    )
+
+    # Menyaring dan menampilkan hasil
+    recommended_destinations = df_tourism_cleaned[
+        df_tourism_cleaned['Place_Id'].isin(recommended_place_ids)
+    ][['Place_Name', 'Category', 'Rating', 'Description']].copy()
+
+    recommended_destinations.reset_index(drop=True, inplace=True)
+    recommended_destinations.index += 1
+    recommended_destinations.index.name = 'No.'
+
+    print(f"\nRekomendasi destinasi wisata untuk '{place_name}' berdasarkan {source_label}:\n")
+    display(recommended_destinations)
+```
+
+##### Hasil Rekomendasi
+
+Sebagai studi kasus, destinasi **Wisata Alam Kalibiru** digunakan sebagai acuan untuk pencarian destinasi lain yang mirip. Hasil rekomendasi disajikan berdasarkan dua pendekatan:
+
+- Berdasarkan kolom `Tags`: Menggabungkan informasi deskripsi dan kategori.
+- Berdasarkan kolom `Description_Preprocessed`: Hanya menggunakan teks deskripsi yang telah diproses.
+
+Berikut hasil rekomendasi:
+
+- Rekomendasi Berdasarkan `Tags`
+
+  | No. | Place_Name                        | Category      | Rating | Description                                       |
+  | --- | --------------------------------- | ------------- | ------ | ------------------------------------------------- |
+  | 1   | Watu Lumbung                      | Cagar Alam    | 4.3    | Letak Kampung Edukasi Watu Lumbung yang berada... |
+  | 2   | Wisata Kaliurang                  | Cagar Alam    | 4.4    | Jogja selalu menarik untuk dikulik, terlebih t... |
+  | 3   | Ciwangun Indah Camp Official      | Cagar Alam    | 4.3    | Ciwangun Indah Camp atau CIC adalah sebuah tem... |
+  | 4   | Curug Cilengkrang                 | Cagar Alam    | 4.0    | Curug Cilengkrang bisa menjadi pilihan tujuan ... |
+  | 5   | Happyfarm Ciwidey                 | Cagar Alam    | 4.2    | Objek wisata alam dan edukasi tengah banyak me... |
+  | 6   | Hutan Wisata Tinjomoyo Semarang   | Cagar Alam    | 4.3    | Awalnya taman wisata hutan Tinjomoyo Semarang ... |
+  | 7   | Umbul Sidomukti                   | Cagar Alam    | 4.6    | Kawasan wisata umbul Sidomukti merupakan salah... |
+  | 8   | Wisata Alam Wana Wisata Penggaron | Cagar Alam    | 4.1    | Berada sekitar 2 KM dari Kota Ungaran atau sek... |
+  | 9   | Kampoeng Kopi Banaran             | Taman Hiburan | 4.3    | Kampoeng Kopi Banaran, sebuah agro wisata perk... |
+  | 10  | Air Terjun Semirang               | Cagar Alam    | 4.4    | Terletak di lereng Gunung Ungaran bagian utara... |
+
+  Tabel 3a. Hasil Rekomendasi Berdasarkan `Tags`
+
+- Rekomendasi Berdasarkan `Description`
+
+  | No. | Place_Name                        | Category      | Rating | Description                                       |
+  | --- | --------------------------------- | ------------- | ------ | ------------------------------------------------- |
+  | 1   | Watu Lumbung                      | Cagar Alam    | 4.3    | Letak Kampung Edukasi Watu Lumbung yang berada... |
+  | 2   | Wisata Kaliurang                  | Cagar Alam    | 4.4    | Jogja selalu menarik untuk dikulik, terlebih t... |
+  | 3   | Ciwangun Indah Camp Official      | Cagar Alam    | 4.3    | Ciwangun Indah Camp atau CIC adalah sebuah tem... |
+  | 4   | Curug Cilengkrang                 | Cagar Alam    | 4.0    | Curug Cilengkrang bisa menjadi pilihan tujuan ... |
+  | 5   | Happyfarm Ciwidey                 | Cagar Alam    | 4.2    | Objek wisata alam dan edukasi tengah banyak me... |
+  | 6   | Desa Wisata Lembah Kalipancur     | Taman Hiburan | 3.9    | Wisata alam tengah menjadi sorotan bagi dunia ... |
+  | 7   | Hutan Wisata Tinjomoyo Semarang   | Cagar Alam    | 4.3    | Awalnya taman wisata hutan Tinjomoyo Semarang ... |
+  | 8   | Wisata Alam Wana Wisata Penggaron | Cagar Alam    | 4.1    | Berada sekitar 2 KM dari Kota Ungaran atau sek... |
+  | 9   | Kampoeng Kopi Banaran             | Taman Hiburan | 4.3    | Kampoeng Kopi Banaran, sebuah agro wisata perk... |
+  | 10  | Air Terjun Semirang               | Cagar Alam    | 4.4    | Terletak di lereng Gunung Ungaran bagian utara... |
+
+  Tabel 3b. Hasil Rekomendasi Berdasarkan `Description_Preprocessed`
+
+  Hasil tersebut menunjukkan bahwa sistem berhasil mengidentifikasi destinasi yang memiliki karakteristik serupa, baik dari sisi deskripsi maupun kategori, sehingga dapat membantu pengguna menemukan tempat wisata alternatif yang relevan dengan preferensinya.
 
 ### 3.2. Model Development - Content Based Filtering
 
