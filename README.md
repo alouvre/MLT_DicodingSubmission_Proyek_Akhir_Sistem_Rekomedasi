@@ -434,7 +434,25 @@ Matriks TF-IDF yang dihasilkan kemudian digunakan sebagai dasar untuk mengukur k
 
 **b. Perhitungan Kemiripan dengan Cosine Similarity**
 
-Setelah data vektor diperoleh, tingkat kemiripan antar destinasi dihitung menggunakan cosine similarity. Nilai ini menunjukkan seberapa mirip suatu destinasi dengan destinasi lainnya berdasarkan konten teksnya.
+Setelah data vektor diperoleh, tingkat kemiripan antar destinasi dihitung menggunakan `cosine similarity`. Nilai ini menunjukkan seberapa mirip suatu destinasi dengan destinasi lainnya berdasarkan konten teksnya.
+
+- Kolom `Tags`
+
+  Representasi teks dari kombinasi deskripsi dan kategori dihitung menggunakan `cosine_similarity` dari pustaka `sklearn.metrics.pairwise`. Hasilnya berupa matriks kesamaan yang menunjukkan nilai kemiripan antar setiap pasangan destinasi. Nilai yang semakin mendekati 1 menandakan bahwa dua destinasi memiliki konten yang sangat mirip.
+
+  ```python
+  similarity_tags = cosine_similarity(vectors_tags, dense_output=True)
+  ```
+
+  Sebagian hasil dari matriks kesamaan ditampilkan secara acak untuk keperluan eksplorasi dan validasi awal.
+
+- Kolom `Description_Preprocessed`
+
+  Proses yang sama diterapkan pada kolom yang hanya memuat deskripsi destinasi tanpa informasi kategori. Tujuannya adalah untuk mengevaluasi seberapa besar pengaruh deskripsi murni terhadap kemiripan antar destinasi.
+
+```python
+similarity_desc = cosine_similarity(vectors_desc, dense_output=True)
+```
 
 **c. Penyusunan Rekomendasi**
 
