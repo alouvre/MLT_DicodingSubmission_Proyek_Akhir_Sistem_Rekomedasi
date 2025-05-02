@@ -411,7 +411,7 @@ Langkah-Langkah Preprocessing:
 
 Pada tahap ini, dua pendekatan sistem rekomendasi yang berbeda dikembangkan, yaitu Content-Based Filtering dan Collaborative Filtering. Masing-masing pendekatan memiliki metode tersendiri dalam menganalisis data dan memberikan rekomendasi destinasi wisata yang sesuai dengan preferensi pengguna.
 
-### Model Development - Content Based Filtering
+### 3.1. Model Development - Content Based Filtering
 
 Dalam pendekatan Content-Based Filtering, model dikembangkan berdasarkan informasi yang melekat pada setiap destinasi, seperti deskripsi dan kategori. Proses pembangunan model dilakukan melalui beberapa tahapan utama berikut:
 
@@ -440,7 +440,7 @@ Setelah data vektor diperoleh, tingkat kemiripan antar destinasi dihitung menggu
 
 Berdasarkan hasil perhitungan kemiripan, sistem menghasilkan daftar destinasi wisata yang paling relevan dan mirip dengan destinasi yang telah disukai atau dikunjungi oleh pengguna.
 
-### Model Development - Content Based Filtering
+### 3.2. Model Development - Content Based Filtering
 
 <br>
 
