@@ -34,7 +34,7 @@ Berdasarkan latar belakang di atas, berikut ini merupakan rincian masalah yang d
 
   Sistem rekomendasi harus mampu memberikan hasil yang sesuai dengan kebutuhan pengguna. Oleh karena itu, diperlukan metrik evaluasi yang efektif untuk memantau dan mengukur sejauh mana sistem mampu menghasilkan rekomendasi yang relevan dan tepat sasaran.
 
-### Goals
+### Goals/ Tujuan
 
 Tujuan utama dari proyek ini adalah untuk membangun sistem rekomendasi destinasi wisata yang relevan dan adaptif dengan memanfaatkan informasi konten destinasi serta interaksi pengguna sebelumnya. Sistem ini diharapkan dapat membantu wisatawan dalam menemukan destinasi yang sesuai dengan preferensi mereka secara lebih efisien, mengurangi ketergantungan pada pencarian manual, serta memperluas eksposur terhadap destinasi yang kurang populer namun potensial.
 
@@ -448,7 +448,7 @@ Berdasarkan hasil perhitungan kemiripan, sistem menghasilkan daftar destinasi wi
 
 <br>
 
-## 5. Kesimpulan
+## 📩 5. Kesimpulan
 
 Luaran dari proyek ini adalah sebuah sistem rekomendasi destinasi wisata yang dikembangkan dengan dua pendekatan utama, yaitu Content-Based Filtering dan Collaborative Filtering.
 
