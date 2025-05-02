@@ -343,14 +343,15 @@ Setelah proses pembersihan dilakukan pada kedua dataset, langkah selanjutnya ada
 Penggabungan dilakukan melalui langkah-langkah berikut:
 
 - Menghitung Rata-rata Rating
-    
+
   Dataset `df_ratings` dikelompokkan berdasarkan kolom `Place_Id`, kemudian dihitung rata-rata dari kolom `Place_Ratings` untuk setiap destinasi. Proses ini menghasilkan dataframe baru yang berisi dua kolom: `Place_Id` dan `Place_Ratings`.
 
 - Penggabungan Dataset
-  
+
   Rata-rata rating yang telah dihitung kemudian digabungkan dengan dataset `df_tourism_cleaned` menggunakan fungsi `pd.merge()` dengan parameter `on='Place_Id'`. Penggabungan dilakukan berdasarkan kolom `Place_Id` yang merupakan kunci unik bagi setiap destinasi wisata.
 
 Kode yang digunakan:
+
 ```python
 df_recommendation = pd.merge(
     df_ratings.groupby('Place_Id')['Place_Ratings'].mean().reset_index(),
@@ -362,15 +363,47 @@ df_recommendation = pd.merge(
 Hasil akhir dari proses ini adalah dataframe `df_recommendation` yang menyatukan informasi deskriptif destinasi wisata dengan nilai rata-rata rating dari pengguna, dan siap digunakan sebagai basis sistem rekomendasi.
 
 | Place_Id | Place_Ratings | Place_Name                        | Description                                       | Category      | Rating |
-|----------|----------------|-----------------------------------|---------------------------------------------------|----------------|--------|
-| 1        | 3.722222       | Monumen Nasional                  | Monumen Nasional atau yang populer disingkat d... | Budaya         | 4.6    |
-| 2        | 2.840000       | Kota Tua                          | Kota tua di Jakarta, yang juga bernama Kota Tu... | Budaya         | 4.6    |
-| 3        | 2.526316       | Dunia Fantasi                     | Dunia Fantasi atau disebut juga Dufan adalah t... | Taman Hiburan  | 4.6    |
-| 4        | 2.857143       | Taman Mini Indonesia Indah (TMII) | Taman Mini Indonesia Indah merupakan suatu kaw... | Taman Hiburan  | 4.5    |
-| 5        | 3.520000       | Atlantis Water Adventure          | Atlantis Water Adventure atau dikenal dengan A... | Taman Hiburan  | 4.5    |
+| -------- | ------------- | --------------------------------- | ------------------------------------------------- | ------------- | ------ |
+| 1        | 3.722222      | Monumen Nasional                  | Monumen Nasional atau yang populer disingkat d... | Budaya        | 4.6    |
+| 2        | 2.840000      | Kota Tua                          | Kota tua di Jakarta, yang juga bernama Kota Tu... | Budaya        | 4.6    |
+| 3        | 2.526316      | Dunia Fantasi                     | Dunia Fantasi atau disebut juga Dufan adalah t... | Taman Hiburan | 4.6    |
+| 4        | 2.857143      | Taman Mini Indonesia Indah (TMII) | Taman Mini Indonesia Indah merupakan suatu kaw... | Taman Hiburan | 4.5    |
+| 5        | 3.520000      | Atlantis Water Adventure          | Atlantis Water Adventure atau dikenal dengan A... | Taman Hiburan | 4.5    |
 
-Tabel 2c. Dataset hasil penggabungan df_ratings dan df_tourism_cleaned berdasarkan Place_Id
+Tabel 2c. Dataset hasil penggabungan `df_ratings` dan `df_tourism_cleaned` berdasarkan `Place_Id`
 
+### 2.4. Preprocessing Text
+
+Pada tahap ini, dilakukan proses pra-pemrosesan terhadap data teks yang terdapat pada dataset destinasi wisata. Langkah ini sangat penting dalam sistem rekomendasi berbasis konten (content-based recommendation system), karena kualitas representasi teks secara langsung mempengaruhi hasil rekomendasi yang diberikan. Tujuan dari preprocessing ini adalah untuk mengurangi kebisingan (noise), menyederhanakan bentuk kata, dan memperkaya konteks antar fitur sehingga informasi yang diperoleh oleh model menjadi lebih relevan dan bermakna.
+
+Langkah-Langkah Preprocessing
+
+- Penggabungan Informasi Deskripsi dan Kategori
+
+  Langkah pertama yang dilakukan adalah menggabungkan informasi dari kolom `Description` dan `Category` ke dalam satu kolom baru bernama `Tags`. Hal ini dilakukan untuk memperkaya konteks dari tiap destinasi wisata. Kolom `Description` memberikan gambaran tentang tempat tersebut, sedangkan kolom `Category` memberi tahu klasifikasinya, seperti budaya, taman hiburan, sejarah, dan sebagainya.
+
+- Normalisasi Teks
+
+Setelah digabungkan, seluruh teks pada kolom Tags diubah menjadi huruf kecil (lowercase) agar formatnya seragam dan tidak ada perbedaan yang disebabkan oleh kapitalisasi huruf.
+
+- Stemming dan Stopword Removal Menggunakan Sastrawi
+
+Untuk menangani kata-kata dalam Bahasa Indonesia, digunakan pustaka Sastrawi yang menyediakan dua fungsi utama:
+
+- **Stemming**: Mengubah kata menjadi bentuk dasarnya. Contohnya, kata “berkunjung”, “mengunjungi”, dan “kunjungan” akan diubah menjadi “kunjung”.
+- **Stopword Removal**: Menghapus kata-kata umum yang tidak memberikan makna signifikan terhadap konteks, seperti “yang”, “di”, dan “dan”.
+
+- Penerapan Fungsi Preprocessing
+
+  Seluruh proses tersebut dikemas dalam sebuah fungsi preprocessing(text) yang akan mengubah teks menjadi huruf kecil, melakukan stemming, dan menghapus stopword. Fungsi ini diterapkan pada kolom `Tags` serta pada kolom Description secara terpisah.
+
+  Penerapan pada kolom `Tags` digunakan untuk membentuk representasi teks gabungan yang akan digunakan sebagai input utama dalam model rekomendasi. Sementara itu, preprocessing pada kolom Description saja dilakukan untuk keperluan eksperimen pembandingan performa antara representasi gabungan (deskripsi + kategori) dan deskripsi saja.
+
+- Menyimpan Dataset Hasil Preprocessing
+
+  Karena proses preprocessing ini cukup memakan waktu, dataset hasil akhir disimpan dalam sebuah file CSV bernama `data_recommendation_preprocessed.csv`. Dengan cara ini, proses eksperimen selanjutnya dapat dilakukan tanpa perlu mengulangi tahap preprocessing dari awal.
+
+<br>
 
 ## 🤖 3. Modeling and Result
 
