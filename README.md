@@ -297,15 +297,19 @@ Pada tahap data preparation, dilakukan serangkaian langkah untuk memastikan bahw
 
 ### 2.1. Menghapus Kolom Yang Tidak Diperlukan
 
-Untuk menyederhanakan struktur dataset dan memastikan hanya informasi yang relevan yang digunakan dalam proses analisis serta pengembangan sistem rekomendasi, dilakukan penghapusan terhadap beberapa kolom yang dianggap tidak diperlukan. Proses ini dilakukan menggunakan perintah `df_tourism.drop(...)` dengan menyertakan nama-nama kolom yang akan dihapus, yaitu: `City`, `Price`, `Time_Minutes`, `Coordinate`, `Lat`, `Long`, `Unnamed: 11`, dan `Unnamed: 12`.
+Untuk menyederhanakan struktur data serta memastikan hanya informasi yang relevan digunakan dalam proses analisis dan pengembangan sistem rekomendasi, dilakukan penghapusan terhadap beberapa kolom yang dinilai tidak memiliki kontribusi signifikan. Proses ini menggunakan perintah:
 
-Beberapa kolom yang dihapus dengan pertimbangan sebagai berikut:
+```python
+df_tourism_cleaned = df_tourism.drop(['City', 'Price', 'Time_Minutes', 'Coordinate', 'Lat', 'Long', 'Unnamed: 11', 'Unnamed: 12'], axis=1)
+```
+
+Pertimbangan penghapusan kolom adalah sebagai berikut:
 
 - Kolom `Time_Minutes` memiliki jumlah nilai yang hilang cukup besar, yakni sebanyak 232 baris, sehingga dianggap kurang representatif untuk dianalisis lebih lanjut.
 - `Unnamed: 11` merupakan kolom kosong tanpa informasi yang berguna, sehingga dikeluarkan dari dataset.
 - Kolom seperti `City`, `Price`, `Coordinate`, `Lat`, dan `Long` juga dihapus karena dianggap tidak memberikan kontribusi signifikan terhadap proses analisis atau model rekomendasi yang dikembangkan.
 
-Hasil dari proses penghapusan ini kemudian disimpan dalam variabel baru bernama `df_tourism_cleaned`, yang berisi versi data yang telah dibersihkan. Untuk memverifikasi hasilnya, daftar kolom pada `df_tourism_cleaned` ditampilkan menggunakan perintah `df_tourism_cleaned.head()`.
+Hasil dari proses ini disimpan dalam variabel baru bernama `df_tourism_cleaned`, yang berisi versi dataset yang telah disederhanakan dan dibersihkan. Untuk memverifikasi hasil penghapusan, kolom-kolom dalam dataset tersebut ditampilkan melalui `df_tourism_cleaned.head()`.
 
 | No  | Place_Id | Place_Name                        | Description                                       | Category      | Rating |
 | --- | -------- | --------------------------------- | ------------------------------------------------- | ------------- | ------ |
@@ -315,7 +319,7 @@ Hasil dari proses penghapusan ini kemudian disimpan dalam variabel baru bernama 
 | 3   | 4        | Taman Mini Indonesia Indah (TMII) | Taman Mini Indonesia Indah merupakan suatu kaw... | Taman Hiburan | 4.5    |
 | 4   | 5        | Atlantis Water Adventure          | Atlantis Water Adventure atau dikenal dengan A... | Taman Hiburan | 4.5    |
 
-Tabel 2a Dataset `df_tourism` setelah penghapusan kolom yang tidak diperlukan
+Tabel 2a. Cuplikan dataset `df_tourism_cleaned` setelah penghapusan kolom yang tidak relevan
 
 ### 2.2. Menghapus Data Yang Duplikat
 
