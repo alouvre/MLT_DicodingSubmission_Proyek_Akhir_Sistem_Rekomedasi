@@ -295,9 +295,9 @@ Berdasarkan hasil analisis matriks korelasi dan pairplot, dapat disimpulkan bahw
 
 Pada tahap data preparation, dilakukan serangkaian langkah untuk memastikan bahwa data yang digunakan dalam proses pemodelan bersih, terstruktur, dan siap untuk dianalisis. Tahapan ini mencakup pembersihan data, penggabungan dataset, pengolahan teks, encoding variabel kategorikal, normalisasi rating, dan pembagian data menjadi set pelatihan dan pengujian. Berikut adalah uraian mendetail mengenai setiap langkah yang dilakukan:
 
-### Menghapus Kolom Yang Tidak Diperlukan
+### 2.1. Menghapus Kolom Yang Tidak Diperlukan
 
-Tujuan dari penghapusan ini adalah untuk menyederhanakan struktur data dan memastikan hanya informasi yang relevan dan berkualitas baik yang digunakan dalam analisis serta pemodelan sistem rekomendasi.
+Untuk menyederhanakan struktur dataset dan memastikan hanya informasi yang relevan yang digunakan dalam proses analisis serta pengembangan sistem rekomendasi, dilakukan penghapusan terhadap beberapa kolom yang dianggap tidak diperlukan. Proses ini dilakukan menggunakan perintah `df_tourism.drop(...)` dengan menyertakan nama-nama kolom yang akan dihapus, yaitu: `City`, `Price`, `Time_Minutes`, `Coordinate`, `Lat`, `Long`, `Unnamed: 11`, dan `Unnamed: 12`.
 
 Beberapa kolom yang dihapus dengan pertimbangan sebagai berikut:
 
@@ -305,7 +305,7 @@ Beberapa kolom yang dihapus dengan pertimbangan sebagai berikut:
 - `Unnamed: 11` merupakan kolom kosong tanpa informasi yang berguna, sehingga dikeluarkan dari dataset.
 - Kolom seperti `City`, `Price`, `Coordinate`, `Lat`, dan `Long` juga dihapus karena dianggap tidak memberikan kontribusi signifikan terhadap proses analisis atau model rekomendasi yang dikembangkan.
 
-Setelah proses pembersihan data, dataset `df_tourism` disederhanakan menjadi hanya lima kolom utama, yaitu `Place_Id`, `Place_Name`, `Description`, `Category`, dan `Rating`.
+Hasil dari proses penghapusan ini kemudian disimpan dalam variabel baru bernama `df_tourism_cleaned`, yang berisi versi data yang telah dibersihkan. Untuk memverifikasi hasilnya, daftar kolom pada `df_tourism_cleaned` ditampilkan menggunakan perintah `df_tourism_cleaned.head()`.
 
 | No  | Place_Id | Place_Name                        | Description                                       | Category      | Rating |
 | --- | -------- | --------------------------------- | ------------------------------------------------- | ------------- | ------ |
@@ -316,6 +316,15 @@ Setelah proses pembersihan data, dataset `df_tourism` disederhanakan menjadi han
 | 4   | 5        | Atlantis Water Adventure          | Atlantis Water Adventure atau dikenal dengan A... | Taman Hiburan | 4.5    |
 
 Tabel 2a Dataset `df_tourism` setelah penghapusan kolom yang tidak diperlukan
+
+### 2.2. Menghapus Data Yang Duplikat
+
+Untuk menjaga integritas dan konsistensi data dalam proses analisis selanjutnya, seluruh baris yang memiliki data duplikat kemudian akan dihapus menggunakan fungsi `drop_duplicates()`. Setelah proses penghapusan selesai, dilakukan pengecekan ulang untuk memastikan bahwa tidak ada lagi baris yang terduplikasi dalam dataset.
+
+| Dataset            | Duplikasi Sebelum Dihapus | Duplikasi Setelah Dihapus |
+| ------------------ | ------------------------- | ------------------------- |
+| df_ratings         | 79                        | 0                         |
+| df_tourism_cleaned | 0                         | 0                         |
 
 ## 🤖 3. Modeling and Result
 
