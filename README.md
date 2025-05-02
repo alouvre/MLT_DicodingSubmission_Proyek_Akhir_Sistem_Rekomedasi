@@ -60,15 +60,15 @@ Untuk mencapai tujuan proyek, dilakukan serangkaian pendekatan sebagai berikut:
 
   Pendekatan ini memanfaatkan informasi tekstual pada deskripsi dan kategori destinasi wisata untuk merekomendasikan tempat yang memiliki karakteristik serupa dengan destinasi yang disukai pengguna sebelumnya. Langkah-langkah yang dilakukan adalah sebagai berikut:
 
-  - Preprocessing
+  - **Preprocessing**
 
     Deskripsi dan kategori destinasi digabungkan dan dibersihkan, lalu diubah menjadi representasi numerik menggunakan metode TF-IDF Vectorizer.
 
-  - Pembangunan Model
+  - **Model Development**
 
     Kesamaan antar destinasi dihitung menggunakan cosine similarity berdasarkan vektor TF-IDF, sehingga sistem dapat merekomendasikan destinasi yang memiliki konten serupa.
 
-  - Evaluasi
+  - **Evaluation**
 
     Kinerja sistem diukur menggunakan metrik Precision@10, yang mengevaluasi proporsi destinasi yang relevan dari 10 rekomendasi teratas.
 
@@ -80,15 +80,15 @@ Untuk mencapai tujuan proyek, dilakukan serangkaian pendekatan sebagai berikut:
 
     ID pengguna dan destinasi dikonversi menjadi indeks numerik untuk mempermudah proses pelatihan dalam model neural network.
 
-  - Normalisasi Rating
+  - **Normalisasi Rating**
 
     Rating dinormalisasi ke rentang [0,1] guna memastikan stabilitas pembelajaran model.
 
-  - Pembangunan Model
+  - **Model Development**
 
     Model dikembangkan menggunakan embedding layer untuk memetakan pengguna dan destinasi ke dalam representasi vektor, dan menghasilkan prediksi rating untuk pasangan pengguna–destinasi.
 
-  - Evaluasi
+  - **Evaluation**
 
     Metrik yang digunakan meliputi Root Mean Square Error (RMSE) dan Mean Absolute Error (MAE), yang menilai akurasi prediksi model terhadap rating aktual.
 
@@ -184,11 +184,11 @@ df_ratings[df_ratings.duplicated(['User_Id', 'Place_Id'], keep=False)]
 
 \*798 rows × 3 columns
 
-Tabel 1d. Memeriksa data duplikasi pada `df_ratings`
+Tabel 1e. Memeriksa data duplikasi pada `df_ratings`
 
-Hasil dari pengecekan duplikasi menunjukkan bahwa pada dataset `df_tourism`, tidak ditemukan duplikasi baik pada kolom `Place_Id` maupun `Place_Name`, sehingga dapat disimpulkan bahwa setiap destinasi wisata memiliki ID dan nama yang tercatat secara unik. Hal ini menunjukkan bahwa data destinasi sudah tersusun dengan baik dan tidak memerlukan tindakan pembersihan terkait duplikasi.
+Hasil dari pengecekan duplikasi menunjukkan bahwa pada dataset `df_tourism` (Tabel 1d), tidak ditemukan duplikasi baik pada kolom `Place_Id` maupun `Place_Name`, sehingga dapat disimpulkan bahwa setiap destinasi wisata memiliki ID dan nama yang tercatat secara unik. Hal ini menunjukkan bahwa data destinasi sudah tersusun dengan baik dan tidak memerlukan tindakan pembersihan terkait duplikasi.
 
-Sementara itu, pada dataset `df_ratings`, ditemukan sebanyak `798 baris duplikasi` pada kombinasi kolom `User_Id` dan `Place_Id`. Artinya, terdapat sejumlah pengguna yang memberikan lebih dari satu rating untuk destinasi wisata yang sama. Kondisi ini perlu menjadi perhatian pada tahap preprocessing, karena duplikasi semacam ini dapat memengaruhi akurasi sistem rekomendasi yang dibangun.
+Sementara itu, pada dataset `df_ratings` (Tabel 1e), ditemukan sebanyak `798 baris duplikasi` pada kombinasi kolom `User_Id` dan `Place_Id`. Artinya, terdapat **sejumlah pengguna yang memberikan lebih dari satu rating untuk destinasi wisata yang sama**. Kondisi ini perlu menjadi perhatian pada tahap preprocessing, karena duplikasi semacam ini dapat memengaruhi akurasi sistem rekomendasi yang dibangun.
 
 #### 1.2.2. Pengecekan Missing Values
 
@@ -210,7 +210,7 @@ Dicek apakah terdapat nilai kosong (missing) pada kolom-kolom penting. Kehadiran
 | 11  | Unnamed: 11  | 437                 |
 | 12  | Unnamed: 12  | 0                   |
 
-Tabel 1e. Memeriksa data missing value pada `df_tourism`
+Tabel 1f. Memeriksa data missing value pada `df_tourism`
 
 | No  | Kolom         | Jumlah Nilai Kosong |
 | --- | ------------- | ------------------- |
@@ -218,17 +218,17 @@ Tabel 1e. Memeriksa data missing value pada `df_tourism`
 | 1   | Place_Id      | 0                   |
 | 2   | Place_Ratings | 0                   |
 
-Tabel 1f. Memeriksa data missing value pada `df_ratings`
+Tabel 1g. Memeriksa data missing value pada `df_ratings`
 
-Dapat dilihat pada Tabel 1 bahwa pada dataset `df_tourism` terdapat missing values pada kolom `Time_Minutes` sebanyak `232 baris`, serta seluruh baris pada kolom `Unnamed: 11` kosong. Hal ini menunjukkan bahwa kolom `Time_Minutes` memerlukan penanganan lebih lanjut seperti imputasi, sedangkan kolom `Unnamed: 11` kemungkinan dapat dihapus karena tidak mengandung informasi.
+Dapat dilihat pada Tabel 1f bahwa pada dataset `df_tourism` terdapat missing values pada kolom `Time_Minutes` sebanyak `232 baris`, serta seluruh baris pada kolom `Unnamed: 11` kosong. Hal ini menunjukkan bahwa kolom `Time_Minutes` memerlukan penanganan lebih lanjut seperti imputasi, sedangkan kolom `Unnamed: 11` kemungkinan dapat dihapus karena tidak mengandung informasi.
 
-Sementara itu, berdasarkan Tabel 2, dataset `df_ratings` tidak memiliki missing values pada seluruh kolomnya. Artinya, data pada `df_ratings` sudah bersih dan siap digunakan dalam proses analisis atau pemodelan tanpa perlu penanganan terhadap nilai yang hilang.
+Sementara itu, berdasarkan Tabel 1g, dataset `df_ratings` tidak memiliki missing values pada seluruh kolomnya. Artinya, data pada `df_ratings` sudah bersih dan siap digunakan dalam proses analisis atau pemodelan tanpa perlu penanganan terhadap nilai yang hilang.
 
 #### 1.2.3. Pengecekan Kolom Yang Tidak Relevan
 
 Kolom yang tidak memuat informasi berguna atau hanya merupakan salinan dari kolom lain dapat menyebabkan redundansi dan memperbesar ukuran dataset secara tidak perlu. Oleh karena itu, perlu dilakukan pemeriksaan lebih lanjut sebelum memutuskan untuk menghapusnya.
 
-Saat meninjau struktur dataset, saya menyadari ada sebuah kolom tambahan bernama `Unnamed: 12` yang tampaknya tidak familiar dan sekilas terlihat mirip dengan `Place_Id`. Hal ini membuat saya penasaran, apakah kolom ini benar-benar memuat informasi baru atau hanya sekadar salinan dari kolom yang sudah ada.
+Saat meninjau struktur dataset, saya menyadari ada sebuah kolom tambahan bernama `Unnamed: 12` yang tampaknya tidak familiar dan sekilas terlihat mirip dengan `Place_Id`. Hal ini membuat saya penasaran, **apakah kolom ini benar-benar memuat informasi baru atau hanya sekadar salinan dari kolom yang sudah ada**.
 
 Dilakukan pengecekan lebih lanjut dengan membandingkan seluruh isi kedua kolom dengan menggunakan kode berikut:
 
