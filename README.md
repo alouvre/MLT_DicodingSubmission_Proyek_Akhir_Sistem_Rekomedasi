@@ -232,7 +232,7 @@ Saat meninjau struktur dataset, saya menyadari ada sebuah kolom tambahan bernama
 
 Dilakukan pengecekan lebih lanjut dengan membandingkan seluruh isi kedua kolom dengan menggunakan kode berikut:
 
-```
+```python
 (df_tourism['Place_Id'] == df_tourism['Unnamed: 12']).all()
 ```
 
