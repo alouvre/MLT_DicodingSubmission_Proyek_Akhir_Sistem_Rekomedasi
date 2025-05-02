@@ -76,7 +76,7 @@ Untuk mencapai tujuan proyek, dilakukan serangkaian pendekatan sebagai berikut:
 
   Pendekatan ini mengandalkan data interaksi pengguna berupa rating untuk menyarankan destinasi yang disukai oleh pengguna lain dengan preferensi serupa. Berikut adalah langkah-langkah yang dilakukan:
 
-  - Encoding Data
+  - **Encoding Data**
 
     ID pengguna dan destinasi dikonversi menjadi indeks numerik untuk mempermudah proses pelatihan dalam model neural network.
 
