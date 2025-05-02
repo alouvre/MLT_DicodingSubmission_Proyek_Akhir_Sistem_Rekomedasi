@@ -145,8 +145,6 @@ Tabel 1b. Deskripsi Variabel File `tourism_with_id.csv`
 
 Tabel 1c. Deskripsi Variabel File `tourism_rating.csv`
 
-<br>
-
 ### 1.2. Data Assessing
 
 Setelah data berhasil dikumpulkan, dilakukan evaluasi kualitas data melalui beberapa pengecekan penting, yaitu:
@@ -238,8 +236,6 @@ Dilakukan pengecekan lebih lanjut dengan membandingkan seluruh isi kedua kolom d
 
 Hasil dari pengecekan ini menghasilkan `True`, yang berarti seluruh nilai di `Unnamed: 12` memang 100% identik dengan `Place_Id`. Dengan demikian, dapat disimpulkan bahwa kolom `Unnamed: 12` tidak memuat informasi baru dan dapat dihapus untuk menjaga kebersihan serta efisiensi data.
 
-<br>
-
 ### 1.3. EDA - Univariate Analysis
 
 ![Analisis Univariat (Data Kategori)](images/image-1.png)
@@ -260,8 +256,6 @@ Pada Gambar 1c, untuk data numerik memiliki karakteristik sebagai berikut:
 - `loan_term` menunjukkan distribusi diskrit yang berfokus pada nilai-nilai standar seperti 5, 10, 15, dan 20 tahun, mengindikasikan tenor pinjaman standar yang umum digunakan.
 - `cibil_score` memiliki sebaran dari 300 hingga 900, dengan distribusi menyerupai kurva normal. Hal ini menandakan variasi skor kredit pemohon cukup luas dan representatif.
 - Nilai-nilai aset seperti `residential_assets_value`, `commercial_assets_value`, `luxury_assets_value`, dan `bank_asset_value` menunjukkan `distribusi right-skewed`, menandakan banyak pemohon memiliki aset dalam jumlah kecil dan hanya sedikit yang memiliki aset bernilai tinggi.
-
-<br>
 
 ### 1.4. EDA - Multivariate Analysis
 
