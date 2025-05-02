@@ -54,27 +54,27 @@ Secara lebih spesifik, tujuan proyek ini meliputi:
 
 ### Solution Statements
 
-Untuk mencapai tujuan proyek, dilakukan serangkaian pendekatan sebagai berikut:
+Untuk mencapai tujuan dari proyek ini, diterapkan dua pendekatan utama dalam sistem rekomendasi, yaitu Content-based Filtering dan Collaborative Filtering, dengan tahapan sebagai berikut:
 
 - **Content-based Filtering**
 
-  Pendekatan ini memanfaatkan informasi tekstual pada deskripsi dan kategori destinasi wisata untuk merekomendasikan tempat yang memiliki karakteristik serupa dengan destinasi yang disukai pengguna sebelumnya. Langkah-langkah yang dilakukan adalah sebagai berikut:
+  Metode ini memanfaatkan informasi deskriptif dan kategori dari destinasi wisata untuk merekomendasikan tempat-tempat yang memiliki kesamaan karakteristik dengan destinasi yang pernah disukai pengguna. Proses pengembangannya mencakup:
 
-  - **Preprocessing**
+  - **Preprocessing Text**
 
-    Deskripsi dan kategori destinasi digabungkan dan dibersihkan, lalu diubah menjadi representasi numerik menggunakan metode TF-IDF Vectorizer.
+    Data teks berupa deskripsi dan kategori destinasi digabungkan dan dibersihkan, kemudian diubah menjadi representasi numerik menggunakan teknik TF-IDF Vectorizer.
 
   - **Model Development**
 
-    Kesamaan antar destinasi dihitung menggunakan cosine similarity berdasarkan vektor TF-IDF, sehingga sistem dapat merekomendasikan destinasi yang memiliki konten serupa.
+    Kesamaan antar destinasi dihitung menggunakan cosine similarity pada hasil vektorisasi TF-IDF, sehingga memungkinkan sistem untuk mengidentifikasi dan merekomendasikan destinasi dengan konten yang mirip.
 
   - **Evaluation**
 
-    Kinerja sistem diukur menggunakan metrik Precision@10, yang mengevaluasi proporsi destinasi yang relevan dari 10 rekomendasi teratas.
+    Performa model diuji menggunakan metrik Precision@10, yang mengukur seberapa banyak rekomendasi dari 10 teratas yang relevan bagi pengguna.
 
 - **Collaborative Filtering**
 
-  Pendekatan ini mengandalkan data interaksi pengguna berupa rating untuk menyarankan destinasi yang disukai oleh pengguna lain dengan preferensi serupa. Berikut adalah langkah-langkah yang dilakukan:
+  Pendekatan ini didasarkan pada perilaku pengguna, khususnya data rating, untuk memberikan rekomendasi berdasarkan kesamaan preferensi antar pengguna. Langkah-langkah pengembangannya meliputi:
 
   - **Encoding Data**
 
@@ -82,15 +82,15 @@ Untuk mencapai tujuan proyek, dilakukan serangkaian pendekatan sebagai berikut:
 
   - **Normalisasi Rating**
 
-    Rating dinormalisasi ke rentang [0,1] guna memastikan stabilitas pembelajaran model.
+    Nilai rating dinormalisasi ke dalam rentang [0,1] guna meningkatkan kestabilan pelatihan model.
 
   - **Model Development**
 
-    Model dikembangkan menggunakan embedding layer untuk memetakan pengguna dan destinasi ke dalam representasi vektor, dan menghasilkan prediksi rating untuk pasangan pengguna–destinasi.
+    Model dibangun menggunakan lapisan embedding untuk merepresentasikan pengguna dan destinasi dalam bentuk vektor, kemudian digunakan untuk memprediksi rating yang mungkin diberikan pengguna terhadap destinasi tertentu.
 
   - **Evaluation**
 
-    Metrik yang digunakan meliputi Root Mean Square Error (RMSE) dan Mean Absolute Error (MAE), yang menilai akurasi prediksi model terhadap rating aktual.
+    Akurasi prediksi model dinilai menggunakan metrik Root Mean Square Error (RMSE) dan Mean Absolute Error (MAE), yang membandingkan hasil prediksi dengan data rating aktual.
 
 <br>
 
