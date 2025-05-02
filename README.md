@@ -378,28 +378,28 @@ Pada tahap ini, dilakukan proses pra-pemrosesan terhadap data teks yang terdapat
 
 Langkah-Langkah Preprocessing
 
-- Penggabungan Informasi Deskripsi dan Kategori
+- **Penggabungan Informasi Deskripsi dan Kategori**
 
   Langkah pertama yang dilakukan adalah menggabungkan informasi dari kolom `Description` dan `Category` ke dalam satu kolom baru bernama `Tags`. Hal ini dilakukan untuk memperkaya konteks dari tiap destinasi wisata. Kolom `Description` memberikan gambaran tentang tempat tersebut, sedangkan kolom `Category` memberi tahu klasifikasinya, seperti budaya, taman hiburan, sejarah, dan sebagainya.
 
-- Normalisasi Teks
+- **Normalisasi Teks**
 
   Setelah digabungkan, seluruh teks pada kolom Tags diubah menjadi huruf kecil (lowercase) agar formatnya seragam dan tidak ada perbedaan yang disebabkan oleh kapitalisasi huruf.
 
-- Stemming dan Stopword Removal Menggunakan Sastrawi
+- **Stemming dan Stopword Removal Menggunakan Sastrawi**
 
   Untuk menangani kata-kata dalam Bahasa Indonesia, digunakan pustaka Sastrawi yang menyediakan dua fungsi utama:
 
   - **Stemming**: Mengubah kata menjadi bentuk dasarnya. Contohnya, kata “berkunjung”, “mengunjungi”, dan “kunjungan” akan diubah menjadi “kunjung”.
   - **Stopword Removal**: Menghapus kata-kata umum yang tidak memberikan makna signifikan terhadap konteks, seperti “yang”, “di”, dan “dan”.
 
-- Penerapan Fungsi Preprocessing
+- **Penerapan Fungsi Preprocessing**
 
   Seluruh proses tersebut dikemas dalam sebuah fungsi preprocessing(text) yang akan mengubah teks menjadi huruf kecil, melakukan stemming, dan menghapus stopword. Fungsi ini diterapkan pada kolom `Tags` serta pada kolom Description secara terpisah.
 
   Penerapan pada kolom `Tags` digunakan untuk membentuk representasi teks gabungan yang akan digunakan sebagai input utama dalam model rekomendasi. Sementara itu, preprocessing pada kolom Description saja dilakukan untuk keperluan eksperimen pembandingan performa antara representasi gabungan (deskripsi + kategori) dan deskripsi saja.
 
-- Menyimpan Dataset Hasil Preprocessing
+- **Menyimpan Dataset Hasil Preprocessing**
 
   Karena proses preprocessing ini cukup memakan waktu, dataset hasil akhir disimpan dalam sebuah file CSV bernama `data_recommendation_preprocessed.csv`. Dengan cara ini, proses eksperimen selanjutnya dapat dilakukan tanpa perlu mengulangi tahap preprocessing dari awal.
 
