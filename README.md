@@ -336,6 +336,42 @@ Tabel 2b. Perbandingan Jumlah Duplikasi Sebelum dan Sesudah Penghapusan
 
 Dengan tidak adanya duplikasi yang tersisa, dataset kini berada dalam kondisi yang lebih bersih dan siap untuk digunakan dalam tahap analisis lebih lanjut maupun pembangunan sistem rekomendasi.
 
+### 2.3. Menggabungkan Dataset
+
+Setelah proses pembersihan dilakukan pada kedua dataset, langkah selanjutnya adalah menggabungkan informasi dari data rating pengguna `(df_ratings)` dengan data destinasi wisata yang telah dibersihkan `(df_tourism_cleaned)`. Tujuan dari penggabungan ini adalah untuk membentuk dataset rekomendasi yang menyajikan informasi rata-rata rating dari setiap destinasi wisata berdasarkan data yang diberikan oleh pengguna.
+
+Penggabungan dilakukan melalui langkah-langkah berikut:
+
+- Menghitung Rata-rata Rating
+    
+  Dataset `df_ratings` dikelompokkan berdasarkan kolom `Place_Id`, kemudian dihitung rata-rata dari kolom `Place_Ratings` untuk setiap destinasi. Proses ini menghasilkan dataframe baru yang berisi dua kolom: `Place_Id` dan `Place_Ratings`.
+
+- Penggabungan Dataset
+  
+  Rata-rata rating yang telah dihitung kemudian digabungkan dengan dataset `df_tourism_cleaned` menggunakan fungsi `pd.merge()` dengan parameter `on='Place_Id'`. Penggabungan dilakukan berdasarkan kolom `Place_Id` yang merupakan kunci unik bagi setiap destinasi wisata.
+
+Kode yang digunakan:
+```python
+df_recommendation = pd.merge(
+    df_ratings.groupby('Place_Id')['Place_Ratings'].mean().reset_index(),
+    df_tourism_cleaned,
+    on='Place_Id'
+)
+```
+
+Hasil akhir dari proses ini adalah dataframe `df_recommendation` yang menyatukan informasi deskriptif destinasi wisata dengan nilai rata-rata rating dari pengguna, dan siap digunakan sebagai basis sistem rekomendasi.
+
+| Place_Id | Place_Ratings | Place_Name                        | Description                                       | Category      | Rating |
+|----------|----------------|-----------------------------------|---------------------------------------------------|----------------|--------|
+| 1        | 3.722222       | Monumen Nasional                  | Monumen Nasional atau yang populer disingkat d... | Budaya         | 4.6    |
+| 2        | 2.840000       | Kota Tua                          | Kota tua di Jakarta, yang juga bernama Kota Tu... | Budaya         | 4.6    |
+| 3        | 2.526316       | Dunia Fantasi                     | Dunia Fantasi atau disebut juga Dufan adalah t... | Taman Hiburan  | 4.6    |
+| 4        | 2.857143       | Taman Mini Indonesia Indah (TMII) | Taman Mini Indonesia Indah merupakan suatu kaw... | Taman Hiburan  | 4.5    |
+| 5        | 3.520000       | Atlantis Water Adventure          | Atlantis Water Adventure atau dikenal dengan A... | Taman Hiburan  | 4.5    |
+
+Tabel 2c. Dataset hasil penggabungan df_ratings dan df_tourism_cleaned berdasarkan Place_Id
+
+
 ## 🤖 3. Modeling and Result
 
 Pada tahap ini, dua pendekatan sistem rekomendasi yang berbeda dikembangkan, yaitu Content-Based Filtering dan Collaborative Filtering. Masing-masing pendekatan memiliki metode tersendiri dalam menganalisis data dan memberikan rekomendasi destinasi wisata yang sesuai dengan preferensi pengguna.
