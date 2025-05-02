@@ -446,7 +446,7 @@ Setelah data vektor diperoleh, tingkat kemiripan antar destinasi dihitung menggu
   similarity_desc = cosine_similarity(vectors_desc, dense_output=True)
   ```
 
-#### **c. Penyusunan Rekomendasi**
+#### **c. Mendapatkan Rekomendasi**
 
 Setelah mendapatkan matriks kesamaan antar destinasi wisata, langkah selanjutnya adalah membangun `sistem rekomendasi berbasis konten (content-based recommendation system)`. Penulis mengembangkan sebuah fungsi bernama `get_content_based_recommendations` yang bertujuan untuk menghasilkan daftar destinasi wisata yang paling relevan atau mirip dengan destinasi yang dipilih pengguna.
 
