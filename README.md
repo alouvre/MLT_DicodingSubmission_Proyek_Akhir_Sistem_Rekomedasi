@@ -162,7 +162,7 @@ df_tourism[df_tourism.duplicated('Place_Id', keep=False)]
 | Place_Id | Place_Name | Description | Category | City | Price | Rating | Time_Minutes | Coordinate | Lat | Long | Unnamed: 11 | Unnamed: 12 |
 | -------- | ---------- | ----------- | -------- | ---- | ----- | ------ | ------------ | ---------- | --- | ---- | ----------- | ----------- |
 
-Tabel 1c. Memeriksa data duplikasi pada `df_tourism`
+Tabel 1d. Memeriksa data duplikasi pada `df_tourism`
 
 ```python
 df_ratings[df_ratings.duplicated(['User_Id', 'Place_Id'], keep=False)]
@@ -184,7 +184,7 @@ df_ratings[df_ratings.duplicated(['User_Id', 'Place_Id'], keep=False)]
 
 \*798 rows × 3 columns
 
-Tabel 1c. Memeriksa data duplikasi pada `df_ratings`
+Tabel 1d. Memeriksa data duplikasi pada `df_ratings`
 
 Hasil dari pengecekan duplikasi menunjukkan bahwa pada dataset `df_tourism`, tidak ditemukan duplikasi baik pada kolom `Place_Id` maupun `Place_Name`, sehingga dapat disimpulkan bahwa setiap destinasi wisata memiliki ID dan nama yang tercatat secara unik. Hal ini menunjukkan bahwa data destinasi sudah tersusun dengan baik dan tidak memerlukan tindakan pembersihan terkait duplikasi.
 
@@ -210,7 +210,7 @@ Dicek apakah terdapat nilai kosong (missing) pada kolom-kolom penting. Kehadiran
 | 11  | Unnamed: 11  | 437                 |
 | 12  | Unnamed: 12  | 0                   |
 
-Tabel 1c. Memeriksa data missing value pada `df_tourism`
+Tabel 1e. Memeriksa data missing value pada `df_tourism`
 
 | No  | Kolom         | Jumlah Nilai Kosong |
 | --- | ------------- | ------------------- |
@@ -218,7 +218,7 @@ Tabel 1c. Memeriksa data missing value pada `df_tourism`
 | 1   | Place_Id      | 0                   |
 | 2   | Place_Ratings | 0                   |
 
-Tabel 1c. Memeriksa data missing value pada `df_ratings`
+Tabel 1f. Memeriksa data missing value pada `df_ratings`
 
 Dapat dilihat pada Tabel 1 bahwa pada dataset `df_tourism` terdapat missing values pada kolom `Time_Minutes` sebanyak `232 baris`, serta seluruh baris pada kolom `Unnamed: 11` kosong. Hal ini menunjukkan bahwa kolom `Time_Minutes` memerlukan penanganan lebih lanjut seperti imputasi, sedangkan kolom `Unnamed: 11` kemungkinan dapat dihapus karena tidak mengandung informasi.
 
