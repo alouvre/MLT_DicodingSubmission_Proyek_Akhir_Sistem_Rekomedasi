@@ -291,7 +291,29 @@ Secara umum, fitur-fitur yang berhubungan dengan pendapatan dan aset memiliki ko
 
 Berdasarkan hasil analisis matriks korelasi dan pairplot, dapat disimpulkan bahwa fitur-fitur finansial seperti `income_annum`, `loan_amount`, `luxury_assets_value`, dan `bank_asset_value` memiliki hubungan yang saling berkorelasi erat. Hal ini mengindikasikan bahwa individu dengan pendapatan tinggi cenderung memiliki jumlah pinjaman yang besar serta aset mewah dan simpanan bank yang lebih tinggi. Di sisi lain, fitur seperti `loan_term`, `cibil_score`, dan `no_of_dependents` menunjukkan korelasi yang lemah terhadap fitur numerik lainnya, sehingga kurang memberikan informasi prediktif yang signifikan dalam analisis ini. Selain itu, tidak ditemukan pola non-linear yang kuat maupun outlier yang mencolok, yang menunjukkan bahwa data relatif bersih dan siap untuk dianalisis lebih lanjut menggunakan pendekatan pemodelan regresi atau klasifikasi, terutama jika target analisis berkaitan dengan aspek finansial.
 
-## 🤖 3. Modelling
+## 🤖 3. Modeling and Result
+
+Pada tahap ini, dua pendekatan sistem rekomendasi yang berbeda dikembangkan, yaitu Content-Based Filtering dan Collaborative Filtering. Masing-masing pendekatan memiliki metode tersendiri dalam menganalisis data dan memberikan rekomendasi destinasi wisata yang sesuai dengan preferensi pengguna.
+
+### Model Development - Content Based Filtering
+
+Dalam pendekatan Content-Based Filtering, model dikembangkan berdasarkan informasi yang melekat pada setiap destinasi, seperti deskripsi dan kategori. Proses pembangunan model dilakukan melalui beberapa tahapan utama berikut:
+
+a. Ekstraksi Fitur Teks dengan TF-IDF
+
+Deskripsi dan kategori destinasi digabungkan dan kemudian direpresentasikan dalam bentuk vektor numerik menggunakan teknik TF-IDF (Term Frequency-Inverse Document Frequency), yang menekankan pentingnya kata-kata unik di setiap destinasi.
+
+b. Perhitungan Kemiripan dengan Cosine Similarity
+
+Setelah data vektor diperoleh, tingkat kemiripan antar destinasi dihitung menggunakan cosine similarity. Nilai ini menunjukkan seberapa mirip suatu destinasi dengan destinasi lainnya berdasarkan konten teksnya.
+
+c. Penyusunan Rekomendasi
+
+Berdasarkan hasil perhitungan kemiripan, sistem menghasilkan daftar destinasi wisata yang paling relevan dan mirip dengan destinasi yang telah disukai atau dikunjungi oleh pengguna.
+
+### Model Development - Content Based Filtering
+
+
 
 <br>
 
