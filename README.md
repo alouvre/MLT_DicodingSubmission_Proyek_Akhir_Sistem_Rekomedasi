@@ -415,7 +415,7 @@ Pada tahap ini, dua pendekatan sistem rekomendasi yang berbeda dikembangkan, yai
 
 Dalam pendekatan Content-Based Filtering, model dikembangkan berdasarkan informasi yang melekat pada setiap destinasi, seperti deskripsi dan kategori. Proses pembangunan model dilakukan melalui beberapa tahapan utama berikut:
 
-a. Ekstraksi Fitur Teks dengan TF-IDF
+**a. Ekstraksi Fitur Teks dengan TF-IDF**
 
 Dalam membangun sistem rekomendasi berbasis Content-Based Filtering, representasi numerik dari data teks menjadi kunci dalam mengidentifikasi kemiripan antar destinasi wisata. Salah satu teknik yang digunakan adalah TF-IDF (Term Frequency–Inverse Document Frequency), yang memungkinkan pemetaan teks ke dalam bentuk vektor numerik berdasarkan pentingnya suatu kata dalam dokumen relatif terhadap seluruh korpus.
 
@@ -432,11 +432,11 @@ Untuk masing-masing kolom, dilakukan proses sebagai berikut:
 
 Matriks TF-IDF yang dihasilkan kemudian digunakan sebagai dasar untuk mengukur kesamaan antar destinasi dan mendukung sistem rekomendasi berbasis konten.
 
-b. Perhitungan Kemiripan dengan Cosine Similarity
+**b. Perhitungan Kemiripan dengan Cosine Similarity**
 
 Setelah data vektor diperoleh, tingkat kemiripan antar destinasi dihitung menggunakan cosine similarity. Nilai ini menunjukkan seberapa mirip suatu destinasi dengan destinasi lainnya berdasarkan konten teksnya.
 
-c. Penyusunan Rekomendasi
+**c. Penyusunan Rekomendasi**
 
 Berdasarkan hasil perhitungan kemiripan, sistem menghasilkan daftar destinasi wisata yang paling relevan dan mirip dengan destinasi yang telah disukai atau dikunjungi oleh pengguna.
 
