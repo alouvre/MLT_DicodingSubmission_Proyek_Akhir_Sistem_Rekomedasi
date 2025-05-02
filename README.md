@@ -461,7 +461,7 @@ Setelah mendapatkan matriks kesamaan antar destinasi wisata, langkah selanjutnya
 Fungsi ini memiliki beberapa parameter penting, yaitu:
 
 - `place_name`: Nama destinasi wisata yang dijadikan acuan pencarian rekomendasi.
-- data: Dataset yang berisi informasi lengkap tentang destinasi wisata.
+- `data`: Dataset yang berisi informasi lengkap tentang destinasi wisata.
 - `similarity_matrix`: Matriks kemiripan antar destinasi yang telah dihitung sebelumnya, menggunakan pendekatan seperti TF-IDF dan cosine similarity.
 - `top_n`: Jumlah destinasi wisata yang ingin direkomendasikan, dengan nilai default sebanyak 10.
 
