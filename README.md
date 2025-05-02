@@ -319,12 +319,18 @@ Tabel 2a Dataset `df_tourism` setelah penghapusan kolom yang tidak diperlukan
 
 ### 2.2. Menghapus Data Yang Duplikat
 
-Untuk menjaga integritas dan konsistensi data dalam proses analisis selanjutnya, seluruh baris yang memiliki data duplikat kemudian akan dihapus menggunakan fungsi `drop_duplicates()`. Setelah proses penghapusan selesai, dilakukan pengecekan ulang untuk memastikan bahwa tidak ada lagi baris yang terduplikasi dalam dataset.
+Untuk menjaga integritas serta konsistensi data selama proses analisis dan pemodelan, seluruh baris yang teridentifikasi sebagai duplikat dihapus dari dataset menggunakan fungsi `drop_duplicates()`. Langkah ini penting dilakukan guna menghindari bias dan distorsi hasil analisis yang dapat muncul akibat data ganda.
+
+Setelah proses penghapusan, dilakukan verifikasi ulang untuk memastikan bahwa tidak ada lagi baris duplikat yang tersisa dalam dataset. Hasil perbandingan jumlah data duplikat sebelum dan sesudah penghapusan disajikan pada `Tabel 2b` berikut:
 
 | Dataset            | Duplikasi Sebelum Dihapus | Duplikasi Setelah Dihapus |
 | ------------------ | ------------------------- | ------------------------- |
 | df_ratings         | 79                        | 0                         |
 | df_tourism_cleaned | 0                         | 0                         |
+
+Tabel 2b. Perbandingan Jumlah Duplikasi Sebelum dan Sesudah Penghapusan
+
+Dengan tidak adanya duplikasi yang tersisa, dataset kini berada dalam kondisi yang lebih bersih dan siap untuk digunakan dalam tahap analisis lebih lanjut maupun pembangunan sistem rekomendasi.
 
 ## 🤖 3. Modeling and Result
 
