@@ -257,16 +257,17 @@ Dengan variasi yang luas dan representatif, `Place_Ratings` jauh lebih relevan u
 - Mencerminkan pengalaman dan preferensi pengguna secara langsung.
 - Memberikan sinyal yang lebih kuat terhadap perbedaan persepsi antar pengguna terhadap sebuah destinasi.
 
-| Aspek                       | `df_tourism (Rating)`             | `df_ratings (Place_Ratings)`               |
-| --------------------------- | --------------------------------- | ------------------------------------------ |
-| Sumber Data                 | Agregator eksternal               | Input langsung dari pengguna               |
-| Variasi                     | Rendah (bias ke arah positif)     | Tinggi (subjektif dan berimbang)           |
-| Nilai dominan               | 4.4 dan 4.5 (masing-masing 22.4%) | 4, 3, dan 2 (masing-masing >20%)           |
-| Relevansi untuk rekomendasi | Kurang informatif                 | Sangat cocok untuk collaborative filtering |
+| Aspek                                       | `df_tourism` (`Rating`)                               | `df_ratings` (`Place_Ratings`)                |
+| ------------------------------------------- | ----------------------------------------------------- | --------------------------------------------- |
+| **Sumber Data**                             | Agregator eksternal                                   | Ulasan atau input langsung dari pengguna      |
+| **Tingkat Variasi**                         | Rendah (bias ke arah positif)                         | Tinggi (berimbang dan subjektif)              |
+| **Nilai Rating Dominan**                    | 4.4 dan 4.5 (masing-masing 22.4%)                     | 4, 3, dan 2 (masing-masing >20%)              |
+| **Kecocokan untuk Content-Based Filtering** | Cukup cocok (sebagai fitur deskriptif tambahan)       | Kurang cocok (tidak terkait atribut konten)   |
+| **Kecocokan untuk Collaborative Filtering** | Kurang cocok (tidak mencerminkan preferensi pengguna) | Sangat cocok (berdasarkan interaksi pengguna) |
 
-Tabel 
+Tabel 1h Perbandingan Fitur `Rating` pada `df_tourism` dan `df_ratings`
 
-Fitur `Rating` pada `df_tourism` memberikan gambaran umum kualitas destinasi tetapi kurang efektif sebagai pembeda. Sementara itu, `Place_Ratings` dari `df_ratings` lebih representatif terhadap opini pengguna dan lebih cocok untuk digunakan dalam pengembangan sistem rekomendasi berbasis pengguna.
+Fitur `Rating` pada `df_tourism` memberikan gambaran umum tentang persepsi kualitas destinasi wisata dari sumber eksternal, namun cenderung memiliki variasi yang rendah dan bias ke arah positif. Hal ini menjadikannya kurang efektif sebagai pembeda antar destinasi dalam konteks sistem rekomendasi. Sebaliknya, `Place_Ratings` dari `df_ratings` merepresentasikan penilaian langsung dari pengguna dengan distribusi yang lebih seimbang dan subjektif, sehingga lebih relevan dan efektif untuk digunakan dalam pengembangan sistem rekomendasi berbasis pengguna, khususnya collaborative filtering.
 
 <br>
 
