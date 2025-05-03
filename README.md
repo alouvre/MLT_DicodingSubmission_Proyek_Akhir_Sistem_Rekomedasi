@@ -532,7 +532,7 @@ Hasil tersebut menunjukkan bahwa sistem berhasil mengidentifikasi destinasi yang
 
 Pada tahap ini, dilakukan beberapa proses awal untuk menyiapkan data sebelum dimodelkan menggunakan metode Collaborative Filtering. Data yang digunakan adalah data rating pengguna terhadap tempat wisata, yang terdiri atas tiga kolom utama: `User_Id`, `Place_Id`, dan `Rating`. Berikut adalah tahapan persiapan data yang dilakukan:
 
-**a. Mengambil Daftar User dan Place Unik**
+#### **a. Mengambil Daftar User dan Place Unik**
 
 Langkah pertama adalah memperoleh daftar unik dari pengguna (user) dan tempat (place) yang terdapat dalam data rating. Hal ini penting karena dalam Collaborative Filtering, kita perlu merepresentasikan pengguna dan tempat sebagai indeks integer untuk keperluan pelatihan model.
 
@@ -546,7 +546,7 @@ print('list Place_Id: ', place_ids)
 
 Output dari perintah ini akan menghasilkan dua buah list yang berisi seluruh `User_Id` dan `Place_Id` unik dalam dataset. Hasil ini akan digunakan untuk melakukan encoding pada langkah berikutnya.
 
-**b. Melakukan Encoding pada `User_Id` dan `Place_Id`**
+#### **b. Melakukan Encoding pada `User_Id` dan `Place_Id`**
 
 Karena algoritma pembelajaran mesin tidak dapat langsung bekerja dengan data kategori dalam bentuk string atau integer tidak berurut, maka dilakukan proses encoding. Encoding ini bertujuan untuk mengubah `User_Id` dan `Place_Id` menjadi indeks integer yang berurutan dimulai dari 0. Proses ini menggunakan dictionary untuk memetakan nilai asli ke nilai yang sudah diencode, serta dictionary sebaliknya untuk keperluan decoding hasil prediksi nantinya.
 
@@ -566,7 +566,7 @@ print('encoded angka ke Place_Id: ', place_encoded_to_place)
 
 Dengan encoding ini, setiap `User_Id` dan `Place_Id` telah dikonversi ke format numerik. Sebagai contoh, `User_Id` bernilai 1 mungkin di-encode menjadi 0, `User_Id` bernilai 2 menjadi 1, dan seterusnya. Proses ini menjadikan data lebih siap untuk dimasukkan ke dalam model pembelajaran mesin, khususnya model berbasis embedding yang umum digunakan dalam sistem rekomendasi.
 
-**c. Transformasi Data Rating**
+#### **c. Transformasi Data Rating**
 
 Selanjutnya, data rating asli akan ditransformasikan menjadi bentuk baru yang menggunakan nilai hasil encoding. Langkah ini akan menghasilkan dataset baru dengan kolom `user`, `place`, dan `rating`, di mana `user` dan `place` sudah dalam bentuk integer hasil encoding.
 
@@ -583,6 +583,120 @@ df_encoded.head()
 ```
 
 Dengan hasil ini, dataframe `df_encoded` siap digunakan sebagai input untuk membangun model Collaborative Filtering. Kolom `user` dan `place` akan digunakan sebagai input ke model, sedangkan `Rating` akan menjadi target yang diprediksi.
+
+#### d. Mendapatkan Rekomendasi
+
+Fungsi utama yang digunakan adalah `recommend_by_collaborative_filtering`, yang bertugas mengembalikan daftar tempat wisata yang direkomendasikan untuk seorang pengguna berdasarkan model Collaborative Filtering.
+
+Parameter Fungsi:
+
+- user_id: ID pengguna target.
+- model: Model Collaborative Filtering yang telah dilatih.
+- data: Dataset interaksi pengguna-tempat wisata (berupa rating).
+- place_encoded_to_place: Mapping dari encoded ID tempat ke ID asli (Place_Id).
+- top_n: Jumlah tempat yang direkomendasikan (default: 10).
+
+Langkah Kerja Fungsi:
+
+- Mengidentifikasi user_id dan tempat-tempat yang telah dikunjungi.
+- Menentukan tempat-tempat yang belum dikunjungi oleh pengguna.
+- Melakukan prediksi rating untuk tempat-tempat tersebut.
+- Mengurutkan hasil prediksi berdasarkan nilai rating tertinggi.
+- Mengembalikan daftar 10 tempat wisata dengan prediksi rating tertinggi beserta informasinya (nama, kategori, rating, dan deskripsi).
+
+##### Implementasi Fungsi
+
+Berikut implementasi fungsi `recommend_by_collaborative_filtering`:
+
+```python
+def recommend_by_collaborative_filtering(user_id, model, data, place_encoded_to_place, top_n=10):
+    # Mencari encoded user_id berdasarkan user_to_user_encoded
+    user_encoded = user_to_user_encoded.get(user_id)
+
+    # Jika user_id tidak ditemukan, mengembalikan DataFrame kosong
+    if user_encoded is None:
+        print("User ID tidak ditemukan. Tidak dapat memberikan rekomendasi.")
+        return pd.DataFrame()
+
+    # Mendapatkan tempat-tempat yang sudah pernah dikunjungi oleh pengguna
+    user_places = data[data['User_Id'] == user_id]['Place_Id'].tolist()
+
+    # Meng-encode ID tempat-tempat yang sudah dikunjungi
+    user_places_encoded = [place_to_place_encoded.get(x) for x in user_places]
+
+    # Mengidentifikasi tempat yang belum pernah dikunjungi oleh pengguna
+    all_places = set(place_ids)
+    places_not_visited = list(all_places - set(user_places))
+
+    # Meng-encode ID tempat yang belum dikunjungi
+    places_not_visited_encoded = [place_to_place_encoded.get(x) for x in places_not_visited]
+
+    # Membuat array untuk input model: user_encoded berulang sebanyak jumlah tempat yang belum dikunjungi
+    user_array = np.array([user_encoded] * len(places_not_visited_encoded))
+    place_array = np.array(places_not_visited_encoded)
+
+    # Menggunakan model untuk memprediksi rating yang diberikan oleh pengguna terhadap tempat yang belum dikunjungi
+    predictions = model.predict(np.vstack([user_array, place_array]).T).flatten()
+
+    # Mengurutkan prediksi rating dari yang tertinggi dan memilih top_n rekomendasi
+    top_indices = predictions.argsort()[-top_n:][::-1]
+
+    # Mendapatkan Place_Id dari tempat yang direkomendasikan
+    recommended_place_ids = [place_encoded_to_place.get(places_not_visited_encoded[i]) for i in top_indices]
+
+    # Mengambil informasi detail destinasi yang direkomendasikan berdasarkan Place_Id
+    recommended_destinations = df_tourism_cleaned[
+        df_tourism_cleaned['Place_Id'].isin(recommended_place_ids)
+    ][['Place_Name', 'Category', 'Rating', 'Description']].copy()
+
+    # Menambahkan kolom nomor urut untuk kemudahan referensi
+    recommended_destinations.reset_index(drop=True, inplace=True)
+    recommended_destinations.index += 1  # Menambahkan indeks mulai dari 1
+    recommended_destinations.index.name = 'No.'  # Menambahkan label 'No.' di indeks
+
+    return recommended_destinations
+```
+
+#### e. Hasil Rekomendasi
+
+Penulis mengambil satu contoh `User_Id` secara acak dari dataset `df_collaborative`, yaitu `User ID: 28`.
+
+Tempat Wisata dengan Rating Tertinggi oleh `User ID 28`:
+
+| Nama Tempat             | Kategori      | Rating |
+| ----------------------- | ------------- | ------ |
+| Watu Lumbung            | Cagar Alam    | 4.3    |
+| Watu Mabur Mangunan     | Cagar Alam    | 4.5    |
+| Jembatan Pasupati       | Taman Hiburan | 4.6    |
+| Mountain View Golf Club | Cagar Alam    | 4.4    |
+| Taman Pelangi           | Taman Hiburan | 4.5    |
+
+Tabel 3a Tempat Wisata dengan Rating Tertinggi oleh User ID 28
+
+Berdasarkan data tersebut, dapat disimpulkan bahwa pengguna memiliki preferensi terhadap destinasi bertema `alam` dan `taman hiburan`. Hal ini tercermin dari tingginya rating yang diberikan pada tempat-tempat dengan kategori Cagar Alam dan Taman Hiburan.
+
+Berikut merupakan hasil rekomendasi 10 tempat wisata teratas untuk `User ID 28` yang belum pernah dikunjungi sebelumnya. Rekomendasi ini diperoleh dari prediksi tertinggi yang dihasilkan oleh model Collaborative Filtering.
+
+| No. | Nama Tempat                           | Kategori           | Rating | Deskripsi Singkat                                      |
+| --- | ------------------------------------- | ------------------ | ------ | ------------------------------------------------------ |
+| 1   | Kampung Cina                          | Budaya             | 4.5    | KAMPUNG China adalah hunian dan kawasan perdagangan... |
+| 2   | Taman Spathodea                       | Taman Hiburan      | 4.6    | Objek Wisata Taman Spathodea di Jagakarsa DKI...       |
+| 3   | Bukit Bintang Yogyakarta              | Taman Hiburan      | 4.5    | Bukit Bintang merupakan salah satu lokasi nongkrong... |
+| 4   | Puncak Gunung Api Purba - Nglanggeran | Cagar Alam         | 4.7    | Gunung Nglanggeran adalah sebuah gunung di Daerah...   |
+| 5   | Pantai Baron                          | Bahari             | 4.4    | Pantai Baron adalah salah satu objek wisata...         |
+| 6   | Pasar Kebon Empring Bintaran          | Pusat Perbelanjaan | 4.4    | Pasar Kebon Empring merupakan salah satu objek...      |
+| 7   | Pintoe Langit Dahromo                 | Cagar Alam         | 4.4    | Pintu Langit Dahromo ini menyediakan berbagai...       |
+| 8   | Glamping Lakeside Rancabali           | Taman Hiburan      | 4.4    | Glamping Lakeside Rancabali menawarkan tempat...       |
+| 9   | Bukit Jamur                           | Cagar Alam         | 4.2    | Bukit Jamur Ciwidey adalah satu dari sekian...         |
+| 10  | Taman Hiburan Rakyat                  | Taman Hiburan      | 4.2    | Taman Hiburan Rakyat atau THR tentunya sudah...        |
+
+Tabel 3b Rekomendasi Tempat Wisata yang Belum Pernah Dikunjungi untuk User ID 28
+
+Analisis dan Kesimpulan:
+
+- Kesesuaian rekomendasi: Tempat-tempat yang direkomendasikan menunjukkan konsistensi dengan minat pengguna sebelumnya, khususnya pada destinasi bertema alam, taman, dan rekreasi.
+- Diversitas tempat: Rekomendasi mencakup berbagai kategori, seperti budaya, bahari, dan pusat perbelanjaan, yang memberikan variasi eksplorasi bagi pengguna.
+- Potensi peningkatan: Sistem dapat dikembangkan lebih lanjut dengan hybrid recommendation (menggabungkan content-based dan collaborative filtering) untuk hasil yang lebih personal.
 
 <br>
 
@@ -664,7 +778,7 @@ Evaluasi pada model Collaborative Filtering dilakukan dengan mengukur dua metrik
 - Root Mean Squared Error (RMSE)
 - Mean Absolute Error (MAE)
 
-Kedua metrik ini mengukur seberapa besar kesalahan model dalam memprediksi rating pengguna terhadap tempat wisata.
+Kedua metrik ini digunakan untuk menilai seberapa dekat prediksi model terhadap nilai rating aktual yang diberikan oleh pengguna terhadap tempat wisata.
 
 #### Prosedur Evaluasi
 
@@ -676,10 +790,50 @@ Evaluasi dilakukan dengan langkah-langkah berikut:
 
 - Prediksi dan Pengukuran Error
 
-  Model melakukan prediksi terhadap data validasi (x_val_cf) dan hasilnya dibandingkan dengan label asli (y_val_cf) menggunakan:
+  ## Evaluasi Model dengan RMSE dan MAE
 
-  - RMSE = sqrt(mean_squared_error(y_true, y_pred))
-  - MAE = mean_absolute_error(y_true, y_pred)
+  Untuk mengevaluasi kinerja model dalam prediksi, kita dapat menggunakan dua metrik populer yaitu **RMSE** dan **MAE**. Kedua metrik ini memberikan gambaran seberapa baik model dalam memprediksi data dibandingkan dengan nilai sebenarnya. Berikut adalah penjelasan dan cara kerja keduanya:
+
+  ### 1. **RMSE (Root Mean Squared Error)**
+
+  RMSE mengukur seberapa besar rata-rata kesalahan prediksi model dengan cara menghitung akar kuadrat dari rata-rata kuadrat perbedaan antara nilai prediksi dan nilai aktual. RMSE memberikan penalti yang lebih besar terhadap kesalahan yang lebih besar.
+
+  #### Rumus RMSE:
+  \[
+  \text{RMSE} = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_{\text{true},i} - y_{\text{pred},i})^2}
+  \]
+  Dimana:
+  - \( y_{\text{true}} \) adalah nilai asli (ground truth).
+  - \( y_{\text{pred}} \) adalah nilai prediksi dari model.
+  - \( n \) adalah jumlah data.
+
+  #### Cara Kerja RMSE:
+  1. **Menghitung Selisih:** Hitung selisih antara nilai prediksi dan nilai asli untuk setiap data.
+  2. **Kuadratkan Selisih:** Kuadratkan setiap selisih untuk menghilangkan tanda negatif dan memberi penalti lebih pada kesalahan yang lebih besar.
+  3. **Rata-rata Kuadrat:** Hitung rata-rata dari hasil kuadrat tersebut.
+  4. **Akar Kuadrat:** Ambil akar kuadrat dari hasil rata-rata kuadrat untuk mendapatkan nilai RMSE.
+
+  RMSE sensitif terhadap kesalahan besar karena kuadrat dari kesalahan memberikan dampak yang lebih besar pada nilai akhir.
+
+  ### 2. **MAE (Mean Absolute Error)**
+
+  MAE mengukur rata-rata selisih absolut antara nilai prediksi dan nilai asli. Berbeda dengan RMSE, MAE tidak memberi penalti lebih besar pada kesalahan yang lebih besar, sehingga lebih memberikan gambaran umum yang lebih sederhana.
+
+  #### Rumus MAE:
+  \[
+  \text{MAE} = \frac{1}{n} \sum_{i=1}^{n} |y_{\text{true},i} - y_{\text{pred},i}|
+  \]
+  Dimana:
+  - \( y_{\text{true}} \) adalah nilai asli (ground truth).
+  - \( y_{\text{pred}} \) adalah nilai prediksi dari model.
+  - \( n \) adalah jumlah data.
+
+  #### Cara Kerja MAE:
+  1. **Menghitung Selisih Absolut:** Hitung selisih antara nilai prediksi dan nilai asli untuk setiap data.
+  2. **Nilai Absolut:** Ambil nilai absolut dari setiap selisih.
+  3. **Rata-rata:** Hitung rata-rata dari hasil selisih absolut tersebut untuk mendapatkan nilai MAE.
+
+  MAE memberikan gambaran yang lebih sederhana dan tidak terpengaruh oleh besar kecilnya kesalahan secara drastis, seperti pada RMSE.
 
 - Visualisasi Error Selama Training
 
@@ -706,11 +860,19 @@ Nilai RMSE dan MAE yang diperoleh menunjukkan bahwa model Collaborative Filterin
 
 Tabel 4b Hasil Evaluasi Collaborative Filtering
 
-Interpretasi:
+Nilai RMSE sebesar 0.3642 dan MAE sebesar 0.3145 mengindikasikan bahwa prediksi model mendekati nilai aktual yang diberikan oleh pengguna, dengan rata-rata kesalahan kurang dari 0.4 poin dari skala rating (0–5). Hal ini menandakan bahwa model mampu melakukan prediksi rating dengan cukup akurat.
 
-- Nilai RMSE dan MAE yang relatif kecil menunjukkan bahwa model Collaborative Filtering mampu memprediksi rating dengan cukup akurat. Namun, karena evaluasi ini dilakukan hanya berdasarkan ground truth rating, belum dapat menjamin kualitas rekomendasi secara semantik atau relevansi konten.
+Analisis terhadap Hasil Rekomendasi:
+- Untuk memperkuat interpretasi dari nilai metrik, dilakukan pula pengamatan terhadap hasil rekomendasi aktual. Misalnya pada User ID 28, model merekomendasikan sejumlah tempat wisata dengan prediksi rating tinggi yang belum pernah dikunjungi pengguna sebelumnya. Berdasarkan data historis, pengguna ini memiliki preferensi terhadap tempat wisata dengan kategori Cagar Alam dan Taman Hiburan.
+- Menariknya, dari 10 rekomendasi teratas, lebih dari setengahnya memang berasal dari kategori yang sesuai dengan preferensi historis pengguna tersebut. Hal ini menunjukkan bahwa model tidak hanya mampu memprediksi rating dengan akurat secara numerik, tetapi juga secara semantik relevan dengan minat pengguna. Beberapa contoh tempat rekomendasi seperti Bukit Bintang Yogyakarta, Glamping Lakeside Rancabali, dan Taman Spathodea menunjukkan kecocokan yang tinggi dengan preferensi awal.
 
-### 4.3. Kesimpulan Evaluasi
+Kesimpulan Evaluasi
+- RMSE dan MAE yang rendah memperkuat bahwa model mampu melakukan prediksi numerik dengan baik.
+- Kesesuaian hasil rekomendasi dengan preferensi pengguna memberikan validasi tambahan bahwa model bukan hanya tepat dalam angka, tetapi juga bermakna secara konteks.
+- Kombinasi antara evaluasi kuantitatif (RMSE dan MAE) dan evaluasi kualitatif (kecocokan rekomendasi) memberikan dasar yang kuat bahwa Collaborative Filtering ini telah bekerja cukup baik dalam memberikan rekomendasi yang dipersonalisasi.
+- Ke depannya, sistem ini tetap dapat ditingkatkan dengan pendekatan hybrid recommendation untuk menangani cold start dan memperluas cakupan preferensi pengguna.
+
+### 4.3. Kesimpulan Evaluasi Masing-Masing Model
 
 - Model Content-Based Filtering menunjukkan `performa sangat baik` dengan `Precision@10 mencapai 100%` pada uji coba terhadap `Museum Perangko`.
 - Model Collaborative Filtering memberikan `performa prediksi yang cukup akurat` dengan `nilai RMSE = 0.3642` dan `MAE = 0.3145`.
