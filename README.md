@@ -790,24 +790,24 @@ Evaluasi dilakukan dengan langkah-langkah berikut:
 
 - Prediksi dan Pengukuran Error
 
-  ## Evaluasi Model dengan RMSE dan MAE
-
   Untuk mengevaluasi kinerja model dalam prediksi, kita dapat menggunakan dua metrik populer yaitu **RMSE** dan **MAE**. Kedua metrik ini memberikan gambaran seberapa baik model dalam memprediksi data dibandingkan dengan nilai sebenarnya. Berikut adalah penjelasan dan cara kerja keduanya:
 
-  ### 1. **RMSE (Root Mean Squared Error)**
+  1. **RMSE (Root Mean Squared Error)**
 
   RMSE mengukur seberapa besar rata-rata kesalahan prediksi model dengan cara menghitung akar kuadrat dari rata-rata kuadrat perbedaan antara nilai prediksi dan nilai aktual. RMSE memberikan penalti yang lebih besar terhadap kesalahan yang lebih besar.
 
-  #### Rumus RMSE:
+  Rumus RMSE:
   \[
-  \text{RMSE} = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_{\text{true},i} - y_{\text{pred},i})^2}
+  \text{RMSE} = \sqrt{\frac{1}{n} \sum*{i=1}^{n} (y*{\text{true},i} - y\_{\text{pred},i})^2}
   \]
   Dimana:
-  - \( y_{\text{true}} \) adalah nilai asli (ground truth).
-  - \( y_{\text{pred}} \) adalah nilai prediksi dari model.
+
+  - \( y\_{\text{true}} \) adalah nilai asli (ground truth).
+  - \( y\_{\text{pred}} \) adalah nilai prediksi dari model.
   - \( n \) adalah jumlah data.
 
-  #### Cara Kerja RMSE:
+  Cara Kerja RMSE:
+
   1. **Menghitung Selisih:** Hitung selisih antara nilai prediksi dan nilai asli untuk setiap data.
   2. **Kuadratkan Selisih:** Kuadratkan setiap selisih untuk menghilangkan tanda negatif dan memberi penalti lebih pada kesalahan yang lebih besar.
   3. **Rata-rata Kuadrat:** Hitung rata-rata dari hasil kuadrat tersebut.
@@ -815,20 +815,22 @@ Evaluasi dilakukan dengan langkah-langkah berikut:
 
   RMSE sensitif terhadap kesalahan besar karena kuadrat dari kesalahan memberikan dampak yang lebih besar pada nilai akhir.
 
-  ### 2. **MAE (Mean Absolute Error)**
+  2. **MAE (Mean Absolute Error)**
 
   MAE mengukur rata-rata selisih absolut antara nilai prediksi dan nilai asli. Berbeda dengan RMSE, MAE tidak memberi penalti lebih besar pada kesalahan yang lebih besar, sehingga lebih memberikan gambaran umum yang lebih sederhana.
 
-  #### Rumus MAE:
+  Rumus MAE:
   \[
-  \text{MAE} = \frac{1}{n} \sum_{i=1}^{n} |y_{\text{true},i} - y_{\text{pred},i}|
+  \text{MAE} = \frac{1}{n} \sum*{i=1}^{n} |y*{\text{true},i} - y\_{\text{pred},i}|
   \]
   Dimana:
-  - \( y_{\text{true}} \) adalah nilai asli (ground truth).
-  - \( y_{\text{pred}} \) adalah nilai prediksi dari model.
+
+  - \( y\_{\text{true}} \) adalah nilai asli (ground truth).
+  - \( y\_{\text{pred}} \) adalah nilai prediksi dari model.
   - \( n \) adalah jumlah data.
 
-  #### Cara Kerja MAE:
+  Cara Kerja MAE:
+
   1. **Menghitung Selisih Absolut:** Hitung selisih antara nilai prediksi dan nilai asli untuk setiap data.
   2. **Nilai Absolut:** Ambil nilai absolut dari setiap selisih.
   3. **Rata-rata:** Hitung rata-rata dari hasil selisih absolut tersebut untuk mendapatkan nilai MAE.
@@ -863,10 +865,12 @@ Tabel 4b Hasil Evaluasi Collaborative Filtering
 Nilai RMSE sebesar 0.3642 dan MAE sebesar 0.3145 mengindikasikan bahwa prediksi model mendekati nilai aktual yang diberikan oleh pengguna, dengan rata-rata kesalahan kurang dari 0.4 poin dari skala rating (0–5). Hal ini menandakan bahwa model mampu melakukan prediksi rating dengan cukup akurat.
 
 Analisis terhadap Hasil Rekomendasi:
+
 - Untuk memperkuat interpretasi dari nilai metrik, dilakukan pula pengamatan terhadap hasil rekomendasi aktual. Misalnya pada User ID 28, model merekomendasikan sejumlah tempat wisata dengan prediksi rating tinggi yang belum pernah dikunjungi pengguna sebelumnya. Berdasarkan data historis, pengguna ini memiliki preferensi terhadap tempat wisata dengan kategori Cagar Alam dan Taman Hiburan.
 - Menariknya, dari 10 rekomendasi teratas, lebih dari setengahnya memang berasal dari kategori yang sesuai dengan preferensi historis pengguna tersebut. Hal ini menunjukkan bahwa model tidak hanya mampu memprediksi rating dengan akurat secara numerik, tetapi juga secara semantik relevan dengan minat pengguna. Beberapa contoh tempat rekomendasi seperti Bukit Bintang Yogyakarta, Glamping Lakeside Rancabali, dan Taman Spathodea menunjukkan kecocokan yang tinggi dengan preferensi awal.
 
 Kesimpulan Evaluasi
+
 - RMSE dan MAE yang rendah memperkuat bahwa model mampu melakukan prediksi numerik dengan baik.
 - Kesesuaian hasil rekomendasi dengan preferensi pengguna memberikan validasi tambahan bahwa model bukan hanya tepat dalam angka, tetapi juga bermakna secara konteks.
 - Kombinasi antara evaluasi kuantitatif (RMSE dan MAE) dan evaluasi kualitatif (kecocokan rekomendasi) memberikan dasar yang kuat bahwa Collaborative Filtering ini telah bekerja cukup baik dalam memberikan rekomendasi yang dipersonalisasi.
