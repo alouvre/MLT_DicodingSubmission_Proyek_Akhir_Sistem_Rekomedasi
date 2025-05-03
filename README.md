@@ -329,7 +329,7 @@ Kesimpulan:
 
 ## 🔗 2. Data Preparation
 
-Pada tahap data preparation, dilakukan serangkaian langkah untuk memastikan bahwa data yang digunakan dalam proses pemodelan bersih, terstruktur, dan siap untuk dianalisis. Tahapan ini mencakup pembersihan data, penggabungan dataset, pengolahan teks, encoding variabel kategorikal, normalisasi rating, dan pembagian data menjadi set pelatihan dan pengujian. Berikut adalah uraian mendetail mengenai setiap langkah yang dilakukan:
+Pada tahap data preparation, dilakukan serangkaian langkah untuk memastikan bahwa data yang digunakan dalam proses pemodelan bersih, terstruktur, dan siap untuk dianalisis. Tahapan ini mencakup pembersihan data, penggabungan dataset, pengolahan teks, encoding variabel kategorikal, normalisasi nilai rating, serta pembagian data menjadi training set dan testing set. Berikut adalah uraian mendetail dari setiap langkah yang dilakukan:
 
 ### 2.1. Menghapus Kolom Yang Tidak Diperlukan
 
@@ -856,9 +856,7 @@ Tabel 4a Hasil Evaluasi Content-Based Filtering untuk Museum Perangko
 - False Positives (FP): 0
 - Precision@10: 100.00%
 
-Interpretasi:
-
-- Semua rekomendasi yang diberikan memiliki kategori yang sama (Budaya) dengan tempat asal, sehingga dianggap relevan. Meskipun similarity pada deskripsi cenderung rendah, model tetap berhasil menghasilkan rekomendasi yang tepat berdasarkan kategori. Hal ini menunjukkan bahwa pemanfaatan tag-based similarity cukup efektif.
+Semua rekomendasi yang diberikan memiliki kategori yang sama (Budaya) dengan tempat asal, sehingga dianggap relevan. Meskipun similarity pada deskripsi cenderung rendah, model tetap berhasil menghasilkan rekomendasi yang tepat berdasarkan kategori. Hal ini menunjukkan bahwa pemanfaatan tag-based similarity cukup efektif.
 
 ### 4.2. Evaluation of Collaborative Filtering Model
 
@@ -954,18 +952,6 @@ Tabel 4b Hasil Evaluasi Collaborative Filtering
 
 Nilai RMSE sebesar 0.3642 dan MAE sebesar 0.3145 mengindikasikan bahwa prediksi model mendekati nilai aktual yang diberikan oleh pengguna, dengan rata-rata kesalahan kurang dari 0.4 poin dari skala rating (0–5). Hal ini menandakan bahwa model mampu melakukan prediksi rating dengan cukup akurat.
 
-Analisis terhadap Hasil Rekomendasi:
-
-- Untuk memperkuat interpretasi dari nilai metrik, dilakukan pula pengamatan terhadap hasil rekomendasi aktual. Misalnya pada User ID 28, model merekomendasikan sejumlah tempat wisata dengan prediksi rating tinggi yang belum pernah dikunjungi pengguna sebelumnya. Berdasarkan data historis, pengguna ini memiliki preferensi terhadap tempat wisata dengan kategori Cagar Alam dan Taman Hiburan.
-- Menariknya, dari 10 rekomendasi teratas, lebih dari setengahnya memang berasal dari kategori yang sesuai dengan preferensi historis pengguna tersebut. Hal ini menunjukkan bahwa model tidak hanya mampu memprediksi rating dengan akurat secara numerik, tetapi juga secara semantik relevan dengan minat pengguna. Beberapa contoh tempat rekomendasi seperti Bukit Bintang Yogyakarta, Glamping Lakeside Rancabali, dan Taman Spathodea menunjukkan kecocokan yang tinggi dengan preferensi awal.
-
-Kesimpulan Evaluasi
-
-- RMSE dan MAE yang rendah memperkuat bahwa model mampu melakukan prediksi numerik dengan baik.
-- Kesesuaian hasil rekomendasi dengan preferensi pengguna memberikan validasi tambahan bahwa model bukan hanya tepat dalam angka, tetapi juga bermakna secara konteks.
-- Kombinasi antara evaluasi kuantitatif (RMSE dan MAE) dan evaluasi kualitatif (kecocokan rekomendasi) memberikan dasar yang kuat bahwa Collaborative Filtering ini telah bekerja cukup baik dalam memberikan rekomendasi yang dipersonalisasi.
-- Ke depannya, sistem ini tetap dapat ditingkatkan dengan pendekatan hybrid recommendation untuk menangani cold start dan memperluas cakupan preferensi pengguna.
-
 ### 4.3. Kesimpulan Evaluasi Masing-Masing Model
 
 - Model Content-Based Filtering menunjukkan `performa sangat baik` dengan `Precision@10 mencapai 100%` pada uji coba terhadap `Museum Perangko`.
@@ -1032,21 +1018,42 @@ Kekurangan:
 
 <br>
 
-## 📩 5. Kesimpulan
+## 📩 5.Keterkaitan dengan Business Understanding
 
-Luaran dari proyek ini adalah sebuah `sistem rekomendasi destinasi wisata yang dibangun menggunakan dua pendekatan utama`, yaitu `Content-Based Filtering` dan `Collaborative Filtering`, guna menjawab tantangan dalam memberikan rekomendasi yang relevan, personal, dan berdampak langsung pada pengalaman pengguna.
+Problem Statements:
 
-Pada `pendekatan Content-Based Filtering`, sistem `memberikan rekomendasi berdasarkan kemiripan konten` seperti `deskripsi dan kategori destinasi`. Hal ini **menjawab kebutuhan untuk merekomendasikan tempat-tempat yang sejenis dengan destinasi favorit pengguna**. Sebagai contoh, untuk destinasi “Museum Perangko”, `sistem berhasil memberikan 10 rekomendasi yang seluruhnya relevan`, sebagaimana dibuktikan oleh `nilai Precision@10 sebesar 100%`.
+  - Bagaimana cara memberikan rekomendasi destinasi wisata yang relevan berdasarkan deskripsi dan kategori konten?
 
-- Pendekatan ini menunjukkan bahwa sistem mampu memahami karakteristik konten dengan baik dan memberikan rekomendasi yang akurat.
-- Secara bisnis, pendekatan ini dapat meningkatkan kepuasan pengguna baru yang belum memberikan rating, sekaligus mempromosikan destinasi yang memiliki profil serupa dengan tempat populer.
+    → Pendekatan Content-Based Filtering berhasil menjawab masalah ini dengan menggunakan informasi deskriptif dan kategori dari destinasi. Evaluasi dengan Precision@10 menghasilkan akurasi hingga 100%, menunjukkan bahwa sistem mampu memberikan rekomendasi yang sangat relevan terhadap preferensi pengguna.
 
-Sementara itu, `Collaborative Filtering` digunakan untuk `memberikan rekomendasi berbasis perilaku`, yaitu dengan **mempelajari pola rating pengguna lain yang memiliki preferensi serupa**. Model ini berhasil mencapai `RMSE sebesar 0.3642` dan `MAE sebesar 0.3145`, menandakan `kesalahan prediksi yang rendah`.
+  - Bagaimana cara menggunakan data rating pengguna untuk meningkatkan akurasi rekomendasi?
 
-- Pendekatan ini efektif untuk personalisasi rekomendasi bagi pengguna aktif, dan mampu menyarankan destinasi yang belum pernah dilihat atau diketahui oleh pengguna.
-- Dampaknya bagi pengembangan bisnis adalah meningkatkan eksposur destinasi yang kurang populer namun potensial, serta mendorong penemuan destinasi baru yang sesuai dengan minat pengguna.
+    → Pendekatan Collaborative Filtering membuktikan bahwa pola penilaian pengguna lain dapat dimanfaatkan untuk menghasilkan rekomendasi yang bersifat personal dan lebih akurat. Model ini mampu mencapai RMSE sebesar 0.3642 dan MAE sebesar 0.3145, menandakan bahwa sistem memiliki kesalahan prediksi yang rendah.
 
-Dengan demikian, `kedua pendekatan ini telah menjawab seluruh problem statement` dan `berhasil memenuhi tujuan proyek`. Sistem yang dihasilkan tidak hanya akurat secara teknis, tetapi juga bermanfaat dari sisi pengguna dan mendukung strategi pengembangan pariwisata yang lebih personal dan data-driven.
+  - Bagaimana cara mengukur relevansi rekomendasi agar sistem dapat memberikan hasil yang tepat?
+
+    → Evaluasi dilakukan menggunakan metrik yang sesuai dengan pendekatannya: Precision@10 untuk pendekatan berbasis konten, serta RMSE dan MAE untuk pendekatan kolaboratif. Penggunaan metrik ini memastikan bahwa rekomendasi tidak hanya personal tetapi juga tepat sasaran dan dapat dipertanggungjawabkan secara kuantitatif.
+
+Goals:
+  - Membangun sistem rekomendasi yang mampu memberikan rekomendasi tempat wisata secara personal berdasarkan konten dan perilaku pengguna.
+  - Meningkatkan kepuasan pengguna melalui sistem yang mampu menyesuaikan saran destinasi dengan preferensi individual tanpa bergantung pada pencarian manual.
+  - Mendorong eksposur destinasi yang kurang populer namun potensial melalui personalisasi dan pemanfaatan data historis.
+
+Solution Statements:
+  - Pendekatan Content-Based Filtering dilakukan dengan mengolah deskripsi dan kategori destinasi menggunakan teknik TF-IDF Vectorizer, kemudian menghitung cosine similarity antar destinasi untuk menghasilkan rekomendasi yang mirip dengan tempat favorit pengguna.
+  - Evaluasi menggunakan Precision@10 menunjukkan bahwa sistem dapat memberikan 10 rekomendasi yang seluruhnya relevan terhadap masukan awal pengguna.
+  - Pendekatan Collaborative Filtering dibangun menggunakan teknik embedding pada data rating pengguna dan destinasi, disertai normalisasi data untuk meningkatkan stabilitas model. Prediksi dilakukan dengan model neural network sederhana.
+  - Evaluasi model menggunakan Root Mean Square Error (RMSE) dan Mean Absolute Error (MAE) menunjukkan performa yang sangat baik dan minim kesalahan prediksi.
+
+Dengan demikian, dua pendekatan yang digunakan, yaitu Content-Based Filtering dan Collaborative Filtering, berhasil menjawab semua problem statement dan memenuhi tujuan proyek, serta memberikan dampak nyata terhadap pengembangan pariwisata berbasis data.
+
+Setiap solusi yang diimplementasikan memiliki kontribusi yang signifikan:
+- Pendekatan Content-Based Filtering berbasis TF-IDF dan cosine similarity memungkinkan sistem memberikan rekomendasi relevan bahkan ketika pengguna belum banyak berinteraksi dengan sistem. Hal ini berdampak langsung pada penyelesaian masalah cold start pada pengguna baru dan memperkuat personalisasi, sesuai dengan temuan `Syakura (2024)`.
+- Evaluasi menggunakan metrik `Precision@10` memastikan bahwa rekomendasi yang diberikan sistem benar-benar relevan, sehingga mengurangi beban pengguna dalam menyaring informasi yang terlalu banyak dan mendukung pengalaman wisata yang lebih efisien.
+- Pendekatan Collaborative Filtering melalui embedding dan normalisasi berhasil memetakan pola perilaku pengguna lain, sehingga mampu merekomendasikan destinasi yang belum populer namun sesuai dengan minat pengguna. Ini mendukung pemerataan promosi destinasi wisata yang selama ini kurang terekspos, sebagaimana dikemukakan oleh `Cholil et al. (2023)`.
+- Evaluasi CF menggunakan metrik RMSE dan MAE menunjukkan bahwa model memiliki kemampuan prediktif yang baik dalam memperkirakan preferensi pengguna, yang secara tidak langsung mendukung keandalan sistem dalam jangka panjang.
+
+Secara keseluruhan, sistem yang dibangun tidak hanya akurat secara teknis, tetapi juga memiliki nilai bisnis yang tinggi, baik dalam meningkatkan kualitas personalisasi layanan wisata maupun dalam mempromosikan destinasi secara lebih merata dan efektif. Dengan menggabungkan aspek teknis dan dampak praktis, proyek ini memberikan kontribusi nyata terhadap transformasi digital di sektor pariwisata.
 
 <br>
 
