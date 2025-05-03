@@ -277,23 +277,17 @@ Gambar 1c. Distribusi `Category` dalam `df_tourism`
 
 Fitur `Category` merepresentasikan klasifikasi atau jenis destinasi wisata yang tersedia dalam dataset `df_tourism`. Pemahaman terhadap fitur ini sangat penting karena dapat membantu dalam mengenali preferensi pengguna terhadap tipe-tipe wisata tertentu, serta berkontribusi pada proses segmentasi dan personalisasi konten dalam sistem rekomendasi.
 
-Distribusi ini menunjukkan dominasi kategori Taman Hiburan, Budaya, dan Cagar Alam, yang secara kumulatif mencakup lebih dari 80% dari total data. Ketimpangan ini dapat menyebabkan bias dalam sistem rekomendasi, di mana sistem cenderung lebih sering menyarankan destinasi dari kategori mayoritas. Untuk mengatasi hal ini, dapat dipertimbangkan pendekatan seperti:
-- Penyeimbangan data melalui sampling atau augmentasi.
-- Pembobotan kategori agar sistem tetap menampilkan diversifikasi destinasi lintas kategori.
+Distribusi ini menunjukkan dominasi kategori Taman Hiburan, Budaya, dan Cagar Alam, yang secara kumulatif mencakup lebih dari 80% dari total data. Ketimpangan ini dapat menyebabkan bias dalam sistem rekomendasi, di mana sistem cenderung lebih sering menyarankan destinasi dari kategori mayoritas. Untuk mengatasi hal ini, dapat dipertimbangkan pendekatan yang lebih informatif dapat dilakukan dengan menggabungkan fitur kategori dengan data deskripsi `(Description)`. Deskripsi menyediakan informasi semantik yang lebih kaya dan kontekstual dibanding label kategori semata. Dengan mengolah teks deskripsi menggunakan teknik seperti TF-IDF, sistem dapat mengidentifikasi kesamaan antar destinasi wisata berdasarkan isi kontennya, bukan hanya berdasarkan kategorinya.
 
 ![Analisis City (df_tourism)](images/Image-7.png)
 
 Gambar 1d. Distribusi `City` dalam `df_tourism`
 
-Fitur `City` menunjukkan lokasi geografis dari tiap destinasi wisata. Fitur ini memiliki peran penting, terutama dalam konteks sistem rekomendasi berbasis lokasi atau ketika mempertimbangkan preferensi geografis pengguna.
+Fitur `City` merepresentasikan lokasi geografis dari setiap destinasi wisata dalam dataset `df_tourism`. Meskipun informasi ini dapat berguna dalam sistem berbasis lokasi, analisis menunjukkan bahwa lebih dari 57% destinasi terpusat di dua kota utama, yaitu Yogyakarta dan Bandung, yang menunjukkan adanya ketimpangan distribusi data antar wilayah. Ketimpangan ini bisa menyebabkan sistem rekomendasi cenderung memberikan saran dari kota-kota dominan saja, mengabaikan keberagaman wilayah lain yang mungkin relevan bagi pengguna.
 
-Analisis menunjukkan bahwa lebih dari 57% destinasi terpusat di dua kota saja, yaitu Yogyakarta dan Bandung. Ketimpangan ini bisa menyebabkan sistem rekomendasi cenderung memberikan saran dari kota-kota dominan saja, mengabaikan keberagaman wilayah lain yang mungkin relevan bagi pengguna.
+Namun demikian, dalam konteks proyek ini, fitur `City` tidak digunakan lebih lanjut karena tidak termasuk dalam cakupan problem statement, yang lebih berfokus pada pengembangan sistem rekomendasi berbasis konten (content-based) dan kolaboratif (collaborative filtering). Sistem yang dikembangkan tidak mempertimbangkan lokasi geografis pengguna atau preferensi berbasis wilayah, sehingga keberadaan fitur ini tidak berkontribusi langsung terhadap performa model rekomendasi.
 
-Untuk mencegah hal tersebut, pendekatan berikut bisa dipertimbangkan:
-- Diversifikasi rekomendasi berdasarkan lokasi, khususnya dalam konteks pengguna yang mobile atau sistem yang melayani area geografis luas.
-- Penyaringan berbasis lokasi pengguna untuk memberikan saran yang lebih personal dan kontekstual.
-
-Distribusi fitur `Category` dan `City` dalam `df_tourism` menunjukkan adanya ketimpangan yang signifikan. Dominasi kategori tertentu dan konsentrasi destinasi di beberapa kota besar dapat memengaruhi kinerja sistem rekomendasi jika tidak diimbangi. Oleh karena itu, strategi penyeimbangan atau pembobotan diperlukan untuk menjaga keberagaman rekomendasi dan relevansi terhadap preferensi pengguna.
+Sebagai hasil dari pertimbangan tersebut, fitur `City` akan dihapus dari pemrosesan data dan pembangunan model untuk menjaga fokus dan kesederhanaan sistem rekomendasi yang dikembangkan.
 
 #### 1.3.3. Analisis Place_Name
 
@@ -307,7 +301,7 @@ Masing-masing destinasi dalam daftar hanya menyumbang kurang dari 0.5% dari tota
 
 Temuan ini memiliki dua implikasi utama:
 - Distribusi rating yang merata merupakan indikasi bahwa pengguna menjelajahi berbagai destinasi secara cukup seimbang. Ini dapat dianggap sebagai sinyal sistem data yang sehat, tanpa ketergantungan pada satu atau dua tempat populer.
-- Tantangan dalam sistem rekomendasi: Karena tidak ada satu destinasi yang secara drastis menonjol, model rekomendasi tidak bisa hanya mengandalkan metrik popularitas (seperti total rating). Oleh karena itu, pendekatan berbasis personalisasi (misalnya berdasarkan preferensi kategori, lokasi, atau profil pengguna) akan lebih efektif dalam meningkatkan relevansi saran destinasi.
+- Tantangan dalam sistem rekomendasi: Karena tidak ada satu destinasi yang secara drastis menonjol, model rekomendasi tidak bisa hanya mengandalkan metrik popularitas (seperti total rating). Oleh karena itu, pendekatan berbasis konten (misalnya berdasarkan preferensi kategori dan deskripsi) akan lebih efektif dalam meningkatkan relevansi saran destinasi.
 
 #### 1.3.4. Analisis Distribusi Fitur Numerik
 
