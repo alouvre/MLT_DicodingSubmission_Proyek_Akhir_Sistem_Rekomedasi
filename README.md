@@ -273,7 +273,7 @@ Pertimbangan penghapusan kolom adalah sebagai berikut:
 
 - Kolom `Time_Minutes` memiliki jumlah nilai yang hilang cukup besar, yakni sebanyak 232 baris, sehingga dianggap kurang representatif untuk dianalisis lebih lanjut.
 - `Unnamed: 11` merupakan kolom kosong tanpa informasi yang berguna, sehingga dikeluarkan dari dataset.
-- Kolom seperti `City`, `Price`, `Coordinate`, `Lat`, dan `Long` juga dihapus karena dianggap tidak memberikan kontribusi signifikan terhadap proses analisis atau model rekomendasi yang dikembangkan.
+- Kolom seperti `City`, `Price`, `Coordinate`, `Lat`, dan `Long` juga dihapus karena pendekatan yang digunakan bersifat berbasis konten (content-based) dengan fokus pada analisis teks dari deskripsi dan kategori. Kolom-kolom tersebut tidak memberikan kontribusi langsung terhadap representasi semantik yang dianalisis melalui cosine similarity. Namun, kolom-kolom ini tetap dapat dipertimbangkan untuk pengembangan sistem berbasis konteks lokasi atau harga di masa mendatang.
 
 Hasil dari proses ini disimpan dalam variabel baru bernama `df_tourism_cleaned`, yang berisi versi dataset yang telah disederhanakan dan dibersihkan. Untuk memverifikasi hasil penghapusan, kolom-kolom dalam dataset tersebut ditampilkan melalui `df_tourism_cleaned.head()`.
 
