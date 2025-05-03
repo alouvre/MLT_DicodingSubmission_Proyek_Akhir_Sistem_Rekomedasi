@@ -623,22 +623,25 @@ Evaluasi dilakukan untuk mengukur kinerja dua pendekatan sistem rekomendasi yang
 Evaluasi pada model Content-Based Filtering dilakukan dengan menggunakan `metrik Precision@10`, yang mengukur proporsi dari 10 rekomendasi teratas yang benar-benar relevan. Rekomendasi dianggap relevan jika memiliki kategori yang sama dengan destinasi asal atau memiliki kesamaan deskripsi (description similarity) di atas nilai threshold yang telah ditentukan, yaitu `0.5`.
 
 #### Prosedur Evaluasi
+
 Berikut adalah langkah-langkah evaluasi model:
-- Menentukan Tempat Uji
-  
+
+- **Menentukan Tempat Uji**
+
   Tempat wisata yang digunakan untuk evaluasi ditentukan dalam daftar places_to_evaluate, misalnya ['Museum Perangko'].
 
-- Mengambil Rekomendasi
+- **Mengambil Rekomendasi**
 
   Fungsi get_content_based_recommendations() digunakan untuk menghasilkan rekomendasi berdasarkan similarity antar destinasi (berdasarkan tag dan deskripsi).
 
-- Menentukan Relevansi Rekomendasi
+- **Menentukan Relevansi Rekomendasi**
 
   Relevansi ditentukan berdasarkan dua kriteria:
+
   - Kategori destinasi rekomendasi sama dengan destinasi asal.
   - Kemiripan deskripsi (Description Similarity) ≥ 0.5.
 
-- Menghitung Precision@10
+- **Menghitung Precision@10**
 
   Menghitung jumlah True Positives (TP), yaitu jumlah rekomendasi relevan, dan menghitung Precision sebagai:
 
@@ -647,10 +650,11 @@ Berikut adalah langkah-langkah evaluasi model:
   $$
 
   Keterangan:
+
   - **TP** = True Positives (jumlah item yang relevan dari 10 rekomendasi teratas)
   - Angka **10** menunjukkan jumlah rekomendasi yang dievaluasi
-​
-- Mencetak dan Menyimpan Hasil Evaluasi
+
+- **Mencetak dan Menyimpan Hasil Evaluasi**
 
   Hasil evaluasi Precision@10 ditampilkan dan disimpan dalam bentuk DataFrame.
 
