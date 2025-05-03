@@ -517,6 +517,11 @@ Berikut hasil rekomendasi:
 
   Tabel 3a. Hasil Rekomendasi Berdasarkan `Tags`
 
+  Hasil rekomendasi berdasarkan `Tags` (Tabel 3a) didominasi oleh destinasi yang memiliki kategori sama (Cagar Alam) dan deskripsi yang menunjukkan aktivitas wisata alam, edukasi, dan pengalaman alam terbuka.
+  - Hal ini menunjukkan bahwa gabungan informasi kategori dan deskripsi mampu memperkuat sinyal kesamaan konten, karena sistem tidak hanya mempertimbangkan narasi, tetapi juga konteks kategori sebagai penanda eksplisit. 
+  - Sebagai contoh, Kampoeng Kopi Banaran (kategori Taman Hiburan) muncul di posisi ke-9, menandakan bahwa meskipun berbeda kategori, deskripsinya masih cukup mirip secara semantik. Ini menunjukkan bahwa sistem tidak terlalu ketat, tetapi tetap mempertahankan relevansi.
+  - Representasi `Tags` efektif dalam menjaga keseimbangan antara relevansi naratif dan kesamaan kategori.
+
 - Rekomendasi Berdasarkan `Description`
 
   | No. | Place_Name                        | Category      | Rating | Description                                       |
@@ -534,7 +539,10 @@ Berikut hasil rekomendasi:
 
   Tabel 3b. Hasil Rekomendasi Berdasarkan `description_preprocessed`
 
-Hasil tersebut menunjukkan bahwa sistem berhasil mengidentifikasi destinasi yang memiliki karakteristik serupa, baik dari sisi deskripsi maupun kategori, sehingga dapat membantu pengguna menemukan tempat wisata alternatif yang relevan dengan preferensinya.
+  Hasil rekomendasi berdasarkan deskripsi murni (Tabel 3b) hampir identik dengan hasil dari `Tags`, terutama di lima besar. Ini menunjukkan bahwa deskripsi naratif saja sudah cukup kuat untuk mengidentifikasi tempat-tempat yang serupa secara konten.
+  - Namun, munculnya destinasi seperti `Desa Wisata Lembah Kalipancur` di posisi ke-6 (yang sebelumnya tidak muncul di versi Tags) menandakan bahwa pendekatan ini lebih terbuka terhadap keberagaman kategori, selama narasinya mirip.
+  - Ini berguna dalam kasus di mana kategori bisa saja terlalu umum atau kurang representatif, dan konten naratiflah yang justru lebih informatif.
+  - Representasi deskripsi naratif `(description_preprocessed)` terbukti relevan dalam mendeteksi kemiripan konten, dan mampu memperluas cakupan rekomendasi secara fleksibel.
 
 ### 3.2. Model Development - Collaborative Filtering
 
