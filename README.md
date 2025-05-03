@@ -745,7 +745,7 @@ Pemilihan metrik evaluasi pada masing-masing model disesuaikan dengan karakteris
 - `Precision@10` digunakan pada Content-Based Filtering karena fokus utama model ini adalah menghasilkan daftar rekomendasi top-N yang relevan bagi pengguna. Ini sesuai dengan kebutuhan sistem yang ingin merekomendasikan tempat wisata yang paling mirip atau relevan dengan preferensi pengguna berdasarkan konten deskripsi dan kategori.
 - `RMSE dan MAE` digunakan pada Collaborative Filtering karena model ini bertujuan memprediksi rating yang diberikan pengguna terhadap tempat wisata. Kedua metrik ini sangat tepat untuk mengukur performa model regresi dalam konteks prediksi numerik.
 
-### 4.5. Kelebihan dan Kekurangan
+### 4.5. Kelebihan dan Kekurangan Masing-Masing Model
 
 Berdasarkan hasil evaluasi pada model Content-Based Filtering dan Collaborative Filtering, berikut adalah kelebihan dan kekurangan masing-masing pendekatan:
 
