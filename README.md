@@ -236,7 +236,7 @@ Hasil dari pengecekan ini menghasilkan `True`, yang berarti seluruh nilai di `Un
 
 ### 1.3. EDA - Univariate Analysis
 
-#### Analisis Rating dan Place_Ratings
+#### 1.3.1. Analisis Rating dan Place_Ratings
 
 ![Analisis Rating (df_tourism)](images/Image-3.png)
 
@@ -268,6 +268,33 @@ Dengan variasi yang luas dan representatif, `Place_Ratings` jauh lebih relevan u
 Tabel 1h Perbandingan Fitur `Rating` pada `df_tourism` dan `df_ratings`
 
 Fitur `Rating` pada `df_tourism` memberikan gambaran umum tentang persepsi kualitas destinasi wisata dari sumber eksternal, namun cenderung memiliki variasi yang rendah dan bias ke arah positif. Hal ini menjadikannya kurang efektif sebagai pembeda antar destinasi dalam konteks sistem rekomendasi. Sebaliknya, `Place_Ratings` dari `df_ratings` merepresentasikan penilaian langsung dari pengguna dengan distribusi yang lebih seimbang dan subjektif, sehingga lebih relevan dan efektif untuk digunakan dalam pengembangan sistem rekomendasi berbasis pengguna, khususnya collaborative filtering.
+
+#### 1.3.1. Analisis Category dan City
+
+![Analisis Category (df_tourism)](images/Image-6.png)
+
+Gambar 1c. Distribusi `Category` dalam `df_tourism`
+
+Fitur `Category` merepresentasikan klasifikasi atau jenis destinasi wisata yang tersedia dalam dataset `df_tourism`. Pemahaman terhadap fitur ini sangat penting karena dapat membantu dalam mengenali preferensi pengguna terhadap tipe-tipe wisata tertentu, serta berkontribusi pada proses segmentasi dan personalisasi konten dalam sistem rekomendasi.
+
+Distribusi ini menunjukkan dominasi kategori Taman Hiburan, Budaya, dan Cagar Alam, yang secara kumulatif mencakup lebih dari 80% dari total data. Ketimpangan ini dapat menyebabkan bias dalam sistem rekomendasi, di mana sistem cenderung lebih sering menyarankan destinasi dari kategori mayoritas. Untuk mengatasi hal ini, dapat dipertimbangkan pendekatan seperti:
+- Penyeimbangan data melalui sampling atau augmentasi.
+- Pembobotan kategori agar sistem tetap menampilkan diversifikasi destinasi lintas kategori.
+
+![Analisis City (df_tourism)](images/Image-7.png)
+
+Gambar 1d. Distribusi `City` dalam `df_tourism`
+
+Fitur `City` menunjukkan lokasi geografis dari tiap destinasi wisata. Fitur ini memiliki peran penting, terutama dalam konteks sistem rekomendasi berbasis lokasi atau ketika mempertimbangkan preferensi geografis pengguna.
+
+Analisis menunjukkan bahwa lebih dari 57% destinasi terpusat di dua kota saja, yaitu Yogyakarta dan Bandung. Ketimpangan ini bisa menyebabkan sistem rekomendasi cenderung memberikan saran dari kota-kota dominan saja, mengabaikan keberagaman wilayah lain yang mungkin relevan bagi pengguna.
+
+Untuk mencegah hal tersebut, pendekatan berikut bisa dipertimbangkan:
+- Diversifikasi rekomendasi berdasarkan lokasi, khususnya dalam konteks pengguna yang mobile atau sistem yang melayani area geografis luas.
+- Penyaringan berbasis lokasi pengguna untuk memberikan saran yang lebih personal dan kontekstual.
+
+Distribusi fitur `Category` dan `City` dalam `df_tourism` menunjukkan adanya ketimpangan yang signifikan. Dominasi kategori tertentu dan konsentrasi destinasi di beberapa kota besar dapat memengaruhi kinerja sistem rekomendasi jika tidak diimbangi. Oleh karena itu, strategi penyeimbangan atau pembobotan diperlukan untuk menjaga keberagaman rekomendasi dan relevansi terhadap preferensi pengguna.
+
 
 <br>
 
