@@ -616,6 +616,44 @@ Dengan hasil ini, dataframe `df_encoded` siap digunakan sebagai input untuk memb
 
 ## 📊 4. Evaluation
 
+Evaluasi dilakukan untuk mengukur kinerja dua pendekatan sistem rekomendasi yang telah dibangun, yaitu Content-Based Filtering dan Collaborative Filtering. Evaluasi bertujuan untuk menilai seberapa relevan dan akurat rekomendasi yang dihasilkan oleh masing-masing model terhadap kebutuhan pengguna.
+
+### 4.1. Evaluation of Content-Based Filtering Model
+
+Evaluasi pada model Content-Based Filtering dilakukan dengan menggunakan `metrik Precision@10`, yang mengukur proporsi dari 10 rekomendasi teratas yang benar-benar relevan. Rekomendasi dianggap relevan jika memiliki kategori yang sama dengan destinasi asal atau memiliki kesamaan deskripsi (description similarity) di atas nilai threshold yang telah ditentukan, yaitu `0.5`.
+
+#### Prosedur Evaluasi
+Berikut adalah langkah-langkah evaluasi model:
+- Menentukan Tempat Uji
+  
+  Tempat wisata yang digunakan untuk evaluasi ditentukan dalam daftar places_to_evaluate, misalnya ['Museum Perangko'].
+
+- Mengambil Rekomendasi
+
+  Fungsi get_content_based_recommendations() digunakan untuk menghasilkan rekomendasi berdasarkan similarity antar destinasi (berdasarkan tag dan deskripsi).
+
+- Menentukan Relevansi Rekomendasi
+
+  Relevansi ditentukan berdasarkan dua kriteria:
+  - Kategori destinasi rekomendasi sama dengan destinasi asal.
+  - Kemiripan deskripsi (Description Similarity) ≥ 0.5.
+
+- Menghitung Precision@10
+
+  Menghitung jumlah True Positives (TP), yaitu jumlah rekomendasi relevan, dan menghitung Precision sebagai:
+
+  $$
+  \text{Precision@10} = \frac{TP}{10}
+  $$
+
+  Keterangan:
+  - **TP** = True Positives (jumlah item yang relevan dari 10 rekomendasi teratas)
+  - Angka **10** menunjukkan jumlah rekomendasi yang dievaluasi
+​
+- Mencetak dan Menyimpan Hasil Evaluasi
+
+  Hasil evaluasi Precision@10 ditampilkan dan disimpan dalam bentuk DataFrame.
+
 <br>
 
 ## 📩 5. Kesimpulan
