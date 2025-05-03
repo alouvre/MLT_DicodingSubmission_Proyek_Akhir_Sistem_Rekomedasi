@@ -269,7 +269,7 @@ Tabel 1h Perbandingan Fitur `Rating` pada `df_tourism` dan `df_ratings`
 
 Fitur `Rating` pada `df_tourism` memberikan gambaran umum tentang persepsi kualitas destinasi wisata dari sumber eksternal, namun cenderung memiliki variasi yang rendah dan bias ke arah positif. Hal ini menjadikannya kurang efektif sebagai pembeda antar destinasi dalam konteks sistem rekomendasi. Sebaliknya, `Place_Ratings` dari `df_ratings` merepresentasikan penilaian langsung dari pengguna dengan distribusi yang lebih seimbang dan subjektif, sehingga lebih relevan dan efektif untuk digunakan dalam pengembangan sistem rekomendasi berbasis pengguna, khususnya collaborative filtering.
 
-#### 1.3.1. Analisis Category dan City
+#### 1.3.2. Analisis Category dan City
 
 ![Analisis Category (df_tourism)](images/Image-6.png)
 
@@ -294,6 +294,41 @@ Untuk mencegah hal tersebut, pendekatan berikut bisa dipertimbangkan:
 - Penyaringan berbasis lokasi pengguna untuk memberikan saran yang lebih personal dan kontekstual.
 
 Distribusi fitur `Category` dan `City` dalam `df_tourism` menunjukkan adanya ketimpangan yang signifikan. Dominasi kategori tertentu dan konsentrasi destinasi di beberapa kota besar dapat memengaruhi kinerja sistem rekomendasi jika tidak diimbangi. Oleh karena itu, strategi penyeimbangan atau pembobotan diperlukan untuk menjaga keberagaman rekomendasi dan relevansi terhadap preferensi pengguna.
+
+#### 1.3.3. Analisis Place_Name
+
+Fitur `Place_Name` merepresentasikan identitas unik dari setiap destinasi wisata dalam dataset `df_tourism`. Untuk mengevaluasi popularitas destinasi, dilakukan analisis berdasarkan jumlah rating terbanyak dari data `df_ratings`. Meskipun `Place_Name` sendiri tidak bersifat numerik, keterkaitannya dengan frekuensi rating dapat mencerminkan tingkat keterlibatan pengguna terhadap suatu tempat.
+
+![Analisis Place_Name (df_tourism)](images/Image-8.png)
+
+Gambar 1e. Distribusi 10 destinasi wisata dengan jumlah rating terbanyak
+
+Masing-masing destinasi dalam daftar hanya menyumbang kurang dari 0.5% dari total rating yang ada. Hal ini menandakan bahwa tidak ada satu destinasi pun yang mendominasi secara signifikan dalam hal interaksi pengguna.
+
+Temuan ini memiliki dua implikasi utama:
+- Distribusi rating yang merata merupakan indikasi bahwa pengguna menjelajahi berbagai destinasi secara cukup seimbang. Ini dapat dianggap sebagai sinyal sistem data yang sehat, tanpa ketergantungan pada satu atau dua tempat populer.
+- Tantangan dalam sistem rekomendasi: Karena tidak ada satu destinasi yang secara drastis menonjol, model rekomendasi tidak bisa hanya mengandalkan metrik popularitas (seperti total rating). Oleh karena itu, pendekatan berbasis personalisasi (misalnya berdasarkan preferensi kategori, lokasi, atau profil pengguna) akan lebih efektif dalam meningkatkan relevansi saran destinasi.
+
+#### 1.3.4. Analisis Distribusi Fitur Numerik
+
+![Analisis Distribusi Fitur Numerik (df_tourism)](images/Image-5.png)
+
+Gambar 1f. Analisis Distribusi Fitur Numerik (df_tourism)
+
+Analisis ini bertujuan untuk memahami pola distribusi dari setiap fitur numerik dalam dataset `df_tourism`. Visualisasi berupa histogram dan kurva KDE (Kernel Density Estimation) memberikan gambaran awal terhadap penyebaran dan bentuk distribusi data.
+- Fitur `Place_Id` dan `Unnamed: 12` memiliki distribusi yang identik dan menyerupai distribusi seragam. Hal ini mengindikasikan bahwa ID tempat diberikan secara merata tanpa ada kecenderungan klaster atau lonjakan nilai tertentu. Kemungkinan besar `Unnamed: 12` merupakan duplikat dari `Place_Id` dan perlu dihapus dalam tahap praproses data.
+- Distribusi harga `(Price)` sangat miring ke kanan `(right-skewed)`, dengan mayoritas nilai terkonsentrasi di bawah Rp 100.000. Terdapat outlier dengan harga sangat tinggi (> Rp 800.000). Distribusi ini menunjukkan bahwa sebagian besar tempat wisata cenderung berbiaya rendah atau gratis, sementara hanya sebagian kecil yang memiliki harga tinggi.
+- Distribusi `Rating` mendekati distribusi normal dengan puncak pada nilai 4.4–4.6. Hal ini menunjukkan bahwa sebagian besar tempat wisata mendapatkan penilaian yang cukup tinggi dari pengunjung. Tidak terdapat nilai ekstrim di bawah 3.5 atau di atas 5, yang menandakan data rating relatif bersih dan stabil.
+- Distribusi waktu kunjungan `(Time_Minutes)` juga menunjukkan distribusi `miring ke kanan`. Sebagian besar wisatawan menghabiskan waktu kurang dari 100 menit di lokasi, dengan sebagian kecil menghabiskan lebih dari 200 menit. Pola ini umum terjadi karena banyak wisata bersifat singkat (seperti taman atau pantai) yang tidak membutuhkan durasi kunjungan panjang.
+- Distribusi nilai `Lat` (latitude) dan `Long` (longitude) menunjukkan konsentrasi geografis lokasi wisata. `Lat` berkisar antara -8 hingga -6 derajat, mengindikasikan mayoritas tempat wisata berada di wilayah selatan Indonesia (seperti Pulau Jawa atau Bali). `Long` terkonsentrasi antara 106 hingga 112 derajat, yang juga mendukung interpretasi bahwa data banyak berasal dari daerah di sekitar Pulau Jawa dan sekitarnya. Kedua fitur ini tidak memiliki distribusi normal, karena mereka merepresentasikan lokasi geografis yang bergantung pada posisi fisik dan bukan hasil pengukuran acak.
+- Fitur `Unnamed: 11` sepenuhnya kosong (hanya menunjukkan frekuensi 0 pada semua nilai). Ini merupakan kolom tidak relevan yang kemungkinan berasal dari hasil ekspor CSV dan perlu dihapus pada tahap pembersihan data.
+
+Kesimpulan:
+- Fitur `Rating` memiliki distribusi mendekati normal, menunjukkan konsistensi penilaian dari para pengguna terhadap destinasi wisata.
+- Kolom `Unnamed: 12` merupakan duplikat dari `Place_Id` dan perlu dihapus pada tahap praprosesan karena tidak memberikan informasi tambahan.
+- Kolom `Unnamed: 11` merupakan kolom kosong tanpa nilai dan juga perlu dibuang.
+- Fitur geografis seperti `Lat` (Latitude) dan `Long` (Longitude) tidak digunakan dalam sistem rekomendasi berbasis konten (content-based) maupun kolaboratif (collaborative filtering), sehingga dapat diabaikan dalam tahap pemodelan.
+- Informasi terkait distribusi miring ke kanan maupun kemungkinan outlier juga diabaikan karena tidak relevan untuk fokus utama sistem rekomendasi yang akan dibangun.
 
 
 <br>
