@@ -780,19 +780,19 @@ Evaluasi pada model Collaborative Filtering dilakukan dengan mengukur dua metrik
 
 Kedua metrik ini digunakan untuk menilai seberapa dekat prediksi model terhadap nilai rating aktual yang diberikan oleh pengguna terhadap tempat wisata.
 
-#### Prosedur Evaluasi
+#### 4.2.1. Prosedur Evaluasi
 
 Evaluasi dilakukan dengan langkah-langkah berikut:
 
-- Training dan Validation
+a. Training dan Validation
 
   Model dilatih dengan data pelatihan dan divalidasi menggunakan data validasi, serta disimpan sejarah training (history.history) untuk memantau performa selama epoch.
 
-- Prediksi dan Pengukuran Error
+b. Prediksi dan Pengukuran Error
 
   Untuk mengevaluasi kinerja model dalam prediksi, kita dapat menggunakan dua metrik populer yaitu **RMSE** dan **MAE**. Kedua metrik ini memberikan gambaran seberapa baik model dalam memprediksi data dibandingkan dengan nilai sebenarnya. Berikut adalah penjelasan dan cara kerja keduanya:
 
-  1. **RMSE (Root Mean Squared Error)**
+  - **RMSE (Root Mean Squared Error)**
 
     RMSE mengukur seberapa besar rata-rata kesalahan prediksi model dengan cara menghitung akar kuadrat dari rata-rata kuadrat perbedaan antara nilai prediksi dan nilai aktual. RMSE memberikan penalti yang lebih besar terhadap kesalahan yang lebih besar.
 
@@ -814,7 +814,7 @@ Evaluasi dilakukan dengan langkah-langkah berikut:
 
     RMSE sensitif terhadap kesalahan besar karena kuadrat dari kesalahan memberikan dampak yang lebih besar pada nilai akhir.
 
-  2. **MAE (Mean Absolute Error)**
+  - **MAE (Mean Absolute Error)**
 
     MAE mengukur rata-rata selisih absolut antara nilai prediksi dan nilai asli. Berbeda dengan RMSE, MAE tidak memberi penalti lebih besar pada kesalahan yang lebih besar, sehingga lebih memberikan gambaran umum yang lebih sederhana.
 
@@ -835,7 +835,7 @@ Evaluasi dilakukan dengan langkah-langkah berikut:
 
     MAE memberikan gambaran yang lebih sederhana dan tidak terpengaruh oleh besar kecilnya kesalahan secara drastis, seperti pada RMSE.
 
-- Visualisasi Error Selama Training
+c. Visualisasi Error Selama Training
 
   Perbandingan performa model Collaborative Filtering divisualisasikan menggunakan grafik batang yang menampilkan nilai akhir dari metrik RMSE dan MAE. Visualisasi ini memberikan gambaran mengenai seberapa besar rata-rata kesalahan prediksi yang dihasilkan model.
 
