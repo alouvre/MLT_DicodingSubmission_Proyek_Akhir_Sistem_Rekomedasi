@@ -794,48 +794,46 @@ Evaluasi dilakukan dengan langkah-langkah berikut:
 
   1. **RMSE (Root Mean Squared Error)**
 
-  RMSE mengukur seberapa besar rata-rata kesalahan prediksi model dengan cara menghitung akar kuadrat dari rata-rata kuadrat perbedaan antara nilai prediksi dan nilai aktual. RMSE memberikan penalti yang lebih besar terhadap kesalahan yang lebih besar.
+    RMSE mengukur seberapa besar rata-rata kesalahan prediksi model dengan cara menghitung akar kuadrat dari rata-rata kuadrat perbedaan antara nilai prediksi dan nilai aktual. RMSE memberikan penalti yang lebih besar terhadap kesalahan yang lebih besar.
 
-  Rumus RMSE:
-  \[
-  \text{RMSE} = \sqrt{\frac{1}{n} \sum*{i=1}^{n} (y*{\text{true},i} - y\_{\text{pred},i})^2}
-  \]
-  Dimana:
+    Rumus RMSE:
+    \[
+    \text{RMSE} = \sqrt{\frac{1}{n} \sum*{i=1}^{n} (y*{\text{true},i} - y\_{\text{pred},i})^2}
+    \]
+    Dimana:
 
-  - \( y\_{\text{true}} \) adalah nilai asli (ground truth).
-  - \( y\_{\text{pred}} \) adalah nilai prediksi dari model.
-  - \( n \) adalah jumlah data.
+    - \( y\_{\text{true}} \) adalah nilai asli (ground truth).
+    - \( y\_{\text{pred}} \) adalah nilai prediksi dari model.
+    - \( n \) adalah jumlah data.
 
-  Cara Kerja RMSE:
+    Cara Kerja RMSE:
+    - **Menghitung Selisih:** Hitung selisih antara nilai prediksi dan nilai asli untuk setiap data
+    - **Kuadratkan Selisih:** Kuadratkan setiap selisih untuk menghilangkan tanda negatif dan memberi penalti lebih pada kesalahan yang lebih besar.
+    - **Rata-rata Kuadrat:** Hitung rata-rata dari hasil kuadrat tersebut.
+    - **Akar Kuadrat:** Ambil akar kuadrat dari hasil rata-rata kuadrat untuk mendapatkan nilai RMSE.
 
-  1. **Menghitung Selisih:** Hitung selisih antara nilai prediksi dan nilai asli untuk setiap data.
-  2. **Kuadratkan Selisih:** Kuadratkan setiap selisih untuk menghilangkan tanda negatif dan memberi penalti lebih pada kesalahan yang lebih besar.
-  3. **Rata-rata Kuadrat:** Hitung rata-rata dari hasil kuadrat tersebut.
-  4. **Akar Kuadrat:** Ambil akar kuadrat dari hasil rata-rata kuadrat untuk mendapatkan nilai RMSE.
-
-  RMSE sensitif terhadap kesalahan besar karena kuadrat dari kesalahan memberikan dampak yang lebih besar pada nilai akhir.
+    RMSE sensitif terhadap kesalahan besar karena kuadrat dari kesalahan memberikan dampak yang lebih besar pada nilai akhir.
 
   2. **MAE (Mean Absolute Error)**
 
-  MAE mengukur rata-rata selisih absolut antara nilai prediksi dan nilai asli. Berbeda dengan RMSE, MAE tidak memberi penalti lebih besar pada kesalahan yang lebih besar, sehingga lebih memberikan gambaran umum yang lebih sederhana.
+    MAE mengukur rata-rata selisih absolut antara nilai prediksi dan nilai asli. Berbeda dengan RMSE, MAE tidak memberi penalti lebih besar pada kesalahan yang lebih besar, sehingga lebih memberikan gambaran umum yang lebih sederhana.
 
-  Rumus MAE:
-  \[
-  \text{MAE} = \frac{1}{n} \sum*{i=1}^{n} |y*{\text{true},i} - y\_{\text{pred},i}|
-  \]
-  Dimana:
+    Rumus MAE:
+    \[
+    \text{MAE} = \frac{1}{n} \sum*{i=1}^{n} |y*{\text{true},i} - y\_{\text{pred},i}|
+    \]
+    Dimana:
 
-  - \( y\_{\text{true}} \) adalah nilai asli (ground truth).
-  - \( y\_{\text{pred}} \) adalah nilai prediksi dari model.
-  - \( n \) adalah jumlah data.
+    - \( y\_{\text{true}} \) adalah nilai asli (ground truth).
+    - \( y\_{\text{pred}} \) adalah nilai prediksi dari model.
+    - \( n \) adalah jumlah data.
 
-  Cara Kerja MAE:
+    Cara Kerja MAE:
+    - **Menghitung Selisih Absolut:** Hitung selisih antara nilai prediksi dan nilai asli untuk setiap data.
+    -  **Nilai Absolut:** Ambil nilai absolut dari setiap selisih.
+    -  **Rata-rata:** Hitung rata-rata dari hasil selisih absolut tersebut untuk mendapatkan nilai MAE.
 
-  1. **Menghitung Selisih Absolut:** Hitung selisih antara nilai prediksi dan nilai asli untuk setiap data.
-  2. **Nilai Absolut:** Ambil nilai absolut dari setiap selisih.
-  3. **Rata-rata:** Hitung rata-rata dari hasil selisih absolut tersebut untuk mendapatkan nilai MAE.
-
-  MAE memberikan gambaran yang lebih sederhana dan tidak terpengaruh oleh besar kecilnya kesalahan secara drastis, seperti pada RMSE.
+    MAE memberikan gambaran yang lebih sederhana dan tidak terpengaruh oleh besar kecilnya kesalahan secara drastis, seperti pada RMSE.
 
 - Visualisasi Error Selama Training
 
