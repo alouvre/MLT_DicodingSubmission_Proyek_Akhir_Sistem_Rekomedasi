@@ -798,13 +798,15 @@ Untuk mengevaluasi kinerja model dalam prediksi, kita dapat menggunakan dua metr
 
   Rumus RMSE:
 
-  RMSE = sqrt( (1/n) * Σ (yᵢ - ŷᵢ)² )
+  $$
+  RMSE = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2}
+  $$
 
   Dimana:
-  - yᵢ : nilai aktual ke-i (ground truth)
-  - ŷᵢ : nilai prediksi ke-i
-  - n : jumlah sampel
-  - Σ : penjumlahan dari i = 1 hingga n
+  - \( y_i \) adalah nilai aktual ke-\( i \)
+  - \( \hat{y}_i \) adalah nilai prediksi ke-\( i \)
+  - \( n \) adalah jumlah sampel
+  - \( \sum \) menyatakan penjumlahan dari \( i = 1 \) hingga \( n \)
 
   Cara Kerja RMSE:
 
@@ -821,12 +823,14 @@ Untuk mengevaluasi kinerja model dalam prediksi, kita dapat menggunakan dua metr
 
   Rumus MAE:
 
-  MAE = (1/n) * Σ |yᵢ - ŷᵢ|
+  $$
+  MAE = \frac{1}{n} \sum_{i=1}^{n} |y_i - \hat{y}_i|
+  $$
 
   Dimana:
-  - yᵢ : nilai aktual ke-i (ground truth)
-  - ŷᵢ : nilai prediksi ke-i
-  - n : jumlah sampel
+  - \( y_i \) adalah nilai aktual ke-\( i \)
+  - \( \hat{y}_i \) adalah nilai prediksi ke-\( i \)
+  - \( n \) adalah jumlah sampel
 
   Cara Kerja MAE:
 
