@@ -685,7 +685,7 @@ Evaluasi dilakukan dengan langkah-langkah berikut:
 
   Performa model selama training divisualisasikan menggunakan grafik perkembangan RMSE dan MAE.
 
-  ![Visualisasi Error Selama Training](images/image-1.png)
+  ![Visualisasi Error Selama Training](images/Image-1.png)
 
 Gambar 4a Visualisasi Error Selama Training
 
