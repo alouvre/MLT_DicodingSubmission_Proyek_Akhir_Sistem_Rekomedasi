@@ -682,11 +682,13 @@ Tabel 4a
 - Precision@10: 100.00%
 
 Interpretasi:
+
 - Semua rekomendasi yang diberikan memiliki kategori yang sama (Budaya) dengan tempat asal, sehingga dianggap relevan. Meskipun similarity pada deskripsi cenderung rendah, model tetap berhasil menghasilkan rekomendasi yang tepat berdasarkan kategori. Hal ini menunjukkan bahwa pemanfaatan tag-based similarity cukup efektif.
 
 ### 4.2. Evaluation of Collaborative Filtering Model
 
 Evaluasi pada model Collaborative Filtering dilakukan dengan mengukur dua metrik regresi utama:
+
 - Root Mean Squared Error (RMSE)
 - Mean Absolute Error (MAE)
 
@@ -703,6 +705,7 @@ Evaluasi dilakukan dengan langkah-langkah berikut:
 - Prediksi dan Pengukuran Error
 
   Model melakukan prediksi terhadap data validasi (x_val_cf) dan hasilnya dibandingkan dengan label asli (y_val_cf) menggunakan:
+
   - RMSE = sqrt(mean_squared_error(y_true, y_pred))
   - MAE = mean_absolute_error(y_true, y_pred)
 
@@ -724,10 +727,21 @@ Selain itu, nilai akhir dari evaluasi ditampilkan dalam bentuk diagram batang:
 | RMSE   | 0.3642 |
 | MAE    | 0.3145 |
 
-Tabel 4b 
+Tabel 4b
 
 Interpretasi:
+
 - Nilai RMSE dan MAE yang relatif kecil menunjukkan bahwa model Collaborative Filtering mampu memprediksi rating dengan cukup akurat. Namun, karena evaluasi ini dilakukan hanya berdasarkan ground truth rating, belum dapat menjamin kualitas rekomendasi secara semantik atau relevansi konten.
+
+### 4.3. Kesimpulan Evaluasi
+
+- Model Content-Based Filtering menunjukkan `performa sangat baik` dengan `Precision@10 mencapai 100%` pada uji coba terhadap `Museum Perangko`.
+- Model Collaborative Filtering memberikan `performa prediksi yang cukup akurat` dengan `nilai RMSE = 0.3642` dan `MAE = 0.3145`.
+
+Masing-masing pendekatan memiliki kekuatan tersendiri:
+
+- Content-Based cocok untuk cold-start problem (pengguna baru).
+- Collaborative Filtering efektif jika ada cukup banyak data interaksi pengguna.
 
 <br>
 
