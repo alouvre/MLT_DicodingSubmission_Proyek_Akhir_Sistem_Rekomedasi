@@ -968,53 +968,53 @@ Pemilihan metrik evaluasi pada masing-masing model disesuaikan dengan karakteris
 
 Berdasarkan hasil evaluasi pada model Content-Based Filtering dan Collaborative Filtering, berikut adalah kelebihan dan kekurangan masing-masing pendekatan:
 
-✅ `Content-Based Filtering`
+#### 4.5.1. `Content-Based Filtering`
 
 Kelebihan:
 
-- **Akurat dalam merekomendasikan item yang serupa secara konten**
+  - **Akurat dalam merekomendasikan item yang serupa secara konten**
 
-  Terbukti dari Precision@10 yang mencapai 100%, artinya semua rekomendasi benar-benar relevan berdasarkan kategori (Budaya) dan tag yang mirip.
+    Terbukti dari Precision@10 yang mencapai 100%, artinya semua rekomendasi benar-benar relevan berdasarkan kategori (Budaya) dan tag yang mirip.
 
-- **Efektif untuk kasus cold-start (pengguna baru)**
+  - **Efektif untuk kasus cold-start (pengguna baru)**
 
-  Karena tidak bergantung pada data interaksi pengguna lain, sistem tetap bisa memberikan rekomendasi meskipun belum ada riwayat aktivitas pengguna.
+    Karena tidak bergantung pada data interaksi pengguna lain, sistem tetap bisa memberikan rekomendasi meskipun belum ada riwayat aktivitas pengguna.
 
-- **Transparansi rekomendasi**
+  - **Transparansi rekomendasi**
 
-  Sistem dapat menjelaskan alasan suatu rekomendasi diberikan (misalnya karena kesamaan kategori atau deskripsi).
+    Sistem dapat menjelaskan alasan suatu rekomendasi diberikan (misalnya karena kesamaan kategori atau deskripsi).
 
 Kekurangan:
 
-- **Kurang mampu memberikan variasi rekomendasi**
+  - **Kurang mampu memberikan variasi rekomendasi**
 
-  Karena hanya merekomendasikan item yang mirip dengan item yang sudah dikenal, model cenderung terbatas pada jenis item tertentu (overspecialization).
+    Karena hanya merekomendasikan item yang mirip dengan item yang sudah dikenal, model cenderung terbatas pada jenis item tertentu (overspecialization).
 
-- **Deskripsi yang tidak informatif akan menurunkan performa**
+  - **Deskripsi yang tidak informatif akan menurunkan performa**
 
-  Jika suatu tempat memiliki deskripsi pendek atau tidak spesifik, kesamaan konten menjadi sulit diukur secara efektif.
+    Jika suatu tempat memiliki deskripsi pendek atau tidak spesifik, kesamaan konten menjadi sulit diukur secara efektif.
 
-✅ `Collaborative Filtering`
+#### 4.5.2. `Collaborative Filtering`
 
 Kelebihan:
 
-- **Mampu menangkap pola preferensi yang kompleks**
+  - **Mampu menangkap pola preferensi yang kompleks**
 
-  Evaluasi menunjukkan nilai RMSE = 0.3642 dan MAE = 0.3145, artinya model cukup akurat dalam memprediksi rating berdasarkan data interaksi.
+    Evaluasi menunjukkan nilai RMSE = 0.3642 dan MAE = 0.3145, artinya model cukup akurat dalam memprediksi rating berdasarkan data interaksi.
 
-- **Dapat merekomendasikan item yang tidak mirip secara konten**
+  - **Dapat merekomendasikan item yang tidak mirip secara konten**
 
-  Karena berdasarkan pola pengguna, sistem bisa mengenalkan destinasi yang berbeda tapi disukai oleh pengguna serupa, sehingga lebih bervariasi.
+    Karena berdasarkan pola pengguna, sistem bisa mengenalkan destinasi yang berbeda tapi disukai oleh pengguna serupa, sehingga lebih bervariasi.
 
 Kekurangan:
 
-- **Rentan terhadap cold-start problem**
+  - **Rentan terhadap cold-start problem**
 
-  Sistem kesulitan memberikan rekomendasi untuk pengguna atau item baru karena belum ada data interaksi.
+    Sistem kesulitan memberikan rekomendasi untuk pengguna atau item baru karena belum ada data interaksi.
 
-- **Kurang transparan (black box)**
+  - **Kurang transparan (black box)**
 
-  Sulit menjelaskan mengapa suatu tempat direkomendasikan karena rekomendasi didasarkan pada pola matematis dari interaksi, bukan konten yang bisa dijelaskan.
+    Sulit menjelaskan mengapa suatu tempat direkomendasikan karena rekomendasi didasarkan pada pola matematis dari interaksi, bukan konten yang bisa dijelaskan.
 
 <br>
 
