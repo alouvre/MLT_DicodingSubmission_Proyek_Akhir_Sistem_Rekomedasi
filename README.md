@@ -738,16 +738,64 @@ Interpretasi:
 - Model Content-Based Filtering menunjukkan `performa sangat baik` dengan `Precision@10 mencapai 100%` pada uji coba terhadap `Museum Perangko`.
 - Model Collaborative Filtering memberikan `performa prediksi yang cukup akurat` dengan `nilai RMSE = 0.3642` dan `MAE = 0.3145`.
 
-Masing-masing pendekatan memiliki kekuatan tersendiri:
-
-- Content-Based cocok untuk cold-start problem (pengguna baru).
-- Collaborative Filtering efektif jika ada cukup banyak data interaksi pengguna.
-
-#### 4.4. Pemilihan Metrik Evaluasi
+### 4.4. Pemilihan Metrik Evaluasi
 
 Pemilihan metrik evaluasi pada masing-masing model disesuaikan dengan karakteristik pendekatan dan tujuan sistem rekomendasi:
+
 - `Precision@10` digunakan pada Content-Based Filtering karena fokus utama model ini adalah menghasilkan daftar rekomendasi top-N yang relevan bagi pengguna. Ini sesuai dengan kebutuhan sistem yang ingin merekomendasikan tempat wisata yang paling mirip atau relevan dengan preferensi pengguna berdasarkan konten deskripsi dan kategori.
 - `RMSE dan MAE` digunakan pada Collaborative Filtering karena model ini bertujuan memprediksi rating yang diberikan pengguna terhadap tempat wisata. Kedua metrik ini sangat tepat untuk mengukur performa model regresi dalam konteks prediksi numerik.
+
+### 4.5. Kelebihan dan Kekurangan
+
+Berdasarkan hasil evaluasi pada model Content-Based Filtering dan Collaborative Filtering, berikut adalah kelebihan dan kekurangan masing-masing pendekatan:
+
+✅ `Content-Based Filtering`
+
+Kelebihan:
+
+- Akurat dalam merekomendasikan item yang serupa secara konten
+
+  Terbukti dari Precision@10 yang mencapai 100%, artinya semua rekomendasi benar-benar relevan berdasarkan kategori (Budaya) dan tag yang mirip.
+
+- Efektif untuk kasus cold-start (pengguna baru)
+
+  Karena tidak bergantung pada data interaksi pengguna lain, sistem tetap bisa memberikan rekomendasi meskipun belum ada riwayat aktivitas pengguna.
+
+- Transparansi rekomendasi
+
+  Sistem dapat menjelaskan alasan suatu rekomendasi diberikan (misalnya karena kesamaan kategori atau deskripsi).
+
+Kekurangan:
+
+- Kurang mampu memberikan variasi rekomendasi
+
+  Karena hanya merekomendasikan item yang mirip dengan item yang sudah dikenal, model cenderung terbatas pada jenis item tertentu (overspecialization).
+
+- Deskripsi yang tidak informatif akan menurunkan performa
+
+  Jika suatu tempat memiliki deskripsi pendek atau tidak spesifik, kesamaan konten menjadi sulit diukur secara efektif.
+
+✅ `Collaborative Filtering`
+
+Kelebihan:
+
+- **Mampu menangkap pola preferensi yang kompleks**
+
+  Evaluasi menunjukkan nilai RMSE = 0.3642 dan MAE = 0.3145, artinya model cukup akurat dalam memprediksi rating berdasarkan data interaksi.
+
+- **Dapat merekomendasikan item yang tidak mirip secara konten**
+
+  Karena berdasarkan pola pengguna, sistem bisa mengenalkan destinasi yang berbeda tapi disukai oleh pengguna serupa, sehingga lebih bervariasi.
+
+Kekurangan:
+
+- **Rentan terhadap cold-start problem**
+
+  Sistem kesulitan memberikan rekomendasi untuk pengguna atau item baru karena belum ada data interaksi.
+
+- **Kurang transparan (black box)**
+
+  Sulit menjelaskan mengapa suatu tempat direkomendasikan karena rekomendasi didasarkan pada pola matematis dari interaksi, bukan konten yang bisa dijelaskan.
 
 <br>
 
