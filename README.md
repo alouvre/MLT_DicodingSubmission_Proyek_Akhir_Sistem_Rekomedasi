@@ -798,9 +798,7 @@ Untuk mengevaluasi kinerja model dalam prediksi, kita dapat menggunakan dua metr
 
   Rumus RMSE:
 
-  $$
-  \text{RMSE} = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_{\text{true},i} - y_{\text{pred},i})^2}
-  $$
+  RMSE = sqrt( (1/n) * Σ (yᵢ - ŷᵢ)² )
 
   Dimana:
 
