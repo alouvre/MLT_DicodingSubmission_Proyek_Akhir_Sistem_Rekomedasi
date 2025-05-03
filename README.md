@@ -786,68 +786,74 @@ Evaluasi dilakukan dengan langkah-langkah berikut:
 
 a. Training dan Validation
 
-  Model dilatih dengan data pelatihan dan divalidasi menggunakan data validasi, serta disimpan sejarah training (history.history) untuk memantau performa selama epoch.
+Model dilatih dengan data pelatihan dan divalidasi menggunakan data validasi, serta disimpan sejarah training (history.history) untuk memantau performa selama epoch.
 
 b. Prediksi dan Pengukuran Error
 
-  Untuk mengevaluasi kinerja model dalam prediksi, kita dapat menggunakan dua metrik populer yaitu **RMSE** dan **MAE**. Kedua metrik ini memberikan gambaran seberapa baik model dalam memprediksi data dibandingkan dengan nilai sebenarnya. Berikut adalah penjelasan dan cara kerja keduanya:
+Untuk mengevaluasi kinerja model dalam prediksi, kita dapat menggunakan dua metrik populer yaitu **RMSE** dan **MAE**. Kedua metrik ini memberikan gambaran seberapa baik model dalam memprediksi data dibandingkan dengan nilai sebenarnya. Berikut adalah penjelasan dan cara kerja keduanya:
 
-  - **RMSE (Root Mean Squared Error)**
+- **RMSE (Root Mean Squared Error)**
 
-    RMSE mengukur seberapa besar rata-rata kesalahan prediksi model dengan cara menghitung akar kuadrat dari rata-rata kuadrat perbedaan antara nilai prediksi dan nilai aktual. RMSE memberikan penalti yang lebih besar terhadap kesalahan yang lebih besar.
+  RMSE mengukur seberapa besar rata-rata kesalahan prediksi model dengan cara menghitung akar kuadrat dari rata-rata kuadrat perbedaan antara nilai prediksi dan nilai aktual. RMSE memberikan penalti yang lebih besar terhadap kesalahan yang lebih besar.
 
-    Rumus RMSE:
-    \[
-    \text{RMSE} = \sqrt{\frac{1}{n} \sum*{i=1}^{n} (y*{\text{true},i} - y\_{\text{pred},i})^2}
-    \]
-    Dimana:
+  Rumus RMSE:
 
-    - \( y\_{\text{true}} \) adalah nilai asli (ground truth).
-    - \( y\_{\text{pred}} \) adalah nilai prediksi dari model.
-    - \( n \) adalah jumlah data.
+  $$
+  \text{RMSE} = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_{\text{true},i} - y_{\text{pred},i})^2}
+  $$
 
-    Cara Kerja RMSE:
-    - **Menghitung Selisih:** Hitung selisih antara nilai prediksi dan nilai asli untuk setiap data
-    - **Kuadratkan Selisih:** Kuadratkan setiap selisih untuk menghilangkan tanda negatif dan memberi penalti lebih pada kesalahan yang lebih besar.
-    - **Rata-rata Kuadrat:** Hitung rata-rata dari hasil kuadrat tersebut.
-    - **Akar Kuadrat:** Ambil akar kuadrat dari hasil rata-rata kuadrat untuk mendapatkan nilai RMSE.
+  Dimana:
 
-    RMSE sensitif terhadap kesalahan besar karena kuadrat dari kesalahan memberikan dampak yang lebih besar pada nilai akhir.
+  - \( y\_{\text{true}} \) adalah nilai asli (ground truth).
+  - \( y\_{\text{pred}} \) adalah nilai prediksi dari model.
+  - \( n \) adalah jumlah data.
 
-  - **MAE (Mean Absolute Error)**
+  Cara Kerja RMSE:
 
-    MAE mengukur rata-rata selisih absolut antara nilai prediksi dan nilai asli. Berbeda dengan RMSE, MAE tidak memberi penalti lebih besar pada kesalahan yang lebih besar, sehingga lebih memberikan gambaran umum yang lebih sederhana.
+  - **Menghitung Selisih:** Hitung selisih antara nilai prediksi dan nilai asli untuk setiap data
+  - **Kuadratkan Selisih:** Kuadratkan setiap selisih untuk menghilangkan tanda negatif dan memberi penalti lebih pada kesalahan yang lebih besar.
+  - **Rata-rata Kuadrat:** Hitung rata-rata dari hasil kuadrat tersebut.
+  - **Akar Kuadrat:** Ambil akar kuadrat dari hasil rata-rata kuadrat untuk mendapatkan nilai RMSE.
 
-    Rumus MAE:
-    \[
-    \text{MAE} = \frac{1}{n} \sum*{i=1}^{n} |y*{\text{true},i} - y\_{\text{pred},i}|
-    \]
-    Dimana:
+  RMSE sensitif terhadap kesalahan besar karena kuadrat dari kesalahan memberikan dampak yang lebih besar pada nilai akhir.
 
-    - \( y\_{\text{true}} \) adalah nilai asli (ground truth).
-    - \( y\_{\text{pred}} \) adalah nilai prediksi dari model.
-    - \( n \) adalah jumlah data.
+- **MAE (Mean Absolute Error)**
 
-    Cara Kerja MAE:
-    - **Menghitung Selisih Absolut:** Hitung selisih antara nilai prediksi dan nilai asli untuk setiap data.
-    -  **Nilai Absolut:** Ambil nilai absolut dari setiap selisih.
-    -  **Rata-rata:** Hitung rata-rata dari hasil selisih absolut tersebut untuk mendapatkan nilai MAE.
+  MAE mengukur rata-rata selisih absolut antara nilai prediksi dan nilai asli. Berbeda dengan RMSE, MAE tidak memberi penalti lebih besar pada kesalahan yang lebih besar, sehingga lebih memberikan gambaran umum yang lebih sederhana.
 
-    MAE memberikan gambaran yang lebih sederhana dan tidak terpengaruh oleh besar kecilnya kesalahan secara drastis, seperti pada RMSE.
+  Rumus MAE:
+
+  $$
+  \text{MAE} = \frac{1}{n} \sum_{i=1}^{n} \left| y_{\text{true},i} - y_{\text{pred},i} \right|
+  $$
+
+  Dimana:
+
+  - \( y\_{\text{true}} \) adalah nilai asli (ground truth).
+  - \( y\_{\text{pred}} \) adalah nilai prediksi dari model.
+  - \( n \) adalah jumlah data.
+
+  Cara Kerja MAE:
+
+  - **Menghitung Selisih Absolut:** Hitung selisih antara nilai prediksi dan nilai asli untuk setiap data.
+  - **Nilai Absolut:** Ambil nilai absolut dari setiap selisih.
+  - **Rata-rata:** Hitung rata-rata dari hasil selisih absolut tersebut untuk mendapatkan nilai MAE.
+
+  MAE memberikan gambaran yang lebih sederhana dan tidak terpengaruh oleh besar kecilnya kesalahan secara drastis, seperti pada RMSE.
 
 c. Visualisasi Error Selama Training
 
-  Perbandingan performa model Collaborative Filtering divisualisasikan menggunakan grafik batang yang menampilkan nilai akhir dari metrik RMSE dan MAE. Visualisasi ini memberikan gambaran mengenai seberapa besar rata-rata kesalahan prediksi yang dihasilkan model.
+Perbandingan performa model Collaborative Filtering divisualisasikan menggunakan grafik batang yang menampilkan nilai akhir dari metrik RMSE dan MAE. Visualisasi ini memberikan gambaran mengenai seberapa besar rata-rata kesalahan prediksi yang dihasilkan model.
 
-  ![Visualisasi Perbandingan Nilai RMSE dan MAE](images/Image-1.png)
+![Visualisasi Perbandingan Nilai RMSE dan MAE](images/Image-1.png)
 
-  Gambar 4a Grafik Batang Perbandingan Nilai RMSE dan MAE
+Gambar 4a Grafik Batang Perbandingan Nilai RMSE dan MAE
 
-  Selain itu, perkembangan error selama proses pelatihan juga ditampilkan dalam bentuk grafik garis. Grafik ini menunjukkan penurunan nilai RMSE dan MAE seiring dengan bertambahnya epoch, baik pada data training maupun validation, yang mengindikasikan bahwa model mengalami proses pelatihan yang stabil.
+Selain itu, perkembangan error selama proses pelatihan juga ditampilkan dalam bentuk grafik garis. Grafik ini menunjukkan penurunan nilai RMSE dan MAE seiring dengan bertambahnya epoch, baik pada data training maupun validation, yang mengindikasikan bahwa model mengalami proses pelatihan yang stabil.
 
-  ![Visualisasi Nilai RMSE dan MAE Selama Training](images/Image-2.png)
+![Visualisasi Nilai RMSE dan MAE Selama Training](images/Image-2.png)
 
-  Gambar 4b. Perkembangan Nilai RMSE dan MAE Selama Training (Train vs Validation)
+Gambar 4b. Perkembangan Nilai RMSE dan MAE Selama Training (Train vs Validation)
 
 #### Hasil Evaluasi
 
