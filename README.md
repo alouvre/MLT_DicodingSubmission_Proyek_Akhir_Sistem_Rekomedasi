@@ -628,11 +628,11 @@ Berikut adalah langkah-langkah evaluasi model:
 
 - **Menentukan Tempat Uji**
 
-  Tempat wisata yang digunakan untuk evaluasi ditentukan dalam daftar places_to_evaluate, misalnya ['Museum Perangko'].
+  Tempat wisata yang digunakan untuk evaluasi ditentukan dalam daftar `places_to_evaluate`, misalnya ['Museum Perangko'].
 
 - **Mengambil Rekomendasi**
 
-  Fungsi get_content_based_recommendations() digunakan untuk menghasilkan rekomendasi berdasarkan similarity antar destinasi (berdasarkan tag dan deskripsi).
+  Fungsi `get_content_based_recommendations()` digunakan untuk menghasilkan rekomendasi berdasarkan similarity antar destinasi (berdasarkan tag dan deskripsi).
 
 - **Menentukan Relevansi Rekomendasi**
 
@@ -643,7 +643,7 @@ Berikut adalah langkah-langkah evaluasi model:
 
 - **Menghitung Precision@10**
 
-  Menghitung jumlah True Positives (TP), yaitu jumlah rekomendasi relevan, dan menghitung Precision sebagai:
+  Menghitung jumlah `True Positives (TP)`, yaitu jumlah rekomendasi relevan, dan menghitung Precision sebagai:
 
   $$
   \text{Precision@10} = \frac{TP}{10}
@@ -656,7 +656,78 @@ Berikut adalah langkah-langkah evaluasi model:
 
 - **Mencetak dan Menyimpan Hasil Evaluasi**
 
-  Hasil evaluasi Precision@10 ditampilkan dan disimpan dalam bentuk DataFrame.
+  Hasil evaluasi `Precision@10` ditampilkan dan disimpan dalam bentuk DataFrame.
+
+#### Hasil Evaluasi
+
+Evaluasi dilakukan terhadap satu tempat, yaitu Museum Perangko. Berikut adalah hasil rekomendasi dan evaluasinya:
+
+| No. | Place Name               | Category | Rating | Description Similarity | Relevance |
+| --- | ------------------------ | -------- | ------ | ---------------------- | --------- |
+| 1   | Museum Taman Prasasti    | Budaya   | 4.5    | 0.0447                 | 1         |
+| 2   | Museum Nasional          | Budaya   | 4.6    | 0.0741                 | 1         |
+| 3   | Museum Joang 45          | Budaya   | 4.0    | 0.1327                 | 1         |
+| 4   | Museum Layang-layang     | Budaya   | 4.5    | 0.0179                 | 1         |
+| 5   | Museum Tengah Kebun      | Budaya   | 4.6    | 0.0047                 | 1         |
+| 6   | Museum Satria Mandala    | Budaya   | 4.5    | 0.0058                 | 1         |
+| 7   | Museum Sonobudoyo Unit I | Budaya   | 4.6    | 0.0327                 | 1         |
+| 8   | Museum Barli             | Budaya   | 4.4    | 0.0196                 | 1         |
+| 9   | Museum Pos Indonesia     | Budaya   | 4.5    | 0.0000                 | 1         |
+| 10  | Museum Mpu Tantular      | Budaya   | 4.4    | 0.0058                 | 1         |
+
+Tabel 4a
+
+- True Positives (TP): 10
+- False Positives (FP): 0
+- Precision@10: 100.00%
+
+Interpretasi:
+- Semua rekomendasi yang diberikan memiliki kategori yang sama (Budaya) dengan tempat asal, sehingga dianggap relevan. Meskipun similarity pada deskripsi cenderung rendah, model tetap berhasil menghasilkan rekomendasi yang tepat berdasarkan kategori. Hal ini menunjukkan bahwa pemanfaatan tag-based similarity cukup efektif.
+
+### 4.2. Evaluation of Collaborative Filtering Model
+
+Evaluasi pada model Collaborative Filtering dilakukan dengan mengukur dua metrik regresi utama:
+- Root Mean Squared Error (RMSE)
+- Mean Absolute Error (MAE)
+
+Kedua metrik ini mengukur seberapa besar kesalahan model dalam memprediksi rating pengguna terhadap tempat wisata.
+
+#### Prosedur Evaluasi
+
+Evaluasi dilakukan dengan langkah-langkah berikut:
+
+- Training dan Validation
+
+  Model dilatih dengan data pelatihan dan divalidasi menggunakan data validasi, serta disimpan sejarah training (history.history) untuk memantau performa selama epoch.
+
+- Prediksi dan Pengukuran Error
+
+  Model melakukan prediksi terhadap data validasi (x_val_cf) dan hasilnya dibandingkan dengan label asli (y_val_cf) menggunakan:
+  - RMSE = sqrt(mean_squared_error(y_true, y_pred))
+  - MAE = mean_absolute_error(y_true, y_pred)
+
+- Visualisasi Error Selama Training
+
+  Performa model selama training divisualisasikan menggunakan grafik perkembangan RMSE dan MAE.
+
+#### Hasil Evaluasi
+
+- RMSE: 0.3642
+- MAE: 0.3145
+
+Grafik evaluasi selama proses pelatihan menunjukkan bahwa model mengalami penurunan error yang stabil pada kedua metrik.
+
+Selain itu, nilai akhir dari evaluasi ditampilkan dalam bentuk diagram batang:
+
+| Metrik | Nilai  |
+| ------ | ------ |
+| RMSE   | 0.3642 |
+| MAE    | 0.3145 |
+
+Tabel 4b 
+
+Interpretasi:
+- Nilai RMSE dan MAE yang relatif kecil menunjukkan bahwa model Collaborative Filtering mampu memprediksi rating dengan cukup akurat. Namun, karena evaluasi ini dilakukan hanya berdasarkan ground truth rating, belum dapat menjamin kualitas rekomendasi secara semantik atau relevansi konten.
 
 <br>
 
