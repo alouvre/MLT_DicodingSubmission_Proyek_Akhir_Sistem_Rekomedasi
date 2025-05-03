@@ -590,15 +590,15 @@ Fungsi utama yang digunakan adalah `recommend_by_collaborative_filtering`, yang 
 
 Parameter Fungsi:
 
-- user_id: ID pengguna target.
-- model: Model Collaborative Filtering yang telah dilatih.
-- data: Dataset interaksi pengguna-tempat wisata (berupa rating).
-- place_encoded_to_place: Mapping dari encoded ID tempat ke ID asli (Place_Id).
-- top_n: Jumlah tempat yang direkomendasikan (default: 10).
+- `user_id`: ID pengguna target.
+- `model`: Model Collaborative Filtering yang telah dilatih.
+- `data`: Dataset interaksi pengguna-tempat wisata (berupa rating).
+- `place_encoded_to_place`: Mapping dari encoded ID tempat ke ID asli `(Place_Id)`.
+- `top_n`: Jumlah tempat yang direkomendasikan (default: 10).
 
 Langkah Kerja Fungsi:
 
-- Mengidentifikasi user_id dan tempat-tempat yang telah dikunjungi.
+- Mengidentifikasi `user_id` dan tempat-tempat yang telah dikunjungi.
 - Menentukan tempat-tempat yang belum dikunjungi oleh pengguna.
 - Melakukan prediksi rating untuk tempat-tempat tersebut.
 - Mengurutkan hasil prediksi berdasarkan nilai rating tertinggi.
