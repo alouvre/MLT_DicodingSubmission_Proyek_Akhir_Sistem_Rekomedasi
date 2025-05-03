@@ -236,13 +236,13 @@ Hasil dari pengecekan ini menghasilkan `True`, yang berarti seluruh nilai di `Un
 
 ### 1.3. EDA - Univariate Analysis
 
-![Analisis Univariat (Data Kategori)](images/image-1.png)
+![Analisis Rating (Data Kategori)](images/Image-3.png)
 
-Gambar 1b. Analisis Univariat (Data Kategori)
+Gambar 1b. Analisis Rating (df_tourism)
 
-![Analisis Univariat (Data Numerik)](images/image-2.png)
+![Analisis Rating (Data Numerik)](images/Image-4.png)
 
-Gambar 1c. Analisis Univariat (Data Numerik)
+Gambar 1c. Analisis Rating (df_ratings)
 
 Berdasarkan Gambar 1b, dapat dilihat bahwa distribusi data kategorik `loan_status` terdiri dari dua kategori yaitu `Approved` dan `Rejected`, yang mana jumlah data `Approved` sekitar 2600 dan `Rejected sekitar` 1600. Hal ini menunjukkan bahwa data tergolong tidak terlalu imbang, dengan mayoritas pemohon memperoleh persetujuan pinjaman. Perbandingan yang tidak seimbang ini perlu diperhatikan saat membangun model prediktif, karena dapat menyebabkan bias terhadap kelas mayoritas (Approved).
 
