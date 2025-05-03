@@ -622,11 +622,11 @@ Dengan hasil ini, dataframe `df_encoded` siap digunakan sebagai input untuk memb
 
 Luaran dari proyek ini adalah sebuah `sistem rekomendasi destinasi wisata yang dibangun menggunakan dua pendekatan utama`, yaitu `Content-Based Filtering` dan `Collaborative Filtering`, guna menjawab tantangan dalam memberikan rekomendasi yang relevan, personal, dan berdampak langsung pada pengalaman pengguna.
 
-Pada `pendekatan Content-Based Filtering`, sistem `memberikan rekomendasi berdasarkan kemiripan konten` seperti `deskripsi dan kategori destinasi`. Hal ini `menjawab kebutuhan untuk merekomendasikan tempat-tempat yang sejenis dengan destinasi favorit pengguna`. Sebagai contoh, untuk destinasi “Museum Perangko”, `sistem berhasil memberikan 10 rekomendasi yang seluruhnya relevan`, sebagaimana dibuktikan oleh `nilai Precision@10 sebesar 100%`. 
+Pada `pendekatan Content-Based Filtering`, sistem `memberikan rekomendasi berdasarkan kemiripan konten` seperti `deskripsi dan kategori destinasi`. Hal ini **menjawab kebutuhan untuk merekomendasikan tempat-tempat yang sejenis dengan destinasi favorit pengguna**. Sebagai contoh, untuk destinasi “Museum Perangko”, `sistem berhasil memberikan 10 rekomendasi yang seluruhnya relevan`, sebagaimana dibuktikan oleh `nilai Precision@10 sebesar 100%`. 
 - Pendekatan ini  menunjukkan bahwa sistem mampu memahami karakteristik konten dengan baik dan memberikan rekomendasi yang akurat.
 - Secara bisnis, pendekatan ini dapat meningkatkan kepuasan pengguna baru yang belum memberikan rating, sekaligus mempromosikan destinasi yang memiliki profil serupa dengan tempat populer.
 
-Sementara itu, `Collaborative Filtering` digunakan untuk `memberikan rekomendasi berbasis perilaku`, yaitu dengan `mempelajari pola rating pengguna lain yang memiliki preferensi serupa`. Model ini berhasil mencapai `RMSE sebesar 0.3642` dan `MAE sebesar 0.3145`, menandakan `kesalahan prediksi yang rendah`.
+Sementara itu, `Collaborative Filtering` digunakan untuk `memberikan rekomendasi berbasis perilaku`, yaitu dengan **mempelajari pola rating pengguna lain yang memiliki preferensi serupa**. Model ini berhasil mencapai `RMSE sebesar 0.3642` dan `MAE sebesar 0.3145`, menandakan `kesalahan prediksi yang rendah`.
 - Pendekatan ini efektif untuk personalisasi rekomendasi bagi pengguna aktif, dan mampu menyarankan destinasi yang belum pernah dilihat atau diketahui oleh pengguna.
 - Dampaknya bagi pengembangan bisnis adalah meningkatkan eksposur destinasi yang kurang populer namun potensial, serta mendorong penemuan destinasi baru yang sesuai dengan minat pengguna.
 
