@@ -255,34 +255,6 @@ Pada Gambar 1c, untuk data numerik memiliki karakteristik sebagai berikut:
 - `cibil_score` memiliki sebaran dari 300 hingga 900, dengan distribusi menyerupai kurva normal. Hal ini menandakan variasi skor kredit pemohon cukup luas dan representatif.
 - Nilai-nilai aset seperti `residential_assets_value`, `commercial_assets_value`, `luxury_assets_value`, dan `bank_asset_value` menunjukkan `distribusi right-skewed`, menandakan banyak pemohon memiliki aset dalam jumlah kecil dan hanya sedikit yang memiliki aset bernilai tinggi.
 
-### 1.4. EDA - Multivariate Analysis
-
-![Analisis Multivariat](images/image-3.png)
-
-Gambar 1d. Analisis Multivariat
-
-Berdasarkan Gambar 1d, yang merupakan hasil dari pairplot, tampak pola distribusi dan hubungan antar pasangan fitur numerik:
-
-- Distribusi diagonal menunjukkan penyebaran data untuk masing-masing fitur. Sebagian besar fitur, seperti `income_annum`, `loan_amount`, dan `luxury_assets_value`, memperlihatkan sebaran miring ke kanan (right-skewed), yang mengindikasikan bahwa mayoritas data berada pada nilai rendah dan hanya sedikit data yang bernilai tinggi.
-- Plot hubungan antara `income_annum` dengan `loan_amount`, `luxury_assets_value`, dan `bank_asset_value` menunjukkan pola garis miring positif, yang menegaskan korelasi kuat seperti yang ditampilkan pada heatmap korelasi.
-- Sebaliknya, fitur seperti `loan_term`, `cibil_score`, dan `no_of_dependents` tampak menunjukkan pola sebaran acak atau tidak terstruktur, menandakan hubungan lemah dengan fitur lainnya.
-- Tidak ditemukan outlier ekstrem yang mencolok, namun sebaran data yang padat di bagian bawah menunjukkan adanya ketidakseimbangan distribusi, terutama pada fitur finansial yang memiliki skala besar.
-
-![Analisis Matriks Korelasi](images/image-4.png)
-
-Gambar 1e. Analisis Matriks Korelasi
-
-Berdasarkan Gambar 1e, yang menampilkan heatmap korelasi antar fitur numerik, dapat disimpulkan bahwa:
-
-- Terdapat korelasi sangat tinggi antara `income_annum` dan `loan_amount` sebesar 0.93, serta dengan `luxury_assets_value` (0.93) dan `bank_asset_value` (0.85). Hal ini menunjukkan bahwa semakin tinggi pendapatan seseorang, semakin besar kemungkinan mereka mengajukan pinjaman dan memiliki aset mewah serta simpanan bank yang tinggi.
-- Korelasi tinggi juga terlihat antara `loan_amount` dan `luxury_assets_value` (0.86), serta dengan `bank_asset_value` (0.79). Ini menandakan bahwa jumlah pinjaman yang lebih besar cenderung dimiliki oleh individu dengan aset mewah dan tabungan bank lebih besar.
-- Sebaliknya, `cibil_score` memiliki korelasi sangat lemah terhadap semua fitur lainnya (berkisar antara -0.03 hingga 0.01), yang menunjukkan bahwa skor CIBIL bersifat independen terhadap fitur-fitur finansial lain.
-- Fitur `no_of_dependents` juga menunjukkan korelasi sangat rendah terhadap seluruh fitur lain, dengan nilai mendekati nol.
-
-Secara umum, fitur-fitur yang berhubungan dengan pendapatan dan aset memiliki korelasi yang kuat satu sama lain, menunjukkan adanya keterkaitan yang logis antara penghasilan, pinjaman, dan kekayaan.
-
-Berdasarkan hasil analisis matriks korelasi dan pairplot, dapat disimpulkan bahwa fitur-fitur finansial seperti `income_annum`, `loan_amount`, `luxury_assets_value`, dan `bank_asset_value` memiliki hubungan yang saling berkorelasi erat. Hal ini mengindikasikan bahwa individu dengan pendapatan tinggi cenderung memiliki jumlah pinjaman yang besar serta aset mewah dan simpanan bank yang lebih tinggi. Di sisi lain, fitur seperti `loan_term`, `cibil_score`, dan `no_of_dependents` menunjukkan korelasi yang lemah terhadap fitur numerik lainnya, sehingga kurang memberikan informasi prediktif yang signifikan dalam analisis ini. Selain itu, tidak ditemukan pola non-linear yang kuat maupun outlier yang mencolok, yang menunjukkan bahwa data relatif bersih dan siap untuk dianalisis lebih lanjut menggunakan pendekatan pemodelan regresi atau klasifikasi, terutama jika target analisis berkaitan dengan aspek finansial.
-
 <br>
 
 ## 🔗 2. Data Preparation
