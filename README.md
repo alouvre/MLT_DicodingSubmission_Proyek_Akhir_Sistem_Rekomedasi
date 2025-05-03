@@ -683,20 +683,21 @@ Evaluasi dilakukan dengan langkah-langkah berikut:
 
 - Visualisasi Error Selama Training
 
-  Performa model selama training divisualisasikan menggunakan grafik perkembangan RMSE dan MAE.
+  Perbandingan performa model Collaborative Filtering divisualisasikan menggunakan grafik batang yang menampilkan nilai akhir dari metrik RMSE dan MAE. Visualisasi ini memberikan gambaran mengenai seberapa besar rata-rata kesalahan prediksi yang dihasilkan model.
 
-  ![Visualisasi Error Selama Training](images/Image-1.png)
+  ![Visualisasi Perbandingan Nilai RMSE dan MAE](images/Image-1.png)
 
-Gambar 4a Visualisasi Error Selama Training
+  Gambar 4a Grafik Batang Perbandingan Nilai RMSE dan MAE
+
+  Selain itu, perkembangan error selama proses pelatihan juga ditampilkan dalam bentuk grafik garis. Grafik ini menunjukkan penurunan nilai RMSE dan MAE seiring dengan bertambahnya epoch, baik pada data training maupun validation, yang mengindikasikan bahwa model mengalami proses pelatihan yang stabil.
+
+  ![Visualisasi Nilai RMSE dan MAE Selama Training](images/Image-2.png)
+
+  Gambar 4b. Perkembangan Nilai RMSE dan MAE Selama Training (Train vs Validation)
 
 #### Hasil Evaluasi
 
-- RMSE: 0.3642
-- MAE: 0.3145
-
-Grafik evaluasi selama proses pelatihan menunjukkan bahwa model mengalami penurunan error yang stabil pada kedua metrik.
-
-Selain itu, nilai akhir dari evaluasi ditampilkan dalam bentuk diagram batang:
+Nilai RMSE dan MAE yang diperoleh menunjukkan bahwa model Collaborative Filtering mampu memprediksi rating dengan tingkat kesalahan yang relatif kecil. Untuk memberikan gambaran yang lebih jelas, kedua metrik ini divisualisasikan dalam bentuk grafik batang.
 
 | Metrik | Nilai  |
 | ------ | ------ |
