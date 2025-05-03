@@ -620,16 +620,17 @@ Dengan hasil ini, dataframe `df_encoded` siap digunakan sebagai input untuk memb
 
 ## 📩 5. Kesimpulan
 
-Luaran dari proyek ini adalah sebuah sistem rekomendasi destinasi wisata yang dikembangkan dengan dua pendekatan utama, yaitu Content-Based Filtering dan Collaborative Filtering.
+Luaran dari proyek ini adalah sebuah `sistem rekomendasi destinasi wisata yang dibangun menggunakan dua pendekatan utama`, yaitu `Content-Based Filtering` dan `Collaborative Filtering`, guna menjawab tantangan dalam memberikan rekomendasi yang relevan, personal, dan berdampak langsung pada pengalaman pengguna.
 
-Pada pendekatan Content-Based Filtering, sistem memberikan rekomendasi berdasarkan kemiripan konten seperti `tags` dan `description` dari destinasi wisata. Contohnya, untuk tempat wisata `"Wisata Alam Kalibiru"`, sistem berhasil merekomendasikan destinasi-destinasi lain yang memiliki karakteristik serupa baik dari sisi kategori maupun deskripsinya. Evaluasi menggunakan metrik Precision@10 menunjukkan hasil yang sangat baik, dengan `nilai 100% pada kasus uji "Museum Perangko"`, yang berarti `seluruh 10 rekomendasi yang diberikan relevan`.
+Pada `pendekatan Content-Based Filtering`, sistem `memberikan rekomendasi berdasarkan kemiripan konten` seperti `deskripsi dan kategori destinasi`. Hal ini `menjawab kebutuhan untuk merekomendasikan tempat-tempat yang sejenis dengan destinasi favorit pengguna`. Sebagai contoh, untuk destinasi “Museum Perangko”, `sistem berhasil memberikan 10 rekomendasi yang seluruhnya relevan`, sebagaimana dibuktikan oleh `nilai Precision@10 sebesar 100%`. 
+- Pendekatan ini  menunjukkan bahwa sistem mampu memahami karakteristik konten dengan baik dan memberikan rekomendasi yang akurat.
+- Secara bisnis, pendekatan ini dapat meningkatkan kepuasan pengguna baru yang belum memberikan rating, sekaligus mempromosikan destinasi yang memiliki profil serupa dengan tempat populer.
 
-Sementara itu, pendekatan Collaborative Filtering digunakan untuk `merekomendasikan wisata yang belum pernah dikunjungi oleh pengguna`, dengan memperhitungkan `pola rating dari pengguna lain yang memiliki preferensi serupa`. Evaluasi performa dilakukan menggunakan metrik Root Mean Squared Error (RMSE) dan Mean Absolute Error (MAE). Model Collaborative Filtering yang dibangun menghasilkan `RMSE sebesar 0.3642` dan `MAE sebesar 0.3145`, yang menunjukkan `tingkat kesalahan prediksi rating yang relatif rendah`, serta `potensi model dalam menghasilkan rekomendasi yang akurat` berdasarkan data perilaku pengguna.
+Sementara itu, `Collaborative Filtering` digunakan untuk `memberikan rekomendasi berbasis perilaku`, yaitu dengan `mempelajari pola rating pengguna lain yang memiliki preferensi serupa`. Model ini berhasil mencapai `RMSE sebesar 0.3642` dan `MAE sebesar 0.3145`, menandakan `kesalahan prediksi yang rendah`.
+- Pendekatan ini efektif untuk personalisasi rekomendasi bagi pengguna aktif, dan mampu menyarankan destinasi yang belum pernah dilihat atau diketahui oleh pengguna.
+- Dampaknya bagi pengembangan bisnis adalah meningkatkan eksposur destinasi yang kurang populer namun potensial, serta mendorong penemuan destinasi baru yang sesuai dengan minat pengguna.
 
-Dengan demikian, kedua pendekatan yang diterapkan dalam proyek ini telah mampu membangun sistem rekomendasi yang efektif:
-
-- Content-Based Filtering sangat akurat dalam menyarankan destinasi serupa berdasarkan konten,
-- Collaborative Filtering memberikan rekomendasi personalisasi yang relevan dengan mempertimbangkan pola preferensi pengguna secara kolektif.
+Dengan demikian, `kedua pendekatan ini telah menjawab seluruh problem statement` dan `berhasil memenuhi tujuan proyek`. Sistem yang dihasilkan tidak hanya akurat secara teknis, tetapi juga bermanfaat dari sisi pengguna dan mendukung strategi pengembangan pariwisata yang lebih personal dan data-driven.
 
 <br>
 
