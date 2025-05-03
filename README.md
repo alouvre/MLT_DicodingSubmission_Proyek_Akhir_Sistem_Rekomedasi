@@ -456,7 +456,7 @@ Dalam membangun sistem rekomendasi berbasis Content-Based Filtering, representas
 Deskripsi dan kategori destinasi digabungkan dan kemudian direpresentasikan dalam bentuk vektor numerik menggunakan TF-IDF, yang menekankan pentingnya kata-kata unik di setiap destinasi. Teknik ini diterapkan pada dua kolom berbeda:
 
 - `Tags`: Gabungan antara deskripsi dan kategori.
-- `description_preprocessed`: Deskripsi destinasi setelah melalui tahap praproses.
+- `Description_Preprocessed`: Deskripsi destinasi setelah melalui tahap praproses.
 
 Untuk masing-masing kolom, dilakukan proses sebagai berikut:
 
@@ -482,7 +482,7 @@ Setelah data vektor diperoleh, tingkat kemiripan antar destinasi dihitung menggu
 
   Matriks `similarity_tags` ini digunakan sebagai dasar utama dalam proses rekomendasi konten (content-based recommendation), di mana destinasi dengan nilai kemiripan tertinggi terhadap input pengguna akan dipilih sebagai rekomendasi.
 
-- Kolom `description_preprocessed`
+- Kolom `Description_Preprocessed`
 
   Sebagai pembanding, sistem juga menghitung kemiripan antar destinasi berdasarkan deskripsi naratif murni tanpa mempertimbangkan kategori. Tujuan penggunaan pendekatan ini adalah untuk mengevaluasi seberapa kuat pengaruh informasi naratif saja dalam mengidentifikasi destinasi yang relevan:
 
@@ -567,7 +567,7 @@ def show_recommendations(place_name, similarity_matrix, df_recommendation, df_to
 Sebagai studi kasus, destinasi **Wisata Alam Kalibiru** digunakan sebagai acuan untuk pencarian destinasi lain yang mirip. Hasil rekomendasi disajikan berdasarkan dua pendekatan:
 
 - Berdasarkan kolom `Tags`: Menggabungkan informasi deskripsi dan kategori.
-- Berdasarkan kolom `description_preprocessed`: Hanya menggunakan teks deskripsi yang telah diproses.
+- Berdasarkan kolom `Description_Preprocessed`: Hanya menggunakan teks deskripsi yang telah diproses.
 
 Berikut hasil rekomendasi:
 
@@ -609,13 +609,13 @@ Berikut hasil rekomendasi:
   | 9   | Kampoeng Kopi Banaran             | Taman Hiburan | 4.3    | Kampoeng Kopi Banaran, sebuah agro wisata perk... |
   | 10  | Air Terjun Semirang               | Cagar Alam    | 4.4    | Terletak di lereng Gunung Ungaran bagian utara... |
 
-  Tabel 3b. Hasil Rekomendasi Berdasarkan `description_preprocessed`
+  Tabel 3b. Hasil Rekomendasi Berdasarkan `Description_Preprocessed`
 
   Hasil rekomendasi berdasarkan deskripsi murni (Tabel 3b) hampir identik dengan hasil dari `Tags`, terutama di lima besar. Ini menunjukkan bahwa deskripsi naratif saja sudah cukup kuat untuk mengidentifikasi tempat-tempat yang serupa secara konten.
 
   - Namun, munculnya destinasi seperti `Desa Wisata Lembah Kalipancur` di posisi ke-6 (yang sebelumnya tidak muncul di versi Tags) menandakan bahwa pendekatan ini lebih terbuka terhadap keberagaman kategori, selama narasinya mirip.
   - Ini berguna dalam kasus di mana kategori bisa saja terlalu umum atau kurang representatif, dan konten naratiflah yang justru lebih informatif.
-  - Representasi deskripsi naratif `(description_preprocessed)` terbukti relevan dalam mendeteksi kemiripan konten, dan mampu memperluas cakupan rekomendasi secara fleksibel.
+  - Representasi deskripsi naratif `(Description_Preprocessed)` terbukti relevan dalam mendeteksi kemiripan konten, dan mampu memperluas cakupan rekomendasi secara fleksibel.
 
 ### 3.2. Model Development - Collaborative Filtering
 
