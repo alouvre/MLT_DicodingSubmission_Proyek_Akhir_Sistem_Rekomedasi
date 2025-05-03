@@ -402,21 +402,29 @@ Setelah data vektor diperoleh, tingkat kemiripan antar destinasi dihitung menggu
 
 - Kolom `Tags`
 
-  Representasi teks dari kombinasi deskripsi dan kategori dihitung menggunakan `cosine_similarity` dari pustaka `sklearn.metrics.pairwise`. Hasilnya berupa matriks kesamaan yang menunjukkan nilai kemiripan antar setiap pasangan destinasi. Nilai yang semakin mendekati 1 menandakan bahwa dua destinasi memiliki konten yang sangat mirip.
+  Representasi `Tags` merupakan gabungan antara deskripsi naratif `(Description_Preprocessed)` dan kategori destinasi `(Category)`. Gabungan ini merepresentasikan karakteristik umum serta jenis tempat wisata secara lebih lengkap. Representasi ini kemudian diubah menjadi vektor numerik dan dihitung kesamaannya menggunakan `cosine similarity` dari pustaka `sklearn.metrics.pairwise`:
 
   ```python
   similarity_tags = cosine_similarity(vectors_tags, dense_output=True)
   ```
 
-  Sebagian hasil dari matriks kesamaan ditampilkan secara acak untuk keperluan eksplorasi dan validasi awal.
+  Hasilnya adalah sebuah matriks similarity yang menunjukkan tingkat kemiripan antar setiap pasangan destinasi wisata. Nilai cosine similarity yang mendekati 1 menandakan bahwa dua destinasi memiliki representasi konten yang sangat mirip.
+
+  Matriks `similarity_tags` ini digunakan sebagai dasar utama dalam proses rekomendasi konten (content-based recommendation), di mana destinasi dengan nilai kemiripan tertinggi terhadap input pengguna akan dipilih sebagai rekomendasi.
 
 - Kolom `description_preprocessed`
 
-  Proses yang sama diterapkan pada kolom yang hanya memuat deskripsi destinasi tanpa informasi kategori. Tujuannya adalah untuk mengevaluasi seberapa besar pengaruh deskripsi murni terhadap kemiripan antar destinasi.
+  Sebagai pembanding, sistem juga menghitung kemiripan antar destinasi berdasarkan deskripsi naratif murni tanpa mempertimbangkan kategori. Tujuan penggunaan pendekatan ini adalah untuk mengevaluasi seberapa kuat pengaruh informasi naratif saja dalam mengidentifikasi destinasi yang relevan:
 
   ```python
   similarity_desc = cosine_similarity(vectors_desc, dense_output=True)
   ```
+
+  Matriks `similarity_desc` digunakan dalam proses evaluasi relevansi rekomendasi. Suatu destinasi dianggap relevan jika memiliki:
+  - Kategori yang sama dengan destinasi acuan atau
+  - Kesamaan deskripsi yang cukup tinggi (di atas ambang `desc_threshold`, misalnya 0.5)
+
+Dengan kombinasi dua representasi ini, sistem rekomendasi tidak hanya mengandalkan kesamaan jenis tempat wisata, tetapi juga mempertimbangkan kemiripan naratif yang lebih halus.
 
 #### **c. Mendapatkan Rekomendasi**
 
