@@ -725,25 +725,25 @@ Berdasarkan hasil evaluasi pada model Content-Based Filtering dan Collaborative 
 
 Kelebihan:
 
-- Akurat dalam merekomendasikan item yang serupa secara konten
+- **Akurat dalam merekomendasikan item yang serupa secara konten**
 
   Terbukti dari Precision@10 yang mencapai 100%, artinya semua rekomendasi benar-benar relevan berdasarkan kategori (Budaya) dan tag yang mirip.
 
-- Efektif untuk kasus cold-start (pengguna baru)
+- **Efektif untuk kasus cold-start (pengguna baru)**
 
   Karena tidak bergantung pada data interaksi pengguna lain, sistem tetap bisa memberikan rekomendasi meskipun belum ada riwayat aktivitas pengguna.
 
-- Transparansi rekomendasi
+- **Transparansi rekomendasi**
 
   Sistem dapat menjelaskan alasan suatu rekomendasi diberikan (misalnya karena kesamaan kategori atau deskripsi).
 
 Kekurangan:
 
-- Kurang mampu memberikan variasi rekomendasi
+- **Kurang mampu memberikan variasi rekomendasi**
 
   Karena hanya merekomendasikan item yang mirip dengan item yang sudah dikenal, model cenderung terbatas pada jenis item tertentu (overspecialization).
 
-- Deskripsi yang tidak informatif akan menurunkan performa
+- **Deskripsi yang tidak informatif akan menurunkan performa**
 
   Jika suatu tempat memiliki deskripsi pendek atau tidak spesifik, kesamaan konten menjadi sulit diukur secara efektif.
 
