@@ -236,24 +236,37 @@ Hasil dari pengecekan ini menghasilkan `True`, yang berarti seluruh nilai di `Un
 
 ### 1.3. EDA - Univariate Analysis
 
-![Analisis Rating (Data Kategori)](images/Image-3.png)
+#### Analisis Rating dan Place_Ratings
 
-Gambar 1b. Analisis Rating (df_tourism)
+![Analisis Rating (df_tourism)](images/Image-3.png)
 
-![Analisis Rating (Data Numerik)](images/Image-4.png)
+Gambar 1b. Distribusi `Rating` dalam `df_tourism`
 
-Gambar 1c. Analisis Rating (df_ratings)
+Fitur `Rating` dalam dataset `df_tourism` (Gambar 1b) menggambarkan skor destinasi wisata yang diduga berasal dari sumber agregator atau sistem penilaian eksternal. Analisis distribusi menunjukkan bahwa nilai rating cenderung tinggi dan kurang bervariasi, dengan dominasi pada skor 4.3 hingga 4.6.
 
-Berdasarkan Gambar 1b, dapat dilihat bahwa distribusi data kategorik `loan_status` terdiri dari dua kategori yaitu `Approved` dan `Rejected`, yang mana jumlah data `Approved` sekitar 2600 dan `Rejected sekitar` 1600. Hal ini menunjukkan bahwa data tergolong tidak terlalu imbang, dengan mayoritas pemohon memperoleh persetujuan pinjaman. Perbandingan yang tidak seimbang ini perlu diperhatikan saat membangun model prediktif, karena dapat menyebabkan bias terhadap kelas mayoritas (Approved).
+Distribusi ini mengindikasikan bahwa fitur `Rating` pada `df_tourism` memiliki bias positif dan kurang mampu membedakan kualitas antar destinasi. Dengan variasi yang kecil, fitur ini menjadi kurang informatif untuk mendukung sistem rekomendasi yang bergantung pada perbedaan nilai rating sebagai penentu relevansi.
 
-Pada Gambar 1c, untuk data numerik memiliki karakteristik sebagai berikut:
+![Analisis Place_Ratings (df_ratings)](images/Image-4.png)
 
-- Dilihat dari distribusi data `no_of_dependents`, jumlah tanggungan rata-rata berada di antara 0 hingga 5, dengan karakteristik data bersifat diskrit.
-- Penghasilan tahunan `(income_annum)` menunjukkan `distribusi yang relatif merata`, dengan sebagian besar nilai berada dalam rentang hingga 10 juta, mengindikasikan `cakupan individu dari berbagai tingkat ekonomi`.
-- Data `loan_amount` memiliki rata-rata nilai kecil dan `distribusi skewed ke kanan`, yang berarti sebagian besar pinjaman bernilai rendah namun ada beberapa nilai ekstrem tinggi.
-- `loan_term` menunjukkan distribusi diskrit yang berfokus pada nilai-nilai standar seperti 5, 10, 15, dan 20 tahun, mengindikasikan tenor pinjaman standar yang umum digunakan.
-- `cibil_score` memiliki sebaran dari 300 hingga 900, dengan distribusi menyerupai kurva normal. Hal ini menandakan variasi skor kredit pemohon cukup luas dan representatif.
-- Nilai-nilai aset seperti `residential_assets_value`, `commercial_assets_value`, `luxury_assets_value`, dan `bank_asset_value` menunjukkan `distribusi right-skewed`, menandakan banyak pemohon memiliki aset dalam jumlah kecil dan hanya sedikit yang memiliki aset bernilai tinggi.
+Gambar 1c. Distribusi `Place_Ratings` dalam `df_ratings`
+
+Sebaliknya, fitur `Place_Ratings` dalam dataset `df_ratings` (Gambar 1c) merepresentasikan penilaian langsung dari pengguna. Nilainya menunjukkan distribusi yang lebih berimbang dan representatif terhadap preferensi nyata pengguna.
+
+Dengan variasi yang luas dan representatif, `Place_Ratings` jauh lebih relevan untuk digunakan dalam sistem collaborative filtering, karena:
+
+- Mencerminkan pengalaman dan preferensi pengguna secara langsung.
+- Memberikan sinyal yang lebih kuat terhadap perbedaan persepsi antar pengguna terhadap sebuah destinasi.
+
+| Aspek                       | `df_tourism (Rating)`             | `df_ratings (Place_Ratings)`               |
+| --------------------------- | --------------------------------- | ------------------------------------------ |
+| Sumber Data                 | Agregator eksternal               | Input langsung dari pengguna               |
+| Variasi                     | Rendah (bias ke arah positif)     | Tinggi (subjektif dan berimbang)           |
+| Nilai dominan               | 4.4 dan 4.5 (masing-masing 22.4%) | 4, 3, dan 2 (masing-masing >20%)           |
+| Relevansi untuk rekomendasi | Kurang informatif                 | Sangat cocok untuk collaborative filtering |
+
+Tabel 
+
+Fitur `Rating` pada `df_tourism` memberikan gambaran umum kualitas destinasi tetapi kurang efektif sebagai pembeda. Sementara itu, `Place_Ratings` dari `df_ratings` lebih representatif terhadap opini pengguna dan lebih cocok untuk digunakan dalam pengembangan sistem rekomendasi berbasis pengguna.
 
 <br>
 
@@ -421,6 +434,7 @@ Setelah data vektor diperoleh, tingkat kemiripan antar destinasi dihitung menggu
   ```
 
   Matriks `similarity_desc` digunakan dalam proses evaluasi relevansi rekomendasi. Suatu destinasi dianggap relevan jika memiliki:
+
   - Kategori yang sama dengan destinasi acuan atau
   - Kesamaan deskripsi yang cukup tinggi (di atas ambang `desc_threshold`, misalnya 0.5)
 
@@ -518,7 +532,8 @@ Berikut hasil rekomendasi:
   Tabel 3a. Hasil Rekomendasi Berdasarkan `Tags`
 
   Hasil rekomendasi berdasarkan `Tags` (Tabel 3a) didominasi oleh destinasi yang memiliki kategori sama (Cagar Alam) dan deskripsi yang menunjukkan aktivitas wisata alam, edukasi, dan pengalaman alam terbuka.
-  - Hal ini menunjukkan bahwa gabungan informasi kategori dan deskripsi mampu memperkuat sinyal kesamaan konten, karena sistem tidak hanya mempertimbangkan narasi, tetapi juga konteks kategori sebagai penanda eksplisit. 
+
+  - Hal ini menunjukkan bahwa gabungan informasi kategori dan deskripsi mampu memperkuat sinyal kesamaan konten, karena sistem tidak hanya mempertimbangkan narasi, tetapi juga konteks kategori sebagai penanda eksplisit.
   - Sebagai contoh, Kampoeng Kopi Banaran (kategori Taman Hiburan) muncul di posisi ke-9, menandakan bahwa meskipun berbeda kategori, deskripsinya masih cukup mirip secara semantik. Ini menunjukkan bahwa sistem tidak terlalu ketat, tetapi tetap mempertahankan relevansi.
   - Representasi `Tags` efektif dalam menjaga keseimbangan antara relevansi naratif dan kesamaan kategori.
 
@@ -540,6 +555,7 @@ Berikut hasil rekomendasi:
   Tabel 3b. Hasil Rekomendasi Berdasarkan `description_preprocessed`
 
   Hasil rekomendasi berdasarkan deskripsi murni (Tabel 3b) hampir identik dengan hasil dari `Tags`, terutama di lima besar. Ini menunjukkan bahwa deskripsi naratif saja sudah cukup kuat untuk mengidentifikasi tempat-tempat yang serupa secara konten.
+
   - Namun, munculnya destinasi seperti `Desa Wisata Lembah Kalipancur` di posisi ke-6 (yang sebelumnya tidak muncul di versi Tags) menandakan bahwa pendekatan ini lebih terbuka terhadap keberagaman kategori, selama narasinya mirip.
   - Ini berguna dalam kasus di mana kategori bisa saja terlalu umum atau kurang representatif, dan konten naratiflah yang justru lebih informatif.
   - Representasi deskripsi naratif `(description_preprocessed)` terbukti relevan dalam mendeteksi kemiripan konten, dan mampu memperluas cakupan rekomendasi secara fleksibel.
