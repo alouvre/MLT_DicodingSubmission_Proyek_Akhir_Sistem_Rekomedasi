@@ -554,13 +554,13 @@ Berikut hasil rekomendasi:
 
   Tabel 3b. Hasil Rekomendasi Berdasarkan `Description_Preprocessed`
 
-  Hasil tersebut menunjukkan bahwa sistem berhasil mengidentifikasi destinasi yang memiliki karakteristik serupa, baik dari sisi deskripsi maupun kategori, sehingga dapat membantu pengguna menemukan tempat wisata alternatif yang relevan dengan preferensinya.
+Hasil tersebut menunjukkan bahwa sistem berhasil mengidentifikasi destinasi yang memiliki karakteristik serupa, baik dari sisi deskripsi maupun kategori, sehingga dapat membantu pengguna menemukan tempat wisata alternatif yang relevan dengan preferensinya.
 
 ### 3.2. Model Development - Content Based Filtering
 
-  Pada tahap ini, dilakukan beberapa proses awal untuk menyiapkan data sebelum dimodelkan menggunakan metode Collaborative Filtering. Data yang digunakan adalah data rating pengguna terhadap tempat wisata, yang terdiri atas tiga kolom utama: `User_Id`, `Place_Id`, dan `Rating`. Berikut adalah tahapan persiapan data yang dilakukan:
+Pada tahap ini, dilakukan beberapa proses awal untuk menyiapkan data sebelum dimodelkan menggunakan metode Collaborative Filtering. Data yang digunakan adalah data rating pengguna terhadap tempat wisata, yang terdiri atas tiga kolom utama: `User_Id`, `Place_Id`, dan `Rating`. Berikut adalah tahapan persiapan data yang dilakukan:
 
-  a. Mengambil Daftar User dan Place Unik
+a. Mengambil Daftar User dan Place Unik
 
     Langkah pertama adalah memperoleh daftar unik dari pengguna (user) dan tempat (place) yang terdapat dalam data rating. Hal ini penting karena dalam Collaborative Filtering, kita perlu merepresentasikan pengguna dan tempat sebagai indeks integer untuk keperluan pelatihan model.
 
