@@ -414,7 +414,7 @@ Dalam membangun sistem rekomendasi berbasis Content-Based Filtering, representas
 Deskripsi dan kategori destinasi digabungkan dan kemudian direpresentasikan dalam bentuk vektor numerik menggunakan TF-IDF, yang menekankan pentingnya kata-kata unik di setiap destinasi. Teknik ini diterapkan pada dua kolom berbeda:
 
 - `Tags`: Gabungan antara deskripsi dan kategori.
-- `Description_Preprocessed`: Deskripsi destinasi setelah melalui tahap praproses.
+- `description_preprocessed`: Deskripsi destinasi setelah melalui tahap praproses.
 
 Untuk masing-masing kolom, dilakukan proses sebagai berikut:
 
@@ -438,7 +438,7 @@ Setelah data vektor diperoleh, tingkat kemiripan antar destinasi dihitung menggu
 
   Sebagian hasil dari matriks kesamaan ditampilkan secara acak untuk keperluan eksplorasi dan validasi awal.
 
-- Kolom `Description_Preprocessed`
+- Kolom `description_preprocessed`
 
   Proses yang sama diterapkan pada kolom yang hanya memuat deskripsi destinasi tanpa informasi kategori. Tujuannya adalah untuk mengevaluasi seberapa besar pengaruh deskripsi murni terhadap kemiripan antar destinasi.
 
@@ -516,7 +516,7 @@ def show_recommendations(place_name, similarity_matrix, df_recommendation, df_to
 Sebagai studi kasus, destinasi **Wisata Alam Kalibiru** digunakan sebagai acuan untuk pencarian destinasi lain yang mirip. Hasil rekomendasi disajikan berdasarkan dua pendekatan:
 
 - Berdasarkan kolom `Tags`: Menggabungkan informasi deskripsi dan kategori.
-- Berdasarkan kolom `Description_Preprocessed`: Hanya menggunakan teks deskripsi yang telah diproses.
+- Berdasarkan kolom `description_preprocessed`: Hanya menggunakan teks deskripsi yang telah diproses.
 
 Berikut hasil rekomendasi:
 
@@ -552,7 +552,7 @@ Berikut hasil rekomendasi:
   | 9   | Kampoeng Kopi Banaran             | Taman Hiburan | 4.3    | Kampoeng Kopi Banaran, sebuah agro wisata perk... |
   | 10  | Air Terjun Semirang               | Cagar Alam    | 4.4    | Terletak di lereng Gunung Ungaran bagian utara... |
 
-  Tabel 3b. Hasil Rekomendasi Berdasarkan `Description_Preprocessed`
+  Tabel 3b. Hasil Rekomendasi Berdasarkan `description_preprocessed`
 
 Hasil tersebut menunjukkan bahwa sistem berhasil mengidentifikasi destinasi yang memiliki karakteristik serupa, baik dari sisi deskripsi maupun kategori, sehingga dapat membantu pengguna menemukan tempat wisata alternatif yang relevan dengan preferensinya.
 
@@ -675,7 +675,7 @@ Evaluasi dilakukan terhadap satu tempat, yaitu Museum Perangko. Berikut adalah h
 | 9   | Museum Pos Indonesia     | Budaya   | 4.5    | 0.0000                 | 1         |
 | 10  | Museum Mpu Tantular      | Budaya   | 4.4    | 0.0058                 | 1         |
 
-Tabel 4a
+Tabel 4a Hasil Evaluasi Content-Based Filtering untuk Museum Perangko
 
 - True Positives (TP): 10
 - False Positives (FP): 0
@@ -727,7 +727,7 @@ Selain itu, nilai akhir dari evaluasi ditampilkan dalam bentuk diagram batang:
 | RMSE   | 0.3642 |
 | MAE    | 0.3145 |
 
-Tabel 4b
+Tabel 4b Hasil Evaluasi Collaborative Filtering
 
 Interpretasi:
 
@@ -742,6 +742,12 @@ Masing-masing pendekatan memiliki kekuatan tersendiri:
 
 - Content-Based cocok untuk cold-start problem (pengguna baru).
 - Collaborative Filtering efektif jika ada cukup banyak data interaksi pengguna.
+
+#### 4.4. Pemilihan Metrik Evaluasi
+
+Pemilihan metrik evaluasi pada masing-masing model disesuaikan dengan karakteristik pendekatan dan tujuan sistem rekomendasi:
+- `Precision@10` digunakan pada Content-Based Filtering karena fokus utama model ini adalah menghasilkan daftar rekomendasi top-N yang relevan bagi pengguna. Ini sesuai dengan kebutuhan sistem yang ingin merekomendasikan tempat wisata yang paling mirip atau relevan dengan preferensi pengguna berdasarkan konten deskripsi dan kategori.
+- `RMSE dan MAE` digunakan pada Collaborative Filtering karena model ini bertujuan memprediksi rating yang diberikan pengguna terhadap tempat wisata. Kedua metrik ini sangat tepat untuk mengukur performa model regresi dalam konteks prediksi numerik.
 
 <br>
 
