@@ -803,8 +803,9 @@ Untuk mengevaluasi kinerja model dalam prediksi, kita dapat menggunakan dua metr
   $$
 
   Dimana:
+
   - \( y_i \) adalah nilai aktual ke-\( i \)
-  - \( \hat{y}_i \) adalah nilai prediksi ke-\( i \)
+  - \( \hat{y}\_i \) adalah nilai prediksi ke-\( i \)
   - \( n \) adalah jumlah sampel
   - \( \sum \) menyatakan penjumlahan dari \( i = 1 \) hingga \( n \)
 
@@ -828,8 +829,9 @@ Untuk mengevaluasi kinerja model dalam prediksi, kita dapat menggunakan dua metr
   $$
 
   Dimana:
+
   - \( y_i \) adalah nilai aktual ke-\( i \)
-  - \( \hat{y}_i \) adalah nilai prediksi ke-\( i \)
+  - \( \hat{y}\_i \) adalah nilai prediksi ke-\( i \)
   - \( n \) adalah jumlah sampel
 
   Cara Kerja MAE:
