@@ -798,16 +798,14 @@ Untuk mengevaluasi kinerja model dalam prediksi, kita dapat menggunakan dua metr
 
   Rumus RMSE:
 
-  $$
-  \text{RMSE} = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2}
-  $$
+  $$RMSE = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2}$$
 
-  Dimana:
+  Di mana:
 
-  - \( y_i \) adalah nilai aktual ke-\( i \)
-  - \( \hat{y}\_i \) adalah nilai prediksi ke-\( i \)
-  - \( n \) adalah jumlah sampel
-  - \( \sum \) menyatakan penjumlahan dari \( i = 1 \) hingga \( n \)
+  - $y_i$ adalah nilai aktual,
+  - $\hat{y}_i$ adalah nilai prediksi,
+  - $n$ adalah jumlah sampel.
+  - $i$ adalah indeks sampel.
 
   Cara Kerja RMSE:
 
@@ -824,15 +822,13 @@ Untuk mengevaluasi kinerja model dalam prediksi, kita dapat menggunakan dua metr
 
   Rumus MAE:
 
-  $$
-  \text{MAE} = \frac{1}{n} \sum_{i=1}^{n} \left| y_i - \hat{y}_i \right|
-  $$
+  $$MAE = \frac{1}{n} \sum_{i=1}^{n} |y_i - \hat{y}_i|$$
 
-  Dimana:
+  Di mana:
 
-  - \( y_i \) adalah nilai aktual ke-\( i \)
-  - \( \hat{y}\_i \) adalah nilai prediksi ke-\( i \)
-  - \( n \) adalah jumlah sampel
+  - $y_i$ adalah nilai aktual,
+  - $\hat{y}_i$ adalah nilai prediksi,
+  - $n$ adalah jumlah sampel.
 
   Cara Kerja MAE:
 
