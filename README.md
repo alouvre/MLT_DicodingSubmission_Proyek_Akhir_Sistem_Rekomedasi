@@ -443,20 +443,20 @@ Langkah-Langkah Preprocessing:
 
   #### **2.4.2. Ekstraksi Fitur Teks dengan TF-IDF**
 
-Dalam membangun sistem rekomendasi berbasis Content-Based Filtering, representasi numerik dari data teks menjadi kunci dalam mengidentifikasi kemiripan antar destinasi wisata. Salah satu teknik yang digunakan adalah `TF-IDF (Term Frequency–Inverse Document Frequency)`, yang memungkinkan pemetaan teks ke dalam bentuk vektor numerik berdasarkan pentingnya suatu kata dalam dokumen relatif terhadap seluruh korpus.
+  Dalam membangun sistem rekomendasi berbasis Content-Based Filtering, representasi numerik dari data teks menjadi kunci dalam mengidentifikasi kemiripan antar destinasi wisata. Salah satu teknik yang digunakan adalah `TF-IDF (Term Frequency–Inverse Document Frequency)`, yang memungkinkan pemetaan teks ke dalam bentuk vektor numerik berdasarkan pentingnya suatu kata dalam dokumen relatif terhadap seluruh korpus.
 
-Deskripsi dan kategori destinasi digabungkan dan kemudian direpresentasikan dalam bentuk vektor numerik menggunakan TF-IDF, yang menekankan pentingnya kata-kata unik di setiap destinasi. Teknik ini diterapkan pada dua kolom berbeda:
+  Deskripsi dan kategori destinasi digabungkan dan kemudian direpresentasikan dalam bentuk vektor numerik menggunakan TF-IDF, yang menekankan pentingnya kata-kata unik di setiap destinasi. Teknik ini diterapkan pada dua kolom berbeda:
 
-- `Tags`: Gabungan antara deskripsi dan kategori.
-- `Description_Preprocessed`: Deskripsi destinasi setelah melalui tahap praproses.
+  - `Tags`: Gabungan antara deskripsi dan kategori.
+  - `Description_Preprocessed`: Deskripsi destinasi setelah melalui tahap praproses.
 
-Untuk masing-masing kolom, dilakukan proses sebagai berikut:
+  Untuk masing-masing kolom, dilakukan proses sebagai berikut:
 
-- Inisialisasi `TfidfVectorizer` dengan parameter seperti `max_features=5000`, `ngram_range=(1,2)`, dan `min_df=2`.
-- Fit dan transformasi teks menjadi matriks numerik.
-- Visualisasi sebagian matriks TF-IDF untuk menganalisis kata-kata penting per destinasi.
+  - Inisialisasi `TfidfVectorizer` dengan parameter seperti `max_features=5000`, `ngram_range=(1,2)`, dan `min_df=2`.
+  - Fit dan transformasi teks menjadi matriks numerik.
+  - Visualisasi sebagian matriks TF-IDF untuk menganalisis kata-kata penting per destinasi.
 
-Matriks TF-IDF yang dihasilkan kemudian digunakan sebagai dasar untuk mengukur kesamaan antar destinasi dan mendukung sistem rekomendasi berbasis konten.
+  Matriks TF-IDF yang dihasilkan kemudian digunakan sebagai dasar untuk mengukur kesamaan antar destinasi dan mendukung sistem rekomendasi berbasis konten.
 
 
 <br>
