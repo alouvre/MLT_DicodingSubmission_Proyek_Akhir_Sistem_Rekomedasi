@@ -448,14 +448,14 @@ Dalam membangun sistem rekomendasi berbasis Content-Based Filtering, representas
 
 Deskripsi dan kategori destinasi digabungkan dan kemudian direpresentasikan dalam bentuk vektor numerik menggunakan TF-IDF, yang menekankan pentingnya kata-kata unik di setiap destinasi. Teknik ini diterapkan pada dua kolom berbeda:
 
-- `Tags`: Gabungan antara deskripsi dan kategori.
-- `Description_Preprocessed`: Deskripsi destinasi setelah melalui tahap praproses.
+  - `Tags`: Gabungan antara deskripsi dan kategori.
+  - `Description_Preprocessed`: Deskripsi destinasi setelah melalui tahap praproses.
 
 Untuk masing-masing kolom, dilakukan proses sebagai berikut:
 
-- Inisialisasi `TfidfVectorizer` dengan parameter seperti `max_features=5000`, `ngram_range=(1,2)`, dan `min_df=2`.
-- Fit dan transformasi teks menjadi matriks numerik.
-- Visualisasi sebagian matriks TF-IDF untuk menganalisis kata-kata penting per destinasi.
+  - Inisialisasi `TfidfVectorizer` dengan parameter seperti `max_features=5000`, `ngram_range=(1,2)`, dan `min_df=2`.
+  - Fit dan transformasi teks menjadi matriks numerik.
+  - Visualisasi sebagian matriks TF-IDF untuk menganalisis kata-kata penting per destinasi.
 
 Matriks TF-IDF yang dihasilkan kemudian digunakan sebagai dasar untuk mengukur kesamaan antar destinasi dan mendukung sistem rekomendasi berbasis konten.
 
