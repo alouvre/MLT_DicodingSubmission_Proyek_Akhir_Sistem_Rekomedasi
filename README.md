@@ -408,7 +408,9 @@ Hasil akhir dari proses ini adalah dataframe `df_recommendation` yang menyatukan
 
 Tabel 2c. Dataset hasil penggabungan `df_ratings` dan `df_tourism_cleaned` berdasarkan `Place_Id`
 
-### 2.4. Preprocessing Text
+### 2.4. Persiapan Data (Content Based Filtering)
+
+#### 2.4.1 Preprocessing Text
 
 Pada tahap ini, dilakukan proses pra-pemrosesan terhadap data teks yang terdapat pada dataset destinasi wisata. Langkah ini sangat penting dalam sistem rekomendasi berbasis konten (content-based recommendation system), karena kualitas representasi teks secara langsung mempengaruhi hasil rekomendasi yang diberikan. Tujuan dari preprocessing ini adalah untuk mengurangi kebisingan (noise), menyederhanakan bentuk kata, dan memperkaya konteks antar fitur sehingga informasi yang diperoleh oleh model menjadi lebih relevan dan bermakna.
 
