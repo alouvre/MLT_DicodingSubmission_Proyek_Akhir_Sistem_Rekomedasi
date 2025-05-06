@@ -441,17 +441,7 @@ Langkah-Langkah Preprocessing:
 
   Karena proses preprocessing ini cukup memakan waktu, dataset hasil akhir disimpan dalam sebuah file CSV bernama `data_recommendation_preprocessed.csv`. Dengan cara ini, proses eksperimen selanjutnya dapat dilakukan tanpa perlu mengulangi tahap preprocessing dari awal.
 
-<br>
-
-## 🤖 3. Modeling and Result
-
-Pada tahap ini, dua pendekatan sistem rekomendasi yang berbeda dikembangkan, yaitu Content-Based Filtering dan Collaborative Filtering. Masing-masing pendekatan memiliki metode tersendiri dalam menganalisis data dan memberikan rekomendasi destinasi wisata yang sesuai dengan preferensi pengguna.
-
-### 3.1. Model Development - Content Based Filtering
-
-Dalam pendekatan Content-Based Filtering, model dikembangkan berdasarkan informasi yang melekat pada setiap destinasi, seperti deskripsi dan kategori. Proses pembangunan model dilakukan melalui beberapa tahapan utama berikut:
-
-#### **a. Ekstraksi Fitur Teks dengan TF-IDF**
+  #### **2.4.2. Ekstraksi Fitur Teks dengan TF-IDF**
 
 Dalam membangun sistem rekomendasi berbasis Content-Based Filtering, representasi numerik dari data teks menjadi kunci dalam mengidentifikasi kemiripan antar destinasi wisata. Salah satu teknik yang digunakan adalah `TF-IDF (Term Frequency–Inverse Document Frequency)`, yang memungkinkan pemetaan teks ke dalam bentuk vektor numerik berdasarkan pentingnya suatu kata dalam dokumen relatif terhadap seluruh korpus.
 
@@ -468,7 +458,18 @@ Untuk masing-masing kolom, dilakukan proses sebagai berikut:
 
 Matriks TF-IDF yang dihasilkan kemudian digunakan sebagai dasar untuk mengukur kesamaan antar destinasi dan mendukung sistem rekomendasi berbasis konten.
 
-#### **b. Perhitungan Kemiripan dengan Cosine Similarity**
+
+<br>
+
+## 🤖 3. Modeling and Result
+
+Pada tahap ini, dua pendekatan sistem rekomendasi yang berbeda dikembangkan, yaitu Content-Based Filtering dan Collaborative Filtering. Masing-masing pendekatan memiliki metode tersendiri dalam menganalisis data dan memberikan rekomendasi destinasi wisata yang sesuai dengan preferensi pengguna.
+
+### 3.1. Model Development - Content Based Filtering
+
+Dalam pendekatan Content-Based Filtering, model dikembangkan berdasarkan informasi yang melekat pada setiap destinasi, seperti deskripsi dan kategori. Proses pembangunan model dilakukan melalui beberapa tahapan utama berikut:
+
+#### **3.1.1. Perhitungan Kemiripan dengan Cosine Similarity**
 
 Setelah data vektor diperoleh, tingkat kemiripan antar destinasi dihitung menggunakan `cosine similarity`. Nilai ini menunjukkan seberapa mirip suatu destinasi dengan destinasi lainnya berdasarkan konten teksnya.
 
@@ -499,7 +500,7 @@ Setelah data vektor diperoleh, tingkat kemiripan antar destinasi dihitung menggu
 
 Dengan kombinasi dua representasi ini, sistem rekomendasi tidak hanya mengandalkan kesamaan jenis tempat wisata, tetapi juga mempertimbangkan kemiripan naratif yang lebih halus.
 
-#### **c. Mendapatkan Rekomendasi**
+#### **3.1.2. Mendapatkan Rekomendasi**
 
 Setelah mendapatkan matriks kesamaan antar destinasi wisata, langkah selanjutnya adalah membangun `sistem rekomendasi berbasis konten (content-based recommendation system)`. Penulis mengembangkan sebuah fungsi bernama `get_content_based_recommendations` yang bertujuan untuk menghasilkan daftar destinasi wisata yang paling relevan atau mirip dengan destinasi yang dipilih pengguna.
 
@@ -564,7 +565,7 @@ def show_recommendations(place_name, similarity_matrix, df_recommendation, df_to
     display(recommended_destinations)
 ```
 
-#### **d. Hasil Rekomendasi**
+#### **3.1.3. Hasil Rekomendasi**
 
 Sebagai studi kasus, destinasi **Wisata Alam Kalibiru** digunakan sebagai acuan untuk pencarian destinasi lain yang mirip. Hasil rekomendasi disajikan berdasarkan dua pendekatan:
 
