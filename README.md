@@ -459,6 +459,62 @@ Untuk masing-masing kolom, dilakukan proses sebagai berikut:
 
 Matriks TF-IDF yang dihasilkan kemudian digunakan sebagai dasar untuk mengukur kesamaan antar destinasi dan mendukung sistem rekomendasi berbasis konten.
 
+### 2.5. Persiapan Data (Collaborative Filtering)
+
+#### **2.5.1. Mengambil Daftar User dan Place Unik**
+
+Langkah pertama pada tahap ini adalah memperoleh daftar unik pengguna (user) dan tempat (place) yang terdapat dalam data rating. Hal ini dilakukan untuk merepresentasikan masing-masing entitas tersebut sebagai indeks numerik, yang diperlukan dalam proses pelatihan model Collaborative Filtering.
+
+```python
+user_ids = df_ratings['User_Id'].unique().tolist()
+place_ids = df_ratings['Place_Id'].unique().tolist()
+
+print('list User_Id: ', user_ids)
+print('list Place_Id: ', place_ids)
+```
+
+Output dari perintah ini akan menghasilkan dua buah list yang berisi seluruh `User_Id` dan `Place_Id` unik dalam dataset. Hasil ini akan digunakan untuk melakukan encoding pada langkah berikutnya.
+
+#### **2.5.2. Melakukan Encoding pada `User_Id` dan `Place_Id`**
+
+Karena algoritma pembelajaran mesin tidak dapat langsung bekerja dengan data kategori dalam bentuk string atau integer tidak berurut, maka dilakukan proses encoding. Encoding ini bertujuan untuk mengubah `User_Id` dan `Place_Id` menjadi indeks integer yang berurutan dimulai dari 0. Proses ini menggunakan dictionary untuk memetakan nilai asli ke nilai yang sudah diencode, serta dictionary sebaliknya untuk keperluan decoding hasil prediksi nantinya.
+
+```python
+# Melakukan encoding pada User_Id
+user_to_user_encoded = {user_id: idx for idx, user_id in enumerate(user_ids)}
+user_encoded_to_user = {idx: user_id for idx, user_id in enumerate(user_ids)}
+
+# Melakukan encoding pada Place_Id
+place_to_place_encoded = {place_id: idx for idx, place_id in enumerate(place_ids)}
+place_encoded_to_place = {idx: place_id for idx, place_id in enumerate(place_ids)}
+
+# Menampilkan hasil encoding
+print('encoded angka ke User_Id: ', user_encoded_to_user)
+print('encoded angka ke Place_Id: ', place_encoded_to_place)
+```
+
+Dengan encoding ini, setiap `User_Id` dan `Place_Id` telah dikonversi ke format numerik. Sebagai contoh, `User_Id` bernilai 1 mungkin di-encode menjadi 0, `User_Id` bernilai 2 menjadi 1, dan seterusnya. Proses ini menjadikan data lebih siap untuk dimasukkan ke dalam model pembelajaran mesin, khususnya model berbasis embedding yang umum digunakan dalam sistem rekomendasi.
+
+#### **2.5.3. Transformasi Data Rating**
+
+Selanjutnya, data rating asli akan ditransformasikan menjadi bentuk baru yang menggunakan nilai hasil encoding. Langkah ini akan menghasilkan dataset baru dengan kolom `user`, `place`, dan `rating`, di mana `user` dan `place` sudah dalam bentuk integer hasil encoding.
+
+```python
+# Transformasi nilai User_Id dan Place_Id ke bentuk encoded
+df_ratings['user'] = df_ratings['User_Id'].map(user_to_user_encoded)
+df_ratings['place'] = df_ratings['Place_Id'].map(place_to_place_encoded)
+
+# Menyusun dataframe baru dengan kolom yang sudah diencoding
+df_encoded = df_ratings[['user', 'place', 'Rating']]
+
+# Menampilkan data hasil encoding
+df_encoded.head()
+```
+
+Dengan hasil ini, dataframe `df_encoded` siap digunakan sebagai input untuk membangun model Collaborative Filtering. Kolom `user` dan `place` akan digunakan sebagai input ke model, sedangkan `Rating` akan menjadi target yang diprediksi.
+
+
+
 
 <br>
 
@@ -625,59 +681,7 @@ Berikut hasil rekomendasi:
 
 Pada tahap ini, dilakukan beberapa proses awal untuk menyiapkan data sebelum dimodelkan menggunakan metode Collaborative Filtering. Data yang digunakan adalah data rating pengguna terhadap tempat wisata, yang terdiri atas tiga kolom utama: `User_Id`, `Place_Id`, dan `Rating`. Berikut adalah tahapan persiapan data yang dilakukan:
 
-#### **a. Mengambil Daftar User dan Place Unik**
-
-Langkah pertama adalah memperoleh daftar unik dari pengguna (user) dan tempat (place) yang terdapat dalam data rating. Hal ini penting karena dalam Collaborative Filtering, kita perlu merepresentasikan pengguna dan tempat sebagai indeks integer untuk keperluan pelatihan model.
-
-```python
-user_ids = df_ratings['User_Id'].unique().tolist()
-place_ids = df_ratings['Place_Id'].unique().tolist()
-
-print('list User_Id: ', user_ids)
-print('list Place_Id: ', place_ids)
-```
-
-Output dari perintah ini akan menghasilkan dua buah list yang berisi seluruh `User_Id` dan `Place_Id` unik dalam dataset. Hasil ini akan digunakan untuk melakukan encoding pada langkah berikutnya.
-
-#### **b. Melakukan Encoding pada `User_Id` dan `Place_Id`**
-
-Karena algoritma pembelajaran mesin tidak dapat langsung bekerja dengan data kategori dalam bentuk string atau integer tidak berurut, maka dilakukan proses encoding. Encoding ini bertujuan untuk mengubah `User_Id` dan `Place_Id` menjadi indeks integer yang berurutan dimulai dari 0. Proses ini menggunakan dictionary untuk memetakan nilai asli ke nilai yang sudah diencode, serta dictionary sebaliknya untuk keperluan decoding hasil prediksi nantinya.
-
-```python
-# Melakukan encoding pada User_Id
-user_to_user_encoded = {user_id: idx for idx, user_id in enumerate(user_ids)}
-user_encoded_to_user = {idx: user_id for idx, user_id in enumerate(user_ids)}
-
-# Melakukan encoding pada Place_Id
-place_to_place_encoded = {place_id: idx for idx, place_id in enumerate(place_ids)}
-place_encoded_to_place = {idx: place_id for idx, place_id in enumerate(place_ids)}
-
-# Menampilkan hasil encoding
-print('encoded angka ke User_Id: ', user_encoded_to_user)
-print('encoded angka ke Place_Id: ', place_encoded_to_place)
-```
-
-Dengan encoding ini, setiap `User_Id` dan `Place_Id` telah dikonversi ke format numerik. Sebagai contoh, `User_Id` bernilai 1 mungkin di-encode menjadi 0, `User_Id` bernilai 2 menjadi 1, dan seterusnya. Proses ini menjadikan data lebih siap untuk dimasukkan ke dalam model pembelajaran mesin, khususnya model berbasis embedding yang umum digunakan dalam sistem rekomendasi.
-
-#### **c. Transformasi Data Rating**
-
-Selanjutnya, data rating asli akan ditransformasikan menjadi bentuk baru yang menggunakan nilai hasil encoding. Langkah ini akan menghasilkan dataset baru dengan kolom `user`, `place`, dan `rating`, di mana `user` dan `place` sudah dalam bentuk integer hasil encoding.
-
-```python
-# Transformasi nilai User_Id dan Place_Id ke bentuk encoded
-df_ratings['user'] = df_ratings['User_Id'].map(user_to_user_encoded)
-df_ratings['place'] = df_ratings['Place_Id'].map(place_to_place_encoded)
-
-# Menyusun dataframe baru dengan kolom yang sudah diencoding
-df_encoded = df_ratings[['user', 'place', 'Rating']]
-
-# Menampilkan data hasil encoding
-df_encoded.head()
-```
-
-Dengan hasil ini, dataframe `df_encoded` siap digunakan sebagai input untuk membangun model Collaborative Filtering. Kolom `user` dan `place` akan digunakan sebagai input ke model, sedangkan `Rating` akan menjadi target yang diprediksi.
-
-#### d. Mendapatkan Rekomendasi
+#### 3.2.1. Mendapatkan Rekomendasi
 
 Fungsi utama yang digunakan adalah `recommend_by_collaborative_filtering`, yang bertugas mengembalikan daftar tempat wisata yang direkomendasikan untuk seorang pengguna berdasarkan model Collaborative Filtering.
 
@@ -750,7 +754,7 @@ def recommend_by_collaborative_filtering(user_id, model, data, place_encoded_to_
     return recommended_destinations
 ```
 
-#### e. Hasil Rekomendasi
+#### 3.2.2. Hasil Rekomendasi
 
 Penulis mengambil satu contoh `User_Id` secara acak dari dataset `df_collaborative`, yaitu `User ID: 28`.
 
