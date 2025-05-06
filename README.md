@@ -300,6 +300,7 @@ Gambar 1e. Distribusi 10 destinasi wisata dengan jumlah rating terbanyak
 Masing-masing destinasi dalam daftar hanya menyumbang kurang dari 0.5% dari total rating yang ada. Hal ini menandakan bahwa tidak ada satu destinasi pun yang mendominasi secara signifikan dalam hal interaksi pengguna.
 
 Temuan ini memiliki dua implikasi utama:
+
 - Distribusi rating yang merata merupakan indikasi bahwa pengguna menjelajahi berbagai destinasi secara cukup seimbang. Ini dapat dianggap sebagai sinyal sistem data yang sehat, tanpa ketergantungan pada satu atau dua tempat populer.
 - Tantangan dalam sistem rekomendasi: Karena tidak ada satu destinasi yang secara drastis menonjol, model rekomendasi tidak bisa hanya mengandalkan metrik popularitas (seperti total rating). Oleh karena itu, pendekatan berbasis konten (misalnya berdasarkan preferensi kategori dan deskripsi) akan lebih efektif dalam meningkatkan relevansi saran destinasi.
 
@@ -310,6 +311,7 @@ Temuan ini memiliki dua implikasi utama:
 Gambar 1f. Analisis Distribusi Fitur Numerik (df_tourism)
 
 Analisis ini bertujuan untuk memahami pola distribusi dari setiap fitur numerik dalam dataset `df_tourism`. Visualisasi berupa histogram dan kurva KDE (Kernel Density Estimation) memberikan gambaran awal terhadap penyebaran dan bentuk distribusi data.
+
 - Fitur `Place_Id` dan `Unnamed: 12` memiliki distribusi yang identik dan menyerupai distribusi seragam. Hal ini mengindikasikan bahwa ID tempat diberikan secara merata tanpa ada kecenderungan klaster atau lonjakan nilai tertentu. Kemungkinan besar `Unnamed: 12` merupakan duplikat dari `Place_Id` dan perlu dihapus dalam tahap praproses data.
 - Distribusi harga `(Price)` sangat miring ke kanan `(right-skewed)`, dengan mayoritas nilai terkonsentrasi di bawah Rp 100.000. Terdapat outlier dengan harga sangat tinggi (> Rp 800.000). Distribusi ini menunjukkan bahwa sebagian besar tempat wisata cenderung berbiaya rendah atau gratis, sementara hanya sebagian kecil yang memiliki harga tinggi.
 - Distribusi `Rating` mendekati distribusi normal dengan puncak pada nilai 4.4–4.6. Hal ini menunjukkan bahwa sebagian besar tempat wisata mendapatkan penilaian yang cukup tinggi dari pengunjung. Tidak terdapat nilai ekstrim di bawah 3.5 atau di atas 5, yang menandakan data rating relatif bersih dan stabil.
@@ -318,12 +320,12 @@ Analisis ini bertujuan untuk memahami pola distribusi dari setiap fitur numerik 
 - Fitur `Unnamed: 11` sepenuhnya kosong (hanya menunjukkan frekuensi 0 pada semua nilai). Ini merupakan kolom tidak relevan yang kemungkinan berasal dari hasil ekspor CSV dan perlu dihapus pada tahap pembersihan data.
 
 Kesimpulan:
+
 - Fitur `Rating` memiliki distribusi mendekati normal, menunjukkan konsistensi penilaian dari para pengguna terhadap destinasi wisata.
 - Kolom `Unnamed: 12` merupakan duplikat dari `Place_Id` dan perlu dihapus pada tahap praprosesan karena tidak memberikan informasi tambahan.
 - Kolom `Unnamed: 11` merupakan kolom kosong tanpa nilai dan juga perlu dibuang.
 - Fitur geografis seperti `Lat` (Latitude) dan `Long` (Longitude) tidak digunakan dalam sistem rekomendasi berbasis konten (content-based) maupun kolaboratif (collaborative filtering), sehingga dapat diabaikan dalam tahap pemodelan.
 - Informasi terkait distribusi miring ke kanan maupun kemungkinan outlier juga diabaikan karena tidak relevan untuk fokus utama sistem rekomendasi yang akan dibangun.
-
 
 <br>
 
@@ -441,21 +443,20 @@ Langkah-Langkah Preprocessing:
 
   Karena proses preprocessing ini cukup memakan waktu, dataset hasil akhir disimpan dalam sebuah file CSV bernama `data_recommendation_preprocessed.csv`. Dengan cara ini, proses eksperimen selanjutnya dapat dilakukan tanpa perlu mengulangi tahap preprocessing dari awal.
 
-
 #### **2.4.2. Ekstraksi Fitur Teks dengan TF-IDF**
 
 Dalam membangun sistem rekomendasi berbasis Content-Based Filtering, representasi numerik dari data teks menjadi kunci dalam mengidentifikasi kemiripan antar destinasi wisata. Salah satu teknik yang digunakan adalah `TF-IDF (Term Frequency–Inverse Document Frequency)`, yang memungkinkan pemetaan teks ke dalam bentuk vektor numerik berdasarkan pentingnya suatu kata dalam dokumen relatif terhadap seluruh korpus.
 
 Deskripsi dan kategori destinasi digabungkan dan kemudian direpresentasikan dalam bentuk vektor numerik menggunakan TF-IDF, yang menekankan pentingnya kata-kata unik di setiap destinasi. Teknik ini diterapkan pada dua kolom berbeda:
 
-  - `Tags`: Gabungan antara deskripsi dan kategori.
-  - `Description_Preprocessed`: Deskripsi destinasi setelah melalui tahap praproses.
+- `Tags`: Gabungan antara deskripsi dan kategori.
+- `Description_Preprocessed`: Deskripsi destinasi setelah melalui tahap praproses.
 
 Untuk masing-masing kolom, dilakukan proses sebagai berikut:
 
-  - Inisialisasi `TfidfVectorizer` dengan parameter seperti `max_features=5000`, `ngram_range=(1,2)`, dan `min_df=2`.
-  - Fit dan transformasi teks menjadi matriks numerik.
-  - Visualisasi sebagian matriks TF-IDF untuk menganalisis kata-kata penting per destinasi.
+- Inisialisasi `TfidfVectorizer` dengan parameter seperti `max_features=5000`, `ngram_range=(1,2)`, dan `min_df=2`.
+- Fit dan transformasi teks menjadi matriks numerik.
+- Visualisasi sebagian matriks TF-IDF untuk menganalisis kata-kata penting per destinasi.
 
 Matriks TF-IDF yang dihasilkan kemudian digunakan sebagai dasar untuk mengukur kesamaan antar destinasi dan mendukung sistem rekomendasi berbasis konten.
 
@@ -505,16 +506,45 @@ df_ratings['user'] = df_ratings['User_Id'].map(user_to_user_encoded)
 df_ratings['place'] = df_ratings['Place_Id'].map(place_to_place_encoded)
 
 # Menyusun dataframe baru dengan kolom yang sudah diencoding
-df_encoded = df_ratings[['user', 'place', 'Rating']]
+df_collaborative = df_ratings[['user', 'place', 'Rating']]
 
 # Menampilkan data hasil encoding
-df_encoded.head()
+df_collaborative.head()
 ```
 
-Dengan hasil ini, dataframe `df_encoded` siap digunakan sebagai input untuk membangun model Collaborative Filtering. Kolom `user` dan `place` akan digunakan sebagai input ke model, sedangkan `Rating` akan menjadi target yang diprediksi.
+Dengan hasil ini, dataframe `df_collaborative` siap digunakan sebagai input untuk membangun model Collaborative Filtering. Kolom `user` dan `place` akan digunakan sebagai input ke model, sedangkan `Rating` akan menjadi target yang diprediksi.
 
+#### **2.5.4. Normalisasi Rating**
 
+Pada tahap ini, dilakukan normalisasi terhadap kolom `Place_Ratings` agar nilai rating berada dalam `rentang [0, 1]`. Tujuannya adalah untuk memastikan bahwa semua nilai rating memiliki skala yang seragam, sehingga model dapat memproses data secara lebih optimal tanpa bias terhadap nilai numerik yang lebih besar.
 
+Normalisasi dilakukan menggunakan rumus berikut:
+
+$$
+\text{normalized\_rating} = \frac{(x - \text{min})}{(\text{max} - \text{min})}
+$$
+
+Berikut merupakan potongan kode Python yang digunakan untuk melakukan normalisasi:
+
+```python
+# Menentukan nilai minimum dan maksimum rating
+min_rating = df_collaborative['Place_Ratings'].min()
+max_rating = df_collaborative['Place_Ratings'].max()
+
+# Melakukan normalisasi rating ke rentang [0, 1]
+df_collaborative['normalized_rating'] = df_collaborative['Place_Ratings'].apply(
+    lambda x: (x - min_rating) / (max_rating - min_rating)
+)
+```
+
+Tabel hasil normalisasi rating ditampilkan sebagai berikut:
+
+| User_Id | Place_Id | Place_Ratings | user | place | normalized_rating |
+| ------- | -------- | ------------- | ---- | ----- | ----------------- |
+| 1       | 179      | 3             | 0    | 0     | 0.50              |
+| 1       | 344      | 2             | 0    | 1     | 0.25              |
+
+Tabel 2d Contoh hasil normalisasi rating pengguna terhadap tempat wisata tertentu.
 
 <br>
 
@@ -980,49 +1010,49 @@ Berdasarkan hasil evaluasi pada model Content-Based Filtering dan Collaborative 
 
 Kelebihan:
 
-  - **Akurat dalam merekomendasikan item yang serupa secara konten**
+- **Akurat dalam merekomendasikan item yang serupa secara konten**
 
-    Terbukti dari Precision@10 yang mencapai 100%, artinya semua rekomendasi benar-benar relevan berdasarkan kategori (Budaya) dan tag yang mirip.
+  Terbukti dari Precision@10 yang mencapai 100%, artinya semua rekomendasi benar-benar relevan berdasarkan kategori (Budaya) dan tag yang mirip.
 
-  - **Efektif untuk kasus cold-start (pengguna baru)**
+- **Efektif untuk kasus cold-start (pengguna baru)**
 
-    Karena tidak bergantung pada data interaksi pengguna lain, sistem tetap bisa memberikan rekomendasi meskipun belum ada riwayat aktivitas pengguna.
+  Karena tidak bergantung pada data interaksi pengguna lain, sistem tetap bisa memberikan rekomendasi meskipun belum ada riwayat aktivitas pengguna.
 
-  - **Transparansi rekomendasi**
+- **Transparansi rekomendasi**
 
-    Sistem dapat menjelaskan alasan suatu rekomendasi diberikan (misalnya karena kesamaan kategori atau deskripsi).
+  Sistem dapat menjelaskan alasan suatu rekomendasi diberikan (misalnya karena kesamaan kategori atau deskripsi).
 
 Kekurangan:
 
-  - **Kurang mampu memberikan variasi rekomendasi**
+- **Kurang mampu memberikan variasi rekomendasi**
 
-    Karena hanya merekomendasikan item yang mirip dengan item yang sudah dikenal, model cenderung terbatas pada jenis item tertentu (overspecialization).
+  Karena hanya merekomendasikan item yang mirip dengan item yang sudah dikenal, model cenderung terbatas pada jenis item tertentu (overspecialization).
 
-  - **Deskripsi yang tidak informatif akan menurunkan performa**
+- **Deskripsi yang tidak informatif akan menurunkan performa**
 
-    Jika suatu tempat memiliki deskripsi pendek atau tidak spesifik, kesamaan konten menjadi sulit diukur secara efektif.
+  Jika suatu tempat memiliki deskripsi pendek atau tidak spesifik, kesamaan konten menjadi sulit diukur secara efektif.
 
 #### 4.5.2. `Collaborative Filtering`
 
 Kelebihan:
 
-  - **Mampu menangkap pola preferensi yang kompleks**
+- **Mampu menangkap pola preferensi yang kompleks**
 
-    Evaluasi menunjukkan nilai RMSE = 0.3642 dan MAE = 0.3145, artinya model cukup akurat dalam memprediksi rating berdasarkan data interaksi.
+  Evaluasi menunjukkan nilai RMSE = 0.3642 dan MAE = 0.3145, artinya model cukup akurat dalam memprediksi rating berdasarkan data interaksi.
 
-  - **Dapat merekomendasikan item yang tidak mirip secara konten**
+- **Dapat merekomendasikan item yang tidak mirip secara konten**
 
-    Karena berdasarkan pola pengguna, sistem bisa mengenalkan destinasi yang berbeda tapi disukai oleh pengguna serupa, sehingga lebih bervariasi.
+  Karena berdasarkan pola pengguna, sistem bisa mengenalkan destinasi yang berbeda tapi disukai oleh pengguna serupa, sehingga lebih bervariasi.
 
 Kekurangan:
 
-  - **Rentan terhadap cold-start problem**
+- **Rentan terhadap cold-start problem**
 
-    Sistem kesulitan memberikan rekomendasi untuk pengguna atau item baru karena belum ada data interaksi.
+  Sistem kesulitan memberikan rekomendasi untuk pengguna atau item baru karena belum ada data interaksi.
 
-  - **Kurang transparan (black box)**
+- **Kurang transparan (black box)**
 
-    Sulit menjelaskan mengapa suatu tempat direkomendasikan karena rekomendasi didasarkan pada pola matematis dari interaksi, bukan konten yang bisa dijelaskan.
+  Sulit menjelaskan mengapa suatu tempat direkomendasikan karena rekomendasi didasarkan pada pola matematis dari interaksi, bukan konten yang bisa dijelaskan.
 
 <br>
 
@@ -1030,32 +1060,35 @@ Kekurangan:
 
 Problem Statements:
 
-  - Bagaimana cara memberikan rekomendasi destinasi wisata yang relevan berdasarkan deskripsi dan kategori konten?
+- Bagaimana cara memberikan rekomendasi destinasi wisata yang relevan berdasarkan deskripsi dan kategori konten?
 
-    → Pendekatan Content-Based Filtering berhasil menjawab masalah ini dengan menggunakan informasi deskriptif dan kategori dari destinasi. Evaluasi dengan Precision@10 menghasilkan akurasi hingga 100%, menunjukkan bahwa sistem mampu memberikan rekomendasi yang sangat relevan terhadap preferensi pengguna.
+  → Pendekatan Content-Based Filtering berhasil menjawab masalah ini dengan menggunakan informasi deskriptif dan kategori dari destinasi. Evaluasi dengan Precision@10 menghasilkan akurasi hingga 100%, menunjukkan bahwa sistem mampu memberikan rekomendasi yang sangat relevan terhadap preferensi pengguna.
 
-  - Bagaimana cara menggunakan data rating pengguna untuk meningkatkan akurasi rekomendasi?
+- Bagaimana cara menggunakan data rating pengguna untuk meningkatkan akurasi rekomendasi?
 
-    → Pendekatan Collaborative Filtering membuktikan bahwa pola penilaian pengguna lain dapat dimanfaatkan untuk menghasilkan rekomendasi yang bersifat personal dan lebih akurat. Model ini mampu mencapai RMSE sebesar 0.3642 dan MAE sebesar 0.3145, menandakan bahwa sistem memiliki kesalahan prediksi yang rendah.
+  → Pendekatan Collaborative Filtering membuktikan bahwa pola penilaian pengguna lain dapat dimanfaatkan untuk menghasilkan rekomendasi yang bersifat personal dan lebih akurat. Model ini mampu mencapai RMSE sebesar 0.3642 dan MAE sebesar 0.3145, menandakan bahwa sistem memiliki kesalahan prediksi yang rendah.
 
-  - Bagaimana cara mengukur relevansi rekomendasi agar sistem dapat memberikan hasil yang tepat?
+- Bagaimana cara mengukur relevansi rekomendasi agar sistem dapat memberikan hasil yang tepat?
 
-    → Evaluasi dilakukan menggunakan metrik yang sesuai dengan pendekatannya: Precision@10 untuk pendekatan berbasis konten, serta RMSE dan MAE untuk pendekatan kolaboratif. Penggunaan metrik ini memastikan bahwa rekomendasi tidak hanya personal tetapi juga tepat sasaran dan dapat dipertanggungjawabkan secara kuantitatif.
+  → Evaluasi dilakukan menggunakan metrik yang sesuai dengan pendekatannya: Precision@10 untuk pendekatan berbasis konten, serta RMSE dan MAE untuk pendekatan kolaboratif. Penggunaan metrik ini memastikan bahwa rekomendasi tidak hanya personal tetapi juga tepat sasaran dan dapat dipertanggungjawabkan secara kuantitatif.
 
 Goals:
-  - Membangun sistem rekomendasi yang mampu memberikan rekomendasi tempat wisata secara personal berdasarkan konten dan perilaku pengguna.
-  - Meningkatkan kepuasan pengguna melalui sistem yang mampu menyesuaikan saran destinasi dengan preferensi individual tanpa bergantung pada pencarian manual.
-  - Mendorong eksposur destinasi yang kurang populer namun potensial melalui personalisasi dan pemanfaatan data historis.
+
+- Membangun sistem rekomendasi yang mampu memberikan rekomendasi tempat wisata secara personal berdasarkan konten dan perilaku pengguna.
+- Meningkatkan kepuasan pengguna melalui sistem yang mampu menyesuaikan saran destinasi dengan preferensi individual tanpa bergantung pada pencarian manual.
+- Mendorong eksposur destinasi yang kurang populer namun potensial melalui personalisasi dan pemanfaatan data historis.
 
 Solution Statements:
-  - Pendekatan Content-Based Filtering dilakukan dengan mengolah deskripsi dan kategori destinasi menggunakan teknik TF-IDF Vectorizer, kemudian menghitung cosine similarity antar destinasi untuk menghasilkan rekomendasi yang mirip dengan tempat favorit pengguna.
-  - Evaluasi menggunakan Precision@10 menunjukkan bahwa sistem dapat memberikan 10 rekomendasi yang seluruhnya relevan terhadap masukan awal pengguna.
-  - Pendekatan Collaborative Filtering dibangun menggunakan teknik embedding pada data rating pengguna dan destinasi, disertai normalisasi data untuk meningkatkan stabilitas model. Prediksi dilakukan dengan model neural network sederhana.
-  - Evaluasi model menggunakan Root Mean Square Error (RMSE) dan Mean Absolute Error (MAE) menunjukkan performa yang sangat baik dan minim kesalahan prediksi.
+
+- Pendekatan Content-Based Filtering dilakukan dengan mengolah deskripsi dan kategori destinasi menggunakan teknik TF-IDF Vectorizer, kemudian menghitung cosine similarity antar destinasi untuk menghasilkan rekomendasi yang mirip dengan tempat favorit pengguna.
+- Evaluasi menggunakan Precision@10 menunjukkan bahwa sistem dapat memberikan 10 rekomendasi yang seluruhnya relevan terhadap masukan awal pengguna.
+- Pendekatan Collaborative Filtering dibangun menggunakan teknik embedding pada data rating pengguna dan destinasi, disertai normalisasi data untuk meningkatkan stabilitas model. Prediksi dilakukan dengan model neural network sederhana.
+- Evaluasi model menggunakan Root Mean Square Error (RMSE) dan Mean Absolute Error (MAE) menunjukkan performa yang sangat baik dan minim kesalahan prediksi.
 
 Dengan demikian, dua pendekatan yang digunakan, yaitu Content-Based Filtering dan Collaborative Filtering, berhasil menjawab semua problem statement dan memenuhi tujuan proyek, serta memberikan dampak nyata terhadap pengembangan pariwisata berbasis data.
 
 Setiap solusi yang diimplementasikan memiliki kontribusi yang signifikan:
+
 - Pendekatan Content-Based Filtering berbasis TF-IDF dan cosine similarity memungkinkan sistem memberikan rekomendasi relevan bahkan ketika pengguna belum banyak berinteraksi dengan sistem. Hal ini berdampak langsung pada penyelesaian masalah cold start pada pengguna baru dan memperkuat personalisasi, sesuai dengan temuan `Syakura (2024)`.
 - Evaluasi menggunakan metrik `Precision@10` memastikan bahwa rekomendasi yang diberikan sistem benar-benar relevan, sehingga mengurangi beban pengguna dalam menyaring informasi yang terlalu banyak dan mendukung pengalaman wisata yang lebih efisien.
 - Pendekatan Collaborative Filtering melalui embedding dan normalisasi berhasil memetakan pola perilaku pengguna lain, sehingga mampu merekomendasikan destinasi yang belum populer namun sesuai dengan minat pengguna. Ini mendukung pemerataan promosi destinasi wisata yang selama ini kurang terekspos, sebagaimana dikemukakan oleh `Cholil et al. (2023)`.
