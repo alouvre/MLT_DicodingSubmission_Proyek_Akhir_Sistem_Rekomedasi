@@ -166,6 +166,8 @@ import kagglehub
 
 from IPython.display import display, HTML
 
+import shutil
+
 # Mount Google Drive
 drive.mount('/content/drive')
 
@@ -305,7 +307,7 @@ Setelah data berhasil dikumpulkan, dilakukan evaluasi kualitas data melalui bebe
 
     Dilakukan pengecekan apakah terdapat kolom yang memuat informasi yang sama (kolom duplikat), karena keberadaan kolom seperti ini dapat menyebabkan redundansi dan perlu dihapus untuk efisiensi.
 
-#### 2.5.1. Menilai Data
+#### **2.5.1. Menilai Data**
 
 ##### **a. Data Tourism**
 """
@@ -416,7 +418,7 @@ duplicate_user_place
 
 #### **2.5.3. Cek Missing Value**
 
-Selanjutnya, kita akan melakukan pemeriksaan terhadap missing values dalam dataset. Nilai yang hilang dapat mempengaruhi hasil analisis maupun kinerja model rekomendasi, sehingga perlu diidentifikasi terlebih dahulu kolom mana saja yang mengandung data kosong.
+Selanjutnya, dilakukan pemeriksaan terhadap missing values dalam dataset. Nilai yang hilang dapat mempengaruhi hasil analisis maupun kinerja model rekomendasi, sehingga perlu diidentifikasi terlebih dahulu kolom mana saja yang mengandung data kosong.
 """
 
 # Cek missing values untuk tourism_with_id.csv
@@ -436,14 +438,12 @@ print((df_ratings.isnull().sum()))
 
 Dalam proses evaluasi data, penting untuk mengidentifikasi kolom-kolom yang tidak relevan atau redundan. Kolom yang tidak memuat informasi berguna atau hanya merupakan salinan dari kolom lain dapat menyebabkan redundansi dan memperbesar ukuran dataset secara tidak perlu. Oleh karena itu, perlu dilakukan pemeriksaan lebih lanjut sebelum memutuskan untuk menghapusnya.
 
-Saat meninjau struktur dataset, saya menyadari ada sebuah kolom tambahan bernama `Unnamed: 12` yang tampaknya tidak familiar dan sekilas terlihat mirip dengan `Place_Id`. Hal ini membuat saya penasaran, apakah kolom ini benar-benar memuat informasi baru atau hanya sekadar salinan dari kolom yang sudah ada.
-
-Untuk menjawab rasa penasaran tersebut, saya memutuskan untuk menampilkan kedua kolom tersebut berdampingan.
+Saat meninjau struktur dataset, ditemukan sebuah kolom tambahan bernama `Unnamed: 12` yang tampaknya tidak familiar dan sekilas terlihat mirip dengan `Place_Id`. Untuk mengetahui apakah kolom ini memuat informasi baru atau hanya merupakan salinan dari kolom yang sudah ada, kedua kolom ditampilkan secara berdampingan untuk dilakukan pemeriksaan lebih lanjut.
 """
 
 df_tourism[['Place_Id', 'Unnamed: 12']]
 
-"""Dapat dilihat bahwa nilai-nilai yang muncul di kedua kolom tersebut tampak identik. Namun, untuk memastikan bahwa semua data benar-benar sama dan tidak ada perbedaan tersembunyi, saya melakukan pengecekan lebih lanjut dengan membandingkan seluruh isi kedua kolom."""
+"""Terlihat bahwa nilai-nilai pada kedua kolom tersebut tampak identik. Namun, untuk memastikan bahwa tidak terdapat perbedaan tersembunyi, dilakukan pengecekan lanjutan dengan membandingkan seluruh isi kedua kolom secara menyeluruh."""
 
 # Cek apakah semua nilai di Place_Id dan Unnamed: 12 sama persis
 (df_tourism['Place_Id'] == df_tourism['Unnamed: 12']).all()
@@ -719,6 +719,8 @@ plt.show()
 Pada tahap data preparation, dilakukan serangkaian langkah untuk memastikan bahwa data yang digunakan dalam proses pemodelan bersih, terstruktur, dan siap untuk dianalisis. Tahapan ini mencakup pembersihan data, penggabungan dataset, pengolahan teks, encoding variabel kategorikal, normalisasi rating, dan pembagian data menjadi set pelatihan dan pengujian.
 
 ### 4.1. Menghapus Kolom Yang Tidak Diperlukan
+
+Untuk menyederhanakan struktur data serta memastikan hanya informasi yang relevan digunakan dalam proses analisis dan pengembangan sistem rekomendasi, dilakukan penghapusan terhadap beberapa kolom yang dinilai tidak memiliki kontribusi signifikan. Proses ini menggunakan perintah:
 """
 
 # Membuang kolom yang tidak dipakai
@@ -728,9 +730,23 @@ df_tourism_cleaned = df_tourism.drop(['City', 'Price', 'Time_Minutes', 'Coordina
 print("\nKolom setelah penghapusan:")
 df_tourism_cleaned.columns
 
+"""Pertimbangan penghapusan kolom adalah sebagai berikut:
+
+- Kolom `Time_Minutes` memiliki jumlah nilai yang hilang cukup besar, yakni sebanyak 232 baris, sehingga dianggap kurang representatif untuk dianalisis lebih lanjut.
+- `Unnamed: 11` merupakan kolom kosong tanpa informasi yang berguna, sehingga dikeluarkan dari dataset.
+- Kolom seperti `City`, `Price`, `Coordinate`, `Lat`, dan `Long` juga dihapus karena pendekatan yang digunakan bersifat berbasis konten (content-based) dengan fokus pada analisis teks dari deskripsi dan kategori. Kolom-kolom tersebut tidak memberikan kontribusi langsung terhadap representasi semantik yang dianalisis melalui cosine similarity. Namun, kolom-kolom ini tetap dapat dipertimbangkan untuk pengembangan sistem berbasis konteks lokasi atau harga di masa mendatang.
+
+Hasil dari proses ini disimpan dalam variabel baru bernama `df_tourism_cleaned`, yang berisi versi dataset yang telah disederhanakan dan dibersihkan. Untuk memverifikasi hasil penghapusan, kolom-kolom dalam dataset tersebut ditampilkan melalui `df_tourism_cleaned.head()`.
+"""
+
 df_tourism_cleaned.head()
 
-"""### 4.2. Menghapus Data Yang Duplikat"""
+"""### 4.2. Menghapus Data Yang Duplikat
+
+Untuk menjaga integritas serta konsistensi data selama proses analisis dan pemodelan, seluruh baris yang teridentifikasi sebagai duplikat dihapus dari dataset menggunakan fungsi `drop_duplicates()`. Langkah ini penting dilakukan guna menghindari bias dan distorsi hasil analisis yang dapat muncul akibat data ganda.
+
+Setelah proses penghapusan, dilakukan verifikasi ulang untuk memastikan bahwa tidak ada lagi baris duplikat yang tersisa dalam dataset.
+"""
 
 # Mengecek dan menghapus duplikasi pada dataset df_ratings
 print("Jumlah Duplikasi pada df_ratings Sebelum Dihapus:", df_ratings.duplicated().sum())
@@ -750,10 +766,21 @@ df_tourism_cleaned = df_tourism_cleaned.drop_duplicates()
 # Mengecek kembali setelah penghapusan
 print("Jumlah Duplikasi pada df_tourism_cleaned Setelah Dihapus:", df_tourism_cleaned.duplicated().sum())
 
-"""### 4.3. Menggabungkan Dataset"""
+"""Dengan tidak adanya duplikasi yang tersisa, dataset kini berada dalam kondisi yang lebih bersih dan siap untuk digunakan dalam tahap analisis lebih lanjut maupun pembangunan sistem rekomendasi.
 
-# Menggabungkan dataset rating dengan dataset destinasi wisata
-# Tujuannya untuk membentuk dataset rekomendasi berbasis rata-rata rating setiap destinasi.
+### 4.3. Menggabungkan Dataset
+
+Setelah proses pembersihan dilakukan pada kedua dataset, langkah selanjutnya adalah menggabungkan informasi dari data rating pengguna `(df_ratings)` dengan data destinasi wisata yang telah dibersihkan `(df_tourism_cleaned)`. Tujuan dari penggabungan ini adalah untuk membentuk dataset rekomendasi yang menyajikan informasi rata-rata rating dari setiap destinasi wisata berdasarkan data yang diberikan oleh pengguna.
+
+Penggabungan dilakukan melalui langkah-langkah berikut:
+- Menghitung Rata-rata Rating
+
+    Dataset df_ratings dikelompokkan berdasarkan kolom Place_Id, kemudian dihitung rata-rata dari kolom Place_Ratings untuk setiap destinasi. Proses ini menghasilkan dataframe baru yang berisi dua kolom: Place_Id dan Place_Ratings.
+
+- Penggabungan Dataset
+
+    Rata-rata rating yang telah dihitung kemudian digabungkan dengan dataset df_tourism_cleaned menggunakan fungsi pd.merge() dengan parameter on='Place_Id'. Penggabungan dilakukan berdasarkan kolom Place_Id yang merupakan kunci unik bagi setiap destinasi wisata.
+"""
 
 df_recommendation = pd.merge(
     # Hitung rata-rata rating untuk setiap destinasi berdasarkan 'Place_Id'.
@@ -765,6 +792,8 @@ df_recommendation = pd.merge(
     # Lakukan penggabungan berdasarkan kolom 'Place_Id' yang sama di kedua dataset.
     on='Place_Id'
 )
+
+"""Hasil akhir dari proses ini adalah dataframe `df_recommendation` yang menyatukan informasi deskriptif destinasi wisata dengan nilai rata-rata rating dari pengguna, dan siap digunakan sebagai basis sistem rekomendasi."""
 
 # Cek jumlah string kosong pada kolom 'Description' dan 'Category'
 empty_description = (df_recommendation['Description'].str.strip() == '').sum()
@@ -789,7 +818,9 @@ if df_recommendation['Place_Name'].duplicated().any():
 print("\nData Rekomendasi setelah penggabungan (Train Data):")
 display(df_recommendation)
 
-"""### 4.4. Preprocessing Text (Untuk Content Based Filtering)
+"""### 4.4. Persiapan Data (Content Based Filtering)
+
+#### 4.4.1. Preprocessing Text
 
 Dalam `sistem rekomendasi berbasis konten (content-based)`, kualitas representasi teks sangat berpengaruh terhadap akurasi hasil yang diberikan. Oleh karena itu, dilakukan tahapan pra-pemrosesan data teks untuk `memastikan bahwa informasi yang digunakan oleh model benar-benar relevan dan bermakna`. Langkah-langkah ini bertujuan `untuk mengurangi kebisingan (noise) pada data`, `menyatukan variasi kata yang memiliki arti sama`, serta `memperkaya konteks antar fitur`.
 
@@ -798,7 +829,7 @@ Untuk mendapatkan representasi teks yang lebih bersih dan bermakna, dilakukan be
 - `Normalisasi Teks`: Mengubah seluruh teks menjadi huruf kecil `(lowercase)` agar seragam.
 - `Stemming dan Stopword Removal`: Menggunakan library Sastrawi untuk menghilangkan kata-kata umum yang tidak bermakna `(stopwords)` dan mengembalikan kata ke bentuk dasarnya `(stemming)`, sehingga `meminimalkan variasi kata yang tidak perlu`.
 
-Penulis `menangani kata-kata dalam Bahasa Indonesia` menggunakan `pustaka Sastrawi` yang menyediakan fungsi stemming dan stopword removal.
+Kata-kata dalam Bahasa Indonesia ditangani menggunakan pustaka `Sastrawi` yang menyediakan fungsi stemming dan stopword removal.
 - `Stemming` digunakan untuk mengubah kata ke bentuk dasarnya, sehingga kata-kata seperti “berkunjung”, “mengunjungi”, dan “kunjungan” akan disederhanakan menjadi “kunjung”.
 - `Stopword removal` digunakan untuk menghapus kata-kata umum yang tidak memiliki makna signifikan seperti “dan”, “di”, atau “yang”.
 """
@@ -808,7 +839,7 @@ Penulis `menangani kata-kata dalam Bahasa Indonesia` menggunakan `pustaka Sastra
 stemmer = StemmerFactory().create_stemmer()  # Untuk melakukan stemming
 stopword = StopWordRemoverFactory().create_stop_word_remover()  # Untuk menghapus stopwords
 
-"""Dengan fungsi `preprocessing()`, penulis dapat mengubah teks menjadi huruf kecil, melakukan stemming, dan menghapus stopwords secara otomatis."""
+"""Dengan fungsi `preprocessing()` digunakan untuk mengubah teks menjadi huruf kecil, melakukan stemming, serta menghapus stopwords secara otomatis."""
 
 def preprocessing(text):
     """
@@ -825,10 +856,9 @@ def preprocessing(text):
     text = stopword.remove(text)  # Menghapus stopwords dari teks
     return text
 
-"""`Deskripsi` sebuah tempat memberi kita gambaran, sementara `kategori` memberitahu kita bagaimana tempat itu diklasifikasikan. Daripada memprosesnya terpisah, kami memutuskan untuk menyatukannya menjadi satu kolom baru: `Tags`.
-Kolom ini berisi informasi gabungan, seolah-olah tiap tempat bercerita tentang dirinya dengan dua nada yang berbeda namun saling melengkapi.
+"""`Deskripsi` dan `kategori` tempat memberikan dua jenis informasi yang saling melengkapi: `deskripsi` memberikan gambaran naratif, sedangkan `kategori` menunjukkan klasifikasi destinasi. Kedua informasi tersebut kemudian digabungkan ke dalam satu kolom baru bernama `Tags`. Kolom ini menyatukan aspek naratif dan kategorikal untuk memperkaya konteks tiap destinasi.
 
-Kolom `Tags` kemudian menjalani tahap preprocessing. Kata demi kata disederhanakan, dibersihkan, dan disiapkan agar mesin dapat melihatnya bukan sebagai kalimat biasa, tapi sebagai representasi numerik yang menggambarkan karakteristik tiap destinasi.
+Selanjutnya, kolom `Tags` menjalani tahap preprocessing berupa normalisasi teks, pembersihan, dan penyederhanaan agar dapat direpresentasikan dalam bentuk numerik yang dapat dipahami oleh mesin.
 """
 
 # Commented out IPython magic to ensure Python compatibility.
@@ -842,7 +872,7 @@ Kolom `Tags` kemudian menjalani tahap preprocessing. Kata demi kata disederhanak
 
 df_recommendation.head()
 
-"""Penulis juga melakukan hal yang sama secara khusus untuk kolom `Description`. Mengapa? Agar nantinya bisa `membandingkan hasil gabungan informasi (deskripsi + kategori) dengan hanya menggunakan deskripsi saja, tanpa tambahan kategori`. Pendekatan ini memungkinkan analisis perbandingan untuk melihat sejauh mana kontribusi kategori dalam meningkatkan relevansi hasil rekomendasi."""
+"""Proses preprocessing juga diterapkan secara terpisah pada kolom `Description`. Tujuannya adalah untuk memungkinkan analisis perbandingan antara representasi teks gabungan `(Description + Category)` dengan representasi yang hanya berasal dari deskripsi. Pendekatan ini bertujuan untuk mengevaluasi sejauh mana informasi dari kategori berkontribusi terhadap peningkatan relevansi hasil rekomendasi."""
 
 # Commented out IPython magic to ensure Python compatibility.
 # %%time
@@ -852,25 +882,16 @@ df_recommendation.head()
 # 
 # df_recommendation.head()
 
-"""Karena `proses ini cukup memakan waktu`, penulis menyimpan dataset yang telah diproses dalam sebuah file CSV. Dengan begitu, penulis tak perlu mengulangi semua langkah ini lagi jika ingin melakukan eksperimen baru. Semua sudah bersih, rapi, dan siap untuk dilatih."""
+"""Karena `proses ini cukup memakan waktu`, dataset yang telah diproses disimpan dalam sebuah file CSV. Langkah ini dilakukan untuk menghindari pengulangan proses yang sama saat melakukan eksperimen lanjutan. Dengan demikian, data yang digunakan sudah dalam kondisi bersih dan siap untuk digunakan pada tahap pelatihan model."""
 
 # Menyimpan Dataset Setelah Preprocessing
 df_recommendation.to_csv('data_recommendation_preprocessed.csv', index=False)
 
-"""## **5. Modelling and Result**
+"""#### 4.4.2. Ekstraksi Fitur Teks Menggunakan TF-IDF
 
-Berdasarkan Solution Approach yang menjadi pembatas bahasan, berikut merupakan penjelasan lebih detail dari kedua rincian tahapan modelling dan result dari masing-masing pendekatan:
+Untuk membangun `sistem rekomendasi berbasis Content-Based Filtering`, digunakan representasi numerik dari data teks yang bertujuan menangkap karakteristik unik dari setiap destinasi wisata. Salah satu pendekatan yang diterapkan adalah `TF-IDF (Term Frequency–Inverse Document Frequency)`, yaitu teknik populer yang digunakan untuk mengukur tingkat kepentingan suatu kata dalam sebuah dokumen relatif terhadap keseluruhan korpus.
 
-### **5.1. Model Development with Content-Based Filtering**
 
-Dengan menggunakan pendekatan Content-Based Filtering, tahapan modelling dan result akan melalui beberapa tahapan sebagai berikut:
-- Ekstraksi Fitur Teks Menggunakan TF-IDF.
-- Menerapkan Proses Cosine Similarity.
-- Mendapatkan Rekomendasi.
-
-#### 5.1.1. Ekstraksi Fitur Teks Menggunakan TF-IDF
-
-Untuk membangun `sistem rekomendasi berbasis Content-Based Filtering`, penulis memanfaatkan representasi numerik dari data teks yang mampu menangkap karakteristik masing-masing destinasi wisata. Salah satu pendekatan yang digunakan adalah `TF-IDF (Term Frequency–Inverse Document Frequency)`, sebuah teknik populer yang dapat mengukur seberapa penting suatu kata dalam suatu dokumen relatif terhadap seluruh korpus.
 
 Dalam penerapannya, skor dalam TF-IDF digunakan untuk mengidentifikasi istilah-istilah yang mengandung informasi penting dalam dokumen tertentu. Proses ini dapat diimplementasikan menggunakan fungsi `TfidfVectorizer()` dari library `scikit-learn`. Fungsi tersebut akan melakukan tokenisasi pada teks, mempelajari kosa kata, membobotkan frekuensi dokumen secara terbalik (inverse), dan memungkinkan pengguna untuk melakukan encoding teks baru.
 
@@ -882,7 +903,7 @@ Dalam sistem ini, `TF-IDF diterapkan pada dua jenis sumber teks yang berbeda`, y
 
 ##### **a. Kolom `Tags`**
 
-Proses representasi teks dimulai dengan penggunaan `TfidfVectorizer`, yang diterapkan untuk mengekstrak kata-kata penting dari kolom `Tags`, yang berisi `kombinasi deskripsi dan kategori destinasi`. Pada tahap ini, `TfidfVectorizer()` digunakan untuk `mengidentifikasi korelasi antara berbagai istilah dalam tag`, dengan mempertimbangkan frekuensi kemunculan kata dalam masing-masing dokumen (destinasi) dan pentingnya kata tersebut dalam keseluruhan dataset. Teknik ini memungkinkan penulis untuk menggali informasi relevan yang dapat digunakan untuk membangun sistem rekomendasi berbasis Content-Based Filtering.
+Proses representasi teks dimulai dengan penggunaan `TfidfVectorizer`, yang diterapkan untuk mengekstrak kata-kata penting dari kolom `Tags`, yang berisi `kombinasi deskripsi dan kategori destinasi`. Pada tahap ini, `TfidfVectorizer()` digunakan untuk `mengidentifikasi korelasi antara berbagai istilah dalam tag`, dengan mempertimbangkan frekuensi kemunculan kata dalam masing-masing dokumen (destinasi) dan pentingnya kata tersebut dalam keseluruhan dataset. Teknik ini memungkinkan untuk menggali informasi relevan yang dapat digunakan untuk membangun sistem rekomendasi berbasis Content-Based Filtering.
 """
 
 # Inisialisasi TfidfVectorizer untuk kolom 'Tags'
@@ -894,7 +915,7 @@ tv_tags.fit(df_recommendation['Tags'])
 # Menampilkan daftar fitur yang diekstrak dari kolom Tags
 pd.DataFrame(tv_tags.get_feature_names_out(), columns=['Tags'])
 
-"""Selanjutnya, proses fit dilakukan pada kolom `Tags`, diikuti dengan transformasi untuk mengubah data teks menjadi matriks representasi numerik. Matriks ini berisi skor TF-IDF untuk setiap kata dalam tag yang terdapat pada setiap destinasi."""
+"""Selanjutnya, proses `fit` dilakukan pada kolom `Tags`, diikuti dengan transformasi untuk mengubah data teks menjadi matriks representasi numerik. Matriks ini berisi skor TF-IDF untuk setiap kata dalam tag yang terdapat pada setiap destinasi."""
 
 # Melakukan fit pada kolom 'Tags' lalu ditransformasikan ke bentuk matrix
 vectors_tags = tv_tags.fit_transform(df_recommendation['Tags'])
@@ -902,16 +923,16 @@ vectors_tags = tv_tags.fit_transform(df_recommendation['Tags'])
 # Melihat ukuran matrix vectors_tags
 vectors_tags.shape
 
-"""Dapat kita lihat bahwa matriks yang dihasilkan berukuran `(437, 5000)`. Angka `437` menunjukkan `jumlah entri data`, yaitu destinasi wisata yang ada dalam dataset, sementara `angka 5000` mewakili `jumlah fitur`, yaitu kata-kata penting yang diekstrak dari kombinasi deskripsi dan kategori destinasi wisata. Fitur-fitur ini `mencerminkan istilah-istilah yang memiliki bobot TF-IDF tertinggi dan relevansi` dalam konteks sistem rekomendasi.
+"""Dapat dilihat bahwa matriks yang dihasilkan berukuran `(437, 5000)`. Angka `437` menunjukkan `jumlah entri data`, yaitu destinasi wisata yang ada dalam dataset, sementara `angka 5000` mewakili `jumlah fitur`, yaitu kata-kata penting yang diekstrak dari kombinasi deskripsi dan kategori destinasi wisata. Fitur-fitur ini `mencerminkan istilah-istilah yang memiliki bobot TF-IDF tertinggi dan relevansi` dalam konteks sistem rekomendasi.
 
-Untuk menghasilkan vektor `vectors_tags` dalam bentuk matriks, kita dapat menggunakan fungsi `todense()`. Fungsi ini mengubah hasil transformasi menjadi matriks padat yang lebih mudah dibaca dan dianalisis.
+Untuk menghasilkan vektor `vectors_tags` dalam bentuk matriks, fungsi `todense()` dapat digunakan untuk mengubah hasil transformasi menjadi matriks padat yang lebih mudah dibaca dan dianalisis.
 """
 
 vectors_tags.todense()
 
 """Hasilnya akan berupa matriks yang menggambarkan skor TF-IDF untuk setiap kata yang terdapat dalam setiap destinasi, dengan nilai nol pada posisi yang menunjukkan ketidakhadiran kata tersebut dalam tag destinasi. Matriks ini memudahkan dalam visualisasi dan analisis data lebih lanjut.
 
-Selanjutnya, kita akan melihat matriks vectors_tags untuk kata-kata penting dari kombinasi deskripsi dan kategori destinasi.
+Selanjutnya, akan ditinjau matriks `vectors_tags` yang merepresentasikan kata-kata penting dari hasil penggabungan `deskripsi` dan `kategori` destinasi.
 """
 
 df_sample_tags = pd.DataFrame(
@@ -927,7 +948,7 @@ display(HTML(df_sample_tags.to_html(notebook=True, escape=False)))
 
 Sebaliknya, sebagian besar destinasi lain seperti `Semarang Contemporary Art Gallery`, `Benteng Pendem`, hingga `Hutan Wisata Tinjomoyo Semarang` memiliki nilai nol pada kata-kata yang ditampilkan, yang menandakan bahwa kata-kata tersebut tidak dianggap penting untuk destinasi tersebut berdasarkan hasil vektorisasi TF-IDF.
 
-Nilai-nilai TF-IDF ini mencerminkan seberapa relevan suatu kata terhadap suatu destinasi dalam korpus data secara keseluruhan. Dengan demikian, kita dapat mengidentifikasi kata-kata kunci yang khas untuk tiap destinasi dan memanfaatkannya dalam proses content-based recommendation.
+Nilai-nilai TF-IDF ini mencerminkan seberapa relevan suatu kata terhadap suatu destinasi dalam korpus data secara keseluruhan. Dengan demikian, kata-kata kunci yang khas dapat diidentifikasi di tiap destinasi dan digunakan dalam proses content-based recommendation.
 
 ##### **b. Kolom `Description_Preprocessed`**
 
@@ -947,7 +968,7 @@ tv_desc.fit(df_recommendation['Description_Preprocessed'])
 # Menampilkan daftar fitur yang diekstrak dari kolom description_features
 pd.DataFrame(tv_desc.get_feature_names_out(), columns=['description_features'])
 
-"""Selanjutnya, proses fit dilakukan pada kolom `Description_Preprocessed`, diikuti dengan transformasi untuk mengubah data teks menjadi matriks representasi numerik. Matriks ini berisi skor TF-IDF untuk setiap kata dalam deskripsi yang terdapat pada setiap destinasi."""
+"""Selanjutnya, proses `fit` dilakukan pada kolom `Description_Preprocessed`, diikuti dengan transformasi untuk mengubah data teks menjadi matriks representasi numerik. Matriks ini berisi skor TF-IDF untuk setiap kata dalam deskripsi yang terdapat pada setiap destinasi."""
 
 # Melakukan fit pada kolom 'Description_Preprocessed' lalu ditransformasikan ke bentuk matrix
 vectors_desc = tv_desc.fit_transform(df_recommendation['Description_Preprocessed'])
@@ -955,7 +976,7 @@ vectors_desc = tv_desc.fit_transform(df_recommendation['Description_Preprocessed
 # Melihat ukuran matrix vectors_desc
 vectors_desc.shape
 
-"""Dapat kita lihat bahwa matriks yang dihasilkan berukuran `(437, 5000)`. `Angka 437` menunjukkan `jumlah entri data`, yaitu destinasi wisata yang ada dalam dataset, sementara `angka 5000` mewakili `jumlah fitur`, yaitu kata-kata penting yang diekstrak dari deskripsi destinasi wisata. Fitur-fitur ini mencerminkan istilah-istilah yang memiliki bobot TF-IDF tertinggi dan relevansi dalam konteks sistem rekomendasi.
+"""Dapat dilihat bahwa matriks yang dihasilkan berukuran `(437, 5000)`. `Angka 437` menunjukkan `jumlah entri data`, yaitu destinasi wisata yang ada dalam dataset, sementara `angka 5000` mewakili `jumlah fitur`, yaitu kata-kata penting yang diekstrak dari deskripsi destinasi wisata. Fitur-fitur ini mencerminkan istilah-istilah yang memiliki bobot TF-IDF tertinggi dan relevansi dalam konteks sistem rekomendasi.
 
 Untuk menghasilkan vektor `vectors_desc` dalam bentuk matriks, kita dapat menggunakan fungsi `todense()`. Fungsi ini mengubah hasil transformasi menjadi matriks padat yang lebih mudah dibaca dan dianalisis.
 """
@@ -964,7 +985,7 @@ vectors_desc.todense()
 
 """Hasilnya akan berupa matriks yang menggambarkan skor TF-IDF untuk setiap kata yang terdapat dalam setiap destinasi, dengan nilai nol pada posisi yang menunjukkan ketidakhadiran kata tersebut dalam deskripsi destinasi wisata. Matriks ini memudahkan dalam visualisasi dan analisis data lebih lanjut.
 
-Selanjutnya, kita akan melihat matriks `vectors_desc` untuk kata-kata penting dari deskripsi destinasi wisata.
+Selanjutnya, akan ditinjau matriks `vectors_desc` yang merepresentasikan kata-kata penting dari deskripsi destinasi wisata.
 """
 
 df_sample_desc = pd.DataFrame(
@@ -982,11 +1003,93 @@ Sebagai contoh, pada baris `"Stone Garden Citatah"`, tampak bahwa kata `"garden	
 
 Hasil ini membantu dalam mengidentifikasi kata-kata unik yang mencirikan setiap destinasi wisata secara deskriptif. Dengan kata lain, pendekatan ini memungkinkan sistem rekomendasi untuk memahami konten secara lebih dalam berdasarkan deskripsi alami destinasi, bukan hanya berdasarkan kategori
 
-#### 5.1.2. Menerapkan Proses Cosine Similiarity
+### 4.6. Persiapan Data (Collaborative Filtering)
+
+Langkah pertama pada tahap ini adalah memperoleh daftar unik `pengguna (user)` dan `tempat (place)` yang terdapat dalam data rating. Hal ini dilakukan untuk merepresentasikan masing-masing entitas tersebut sebagai indeks numerik, yang diperlukan dalam proses pelatihan model Collaborative Filtering.
+"""
+
+# Mendapatkan daftar unik User_Id dan Place_Id
+user_ids = df_ratings['User_Id'].unique().tolist()
+place_ids = df_ratings['Place_Id'].unique().tolist()
+
+print('list User_Id: ', user_ids)
+print('list Place_Id: ', place_ids)
+
+"""#### 4.6.1. Encoding User_Id dan Place_Id
+
+Karena algoritma pembelajaran mesin tidak dapat langsung bekerja dengan data kategori dalam bentuk string atau integer tidak berurut, maka dilakukan proses encoding. Encoding ini bertujuan untuk mengubah `User_Id` dan `Place_Id` menjadi indeks integer yang berurutan dimulai dari 0. Proses ini menggunakan dictionary untuk memetakan nilai asli ke nilai yang sudah diencode, serta dictionary sebaliknya untuk keperluan decoding hasil prediksi nantinya.
+"""
+
+# Melakukan encoding User_Id
+user_to_user_encoded = {user_id: idx for idx, user_id in enumerate(user_ids)}
+# Membuat mapping dictionary untuk User_Id
+user_encoded_to_user = {idx: user_id for idx, user_id in enumerate(user_ids)}
+
+# Melakukan encoding Place_Id
+place_to_place_encoded = {place_id: idx for idx, place_id in enumerate(place_ids)}
+# Membuat mapping dictionary untuk Place_Id
+place_encoded_to_place = {idx: place_id for idx, place_id in enumerate(place_ids)}
+
+print('encoded angka ke User_Id: ', user_encoded_to_user)
+print('encoded angka ke Place_Id: ', place_encoded_to_place)
+
+"""Dengan encoding ini, setiap `User_Id` dan `Place_Id` telah dikonversi ke format numerik. Sebagai contoh, `User_Id` bernilai 1 mungkin di-encode menjadi 0, `User_Id` bernilai 2 menjadi 1, dan seterusnya. Proses ini menjadikan data lebih siap untuk dimasukkan ke dalam model pembelajaran mesin, khususnya model berbasis embedding yang umum digunakan dalam sistem rekomendasi.
+
+#### 4.6.2. Menyiapkan Data Setelah Encoding
+
+Selanjutnya, data rating asli akan ditransformasikan menjadi bentuk baru yang menggunakan nilai hasil encoding. Langkah ini akan menghasilkan dataset baru dengan kolom `user`, `place`, dan `rating`, di mana user dan place sudah dalam bentuk integer hasil encoding.
+"""
+
+# Membuat salinan dataset dan menampilkannya
+df_collaborative = df_ratings.copy()
+df_collaborative.head()
+
+# Menambahkan kolom encoded
+df_collaborative['user'] = df_collaborative['User_Id'].map(user_to_user_encoded)
+df_collaborative['place'] = df_collaborative['Place_Id'].map(place_to_place_encoded)
+
+# Menyimpan jumlah user dan jumlah tempat
+num_users = len(user_to_user_encoded)
+num_places = len(place_encoded_to_place)
+
+print("Jumlah User:", num_users)
+print("Jumlah Destinasi wisata:", num_places)
+
+"""Dengan hasil ini, dataframe `df_collaborative` siap digunakan sebagai `input` untuk membangun model Collaborative Filtering. Kolom `user` dan `place` akan digunakan sebagai `input` ke model, sedangkan `Rating` akan menjadi target yang diprediksi.
+
+#### 4.6.3. Normalisasi Rating
+
+Pada tahap ini, dilakukan normalisasi terhadap kolom `Place_Ratings` agar nilai rating berada dalam `rentang [0, 1]`. Tujuannya adalah untuk memastikan bahwa semua nilai rating memiliki skala yang seragam, sehingga model dapat memproses data secara lebih optimal tanpa bias terhadap nilai numerik yang lebih besar.
+"""
+
+# Menentukan nilai minimum dan maksimum rating
+min_rating = df_collaborative['Place_Ratings'].min()
+max_rating = df_collaborative['Place_Ratings'].max()
+
+# Melakukan normalisasi rating ke rentang [0, 1]
+df_collaborative['normalized_rating'] = df_collaborative['Place_Ratings'].apply(
+    lambda x: (x - min_rating) / (max_rating - min_rating)
+)
+
+"""Hasil normalisasi rating ditampilkan sebagai berikut"""
+
+df_collaborative.head(2)
+
+"""## **5. Modelling and Result**
+
+Pada tahap ini, dua pendekatan sistem rekomendasi yang berbeda dikembangkan, yaitu Content-Based Filtering dan Collaborative Filtering. Masing-masing pendekatan memiliki metode tersendiri dalam menganalisis data dan memberikan rekomendasi destinasi wisata yang sesuai dengan preferensi pengguna.
+
+### **5.1. Model Development with Content-Based Filtering**
+
+Dalam pendekatan Content-Based Filtering, model dikembangkan berdasarkan informasi yang melekat pada setiap destinasi, seperti deskripsi dan kategori. Proses pembangunan model dilakukan melalui beberapa tahapan modelling dan result sebagai berikut:
+- Menerapkan Proses Cosine Similarity.
+- Mendapatkan Rekomendasi.
+
+#### 5.1.1. Menerapkan Proses Cosine Similiarity
 
 ##### **a.  Kolom `Tags`**
 
-Pada kasus ini, tahap Cosine Similarity digunakan untuk menghitung derajat kesamaan antar destinasi wisata berdasarkan informasi pada kolom `Tags`. Penulis menggunakan fungsi `cosine_similarity()` dari library `sklearn.metrics`.pairwise untuk mengukur tingkat kemiripan antar vektor TF-IDF yang telah dibentuk sebelumnya. Perhitungan ini dilakukan terhadap objek `vectors_tags`, yang merupakan representasi vektor dari kombinasi deskripsi dan kategori destinasi. Hasil dari proses ini adalah sebuah matriks kesamaan `(similarity matrix)` yang menyajikan nilai-nilai kemiripan antar setiap pasangan destinasi wisata.
+Pada kasus ini, tahap Cosine Similarity digunakan untuk menghitung derajat kesamaan antar destinasi wisata berdasarkan informasi pada kolom `Tags`. Fungsi `cosine_similarity()` dari pustaka `sklearn.metrics.pairwise` digunakan untuk mengukur tingkat kemiripan antar vektor TF-IDF yang telah dibentuk sebelumnya. Perhitungan dilakukan terhadap objek `vectors_tags`, yaitu representasi vektor dari kombinasi deskripsi dan kategori destinasi. Hasil dari proses ini berupa matriks kesamaan `(similarity matrix)` yang menunjukkan nilai kemiripan antar setiap pasangan destinasi wisata.
 """
 
 # Menghitung Cosine Similarity antara vektor-vektor 'Tags'
@@ -1002,7 +1105,10 @@ pd.DataFrame(
     columns = df_recommendation.Place_Name,
 ).sample(24, axis=1).sample(10, axis=0)
 
-"""##### **b. Kolom `Description_Preprocessed`**"""
+"""##### **b. Kolom `Description_Preprocessed`**
+
+Perhitungan dilakukan terhadap objek `vectors_desc`, yaitu representasi vektor dari deskripsi destinasi. Hasil dari proses ini berupa matriks kesamaan `(similarity matrix)` yang menunjukkan nilai kemiripan antar setiap pasangan destinasi wisata.
+"""
 
 # Menghitung Cosine Similarity antara vektor-vektor 'Description' untuk menghitung kemiripan antar destinasi berdasarkan deskripsi
 similarity_desc = cosine_similarity(vectors_desc, dense_output=True)
@@ -1017,9 +1123,9 @@ pd.DataFrame(
     columns = df_recommendation.Place_Name,
 ).sample(24, axis=1).sample(10, axis=0)
 
-"""#### 5.1.3. Mendapatkan Rekomendasi
+"""#### 5.1.2. Mendapatkan Rekomendasi
 
-Selanjutnya, penulis membuat fungsi `get_content_based_recommendations` dengan beberapa parameter berikut:
+Selanjutnya, dibuat sebuah fungsi bernama `get_content_based_recommendations` dengan beberapa parameter berikut:
 - `place_name`: Nama destinasi wisata yang dijadikan acuan untuk pencarian rekomendasi.
 - `data`: Dataset yang berisi informasi lengkap mengenai destinasi wisata.
 - `similarity_matrix`: Matriks kemiripan antar destinasi wisata yang telah dihitung sebelumnya, biasanya menggunakan metode seperti TF-IDF dan cosine similarity.
@@ -1114,74 +1220,8 @@ show_recommendations(place_to_recommend, similarity_desc, df_recommendation, df_
 
 """### 5.2. Model Development with Collaborative Filtering
 
-Pada tahap ini, dilakukan beberapa proses awal untuk menyiapkan data sebelum dimodelkan menggunakan metode Collaborative Filtering. Data yang digunakan adalah data rating pengguna terhadap tempat wisata, yang terdiri atas tiga kolom utama: User_Id, Place_Id, dan Rating. Berikut adalah tahapan persiapan data yang dilakukan:
-
-#### 5.2.1. Persiapan Data
-
-Langkah pertama adalah memperoleh daftar unik dari pengguna (user) dan tempat (place) yang terdapat dalam data rating. Hal ini penting karena dalam Collaborative Filtering, kita perlu merepresentasikan pengguna dan tempat sebagai indeks integer untuk keperluan pelatihan model.
+#### 5.2.1. Membagi Data Untuk Training dan Validation
 """
-
-# Mendapatkan daftar unik User_Id dan Place_Id
-user_ids = df_ratings['User_Id'].unique().tolist()
-place_ids = df_ratings['Place_Id'].unique().tolist()
-
-print('list User_Id: ', user_ids)
-print('list Place_Id: ', place_ids)
-
-"""##### a. Encoding User_Id dan Place_Id
-
-Karena algoritma pembelajaran mesin tidak dapat langsung bekerja dengan data kategori dalam bentuk string atau integer tidak berurut, maka dilakukan proses encoding. Encoding ini bertujuan untuk mengubah User_Id dan Place_Id menjadi indeks integer yang berurutan dimulai dari 0. Proses ini menggunakan dictionary untuk memetakan nilai asli ke nilai yang sudah diencode, serta dictionary sebaliknya untuk keperluan decoding hasil prediksi nantinya.
-"""
-
-# Melakukan encoding User_Id
-user_to_user_encoded = {user_id: idx for idx, user_id in enumerate(user_ids)}
-# Membuat mapping dictionary untuk User_Id
-user_encoded_to_user = {idx: user_id for idx, user_id in enumerate(user_ids)}
-
-# Melakukan encoding Place_Id
-place_to_place_encoded = {place_id: idx for idx, place_id in enumerate(place_ids)}
-# Membuat mapping dictionary untuk Place_Id
-place_encoded_to_place = {idx: place_id for idx, place_id in enumerate(place_ids)}
-
-print('encoded angka ke User_Id: ', user_encoded_to_user)
-print('encoded angka ke Place_Id: ', place_encoded_to_place)
-
-"""Dengan encoding ini, setiap User_Id dan Place_Id telah dikonversi ke format numerik. Sebagai contoh, User_Id bernilai 1 mungkin di-encode menjadi 0, User_Id bernilai 2 menjadi 1, dan seterusnya. Proses ini menjadikan data lebih siap untuk dimasukkan ke dalam model pembelajaran mesin, khususnya model berbasis embedding yang umum digunakan dalam sistem rekomendasi.
-
-##### b. Menyiapkan Data Setelah Encoding
-
-Selanjutnya, data rating asli akan ditransformasikan menjadi bentuk baru yang menggunakan nilai hasil encoding. Langkah ini akan menghasilkan dataset baru dengan kolom user, place, dan rating, di mana user dan place sudah dalam bentuk integer hasil encoding.
-"""
-
-# Membuat salinan dataset dan menambahkan kolom encoded
-df_collaborative = df_ratings.copy()
-df_collaborative['user'] = df_collaborative['User_Id'].map(user_to_user_encoded)
-df_collaborative['place'] = df_collaborative['Place_Id'].map(place_to_place_encoded)
-
-# Menyimpan jumlah user dan jumlah tempat
-num_users = len(user_to_user_encoded)
-num_places = len(place_encoded_to_place)
-
-print("Jumlah User:", num_users)
-print("Jumlah Destinasi wisata:", num_places)
-
-"""Dengan hasil ini, dataframe df_encoded siap digunakan sebagai input untuk membangun model Collaborative Filtering. Kolom user dan place akan digunakan sebagai input ke model, sedangkan Rating akan menjadi target yang diprediksi.
-
-##### c. Normalisasi Rating
-"""
-
-# Menentukan nilai minimum dan maksimum rating
-min_rating = df_collaborative['Place_Ratings'].min()
-max_rating = df_collaborative['Place_Ratings'].max()
-
-# Melakukan normalisasi rating ke rentang [0, 1]
-df_collaborative['normalized_rating'] = df_collaborative['Place_Ratings'].apply(
-    lambda x: (x - min_rating) / (max_rating - min_rating)
-)
-
-df_collaborative.head(2)
-
-"""#### 5.2.2. Membagi Data Untuk Training dan Validation"""
 
 # Menentukan ukuran training set (80% data)
 train_size_cf = int(0.8 * len(df_collaborative))
@@ -1193,7 +1233,7 @@ y_train_cf = df_collaborative['normalized_rating'].values[:train_size_cf]
 x_val_cf = df_collaborative[['user', 'place']].values[train_size_cf:]
 y_val_cf = df_collaborative['normalized_rating'].values[train_size_cf:]
 
-"""#### 5.2.3. Membangun Model Collaborative Filtering"""
+"""#### 5.2.2. Membangun Model Collaborative Filtering"""
 
 # Membangun model Collaborative Filtering menggunakan Keras
 class TourismRecNet(tf.keras.Model):
@@ -1253,7 +1293,7 @@ class TourismRecNet(tf.keras.Model):
         # Mengembalikan hasil prediksi rating yang diproses dengan fungsi sigmoid untuk memastikan hasil antara 0 dan 1
         return tf.nn.sigmoid(x)
 
-"""#### 5.2.4. Proses Training"""
+"""#### 5.2.3. Proses Training"""
 
 # Inisialisasi dan compile model Collaborative Filtering
 # Menggunakan 'num_users' (jumlah pengguna), 'num_places' (jumlah tempat wisata), dan ukuran embedding (misal 50)
@@ -1278,9 +1318,9 @@ history = model.fit(
     validation_data=(x_val_cf, y_val_cf)  # Data validasi untuk evaluasi selama pelatihan
 )
 
-"""#### 5.2.5. Mendapatkan Rekomendasi
+"""#### 5.2.4. Mendapatkan Rekomendasi
 
-Selanjutnya, penulis membuat fungsi `recommend_by_collaborative_filtering` dengan beberapa parameter berikut:
+Selanjutnya, dibuat fungsi `recommend_by_collaborative_filtering` dengan beberapa parameter berikut:
 - `user_id`: ID pengguna yang akan direkomendasikan tempat wisata.
 - `model`: Model Collaborative Filtering yang telah dilatih dan digunakan untuk memprediksi rating.
 - `data`: Dataset yang berisi interaksi pengguna terhadap tempat wisata (dalam bentuk rating).
@@ -1590,4 +1630,3 @@ Setiap solusi yang diimplementasikan memiliki kontribusi yang signifikan:
 
 Secara keseluruhan, sistem yang dibangun tidak hanya akurat secara teknis, tetapi juga memiliki nilai bisnis yang tinggi, baik dalam meningkatkan kualitas personalisasi layanan wisata maupun dalam mempromosikan destinasi secara lebih merata dan efektif. Dengan menggabungkan aspek teknis dan dampak praktis, proyek ini memberikan kontribusi nyata terhadap transformasi digital di sektor pariwisata.
 """
-
