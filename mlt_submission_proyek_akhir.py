@@ -181,7 +181,9 @@ if os.path.exists(target_path):
 else:
     print(f"❌ Path tidak ditemukan: {target_path}. Periksa kembali lokasi foldernya.")
 
-"""## **2. Data Understanding**
+"""---
+
+## **2. Data Understanding**
 
 Data Understanding merupakan proses memahami informasi dalam data dan menentukan kualitas dari data tersebut.
 
@@ -480,11 +482,11 @@ Berdasarkan hasil pengecekan, diperoleh temuan sebagai berikut:
 
     Tidak ditemukan missing values di seluruh kolom, sehingga tidak memerlukan langkah tambahan seperti imputasi atau penghapusan data.
 
+---
+
 ## **3. Exploratory Data Analysis**
 
 Exploratory data analysis merupakan proses investigasi awal pada data untuk menganalisis karakteristik, menemukan pola, anomali, dan memeriksa asumsi pada data. Teknik ini biasanya menggunakan bantuan statistik dan representasi grafis atau visualisasi.
-
----
 
 ### 3.1. Univariate Analysis
 """
@@ -713,6 +715,8 @@ plt.tight_layout()
 plt.show()
 
 """Hal ini mengindikasikan bahwa tidak ada satu tempat wisata yang secara dominan mendominasi interaksi pengguna dalam hal rating. Ini bisa menjadi indikasi sistem yang sehat, namun juga menunjukkan bahwa model rekomendasi perlu memperhatikan konteks personalisasi atau atribut lain (seperti kategori atau lokasi), karena hanya mengandalkan popularitas berdasarkan jumlah rating tidak cukup untuk membedakan secara signifikan antar destinasi.
+
+---
 
 ## **4. Data Preparation**
 
@@ -1040,9 +1044,10 @@ print('encoded angka ke Place_Id: ', place_encoded_to_place)
 Selanjutnya, data rating asli akan ditransformasikan menjadi bentuk baru yang menggunakan nilai hasil encoding. Langkah ini akan menghasilkan dataset baru dengan kolom `user`, `place`, dan `rating`, di mana user dan place sudah dalam bentuk integer hasil encoding.
 """
 
-# Membuat salinan dataset dan menampilkannya
+# Membuat salinan dataset
 df_collaborative = df_ratings.copy()
-df_collaborative.head()
+
+df_collaborative.head(2)
 
 # Menambahkan kolom encoded
 df_collaborative['user'] = df_collaborative['User_Id'].map(user_to_user_encoded)
@@ -1075,7 +1080,9 @@ df_collaborative['normalized_rating'] = df_collaborative['Place_Ratings'].apply(
 
 df_collaborative.head(2)
 
-"""## **5. Modelling and Result**
+"""---
+
+## **5. Modelling and Result**
 
 Pada tahap ini, dua pendekatan sistem rekomendasi yang berbeda dikembangkan, yaitu Content-Based Filtering dan Collaborative Filtering. Masing-masing pendekatan memiliki metode tersendiri dalam menganalisis data dan memberikan rekomendasi destinasi wisata yang sesuai dengan preferensi pengguna.
 
@@ -1433,7 +1440,9 @@ print('---' * 35)
 
 display(collab_recommendations)
 
-"""## **6. Evaluation**
+"""---
+
+## **6. Evaluation**
 
 ### 6.1. Evaluation of Content-Based Filtering Model
 
@@ -1592,6 +1601,8 @@ for i, v in enumerate([rmse_cf, mae_cf]):
 plt.show()
 
 """Nilai RMSE dan MAE yang diperoleh menunjukkan bahwa model Collaborative Filtering mampu memprediksi rating dengan tingkat kesalahan yang relatif kecil. Untuk memberikan gambaran yang lebih jelas, kedua metrik ini divisualisasikan dalam bentuk grafik batang. Nilai RMSE sebesar 0.3642 dan MAE sebesar 0.3145 mengindikasikan bahwa prediksi model mendekati nilai aktual yang diberikan oleh pengguna, dengan rata-rata kesalahan kurang dari 0.4 poin dari skala rating (0–5). Hal ini menandakan bahwa model mampu melakukan prediksi rating dengan cukup akurat.
+
+---
 
 ## **7. Keterkaitan dengan Business Understanding**
 
