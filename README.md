@@ -521,9 +521,8 @@ Pada tahap ini, dilakukan normalisasi terhadap kolom `Place_Ratings` agar nilai 
 Normalisasi dilakukan menggunakan rumus berikut:
 
 $$
-\text{normalized\_rating} = \frac{x - \min}{\max - \min}
+\text{normalized\ rating} = \frac{x - \min}{\max - \min}
 $$
-
 
 Berikut merupakan potongan kode Python yang digunakan untuk melakukan normalisasi:
 
