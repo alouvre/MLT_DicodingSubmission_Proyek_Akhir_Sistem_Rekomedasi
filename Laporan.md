@@ -774,7 +774,7 @@ history = model.fit(
 )
 ```
 
-#### c. Hasil Pelatihan
+##### c. Hasil Pelatihan
 
 Setelah melalui `100 epoch` pelatihan, diperoleh hasil sebagai berikut:
 
@@ -786,7 +786,7 @@ Setelah melalui `100 epoch` pelatihan, diperoleh hasil sebagai berikut:
 
 Hasil tersebut menunjukkan bahwa model mampu mempelajari pola rating pengguna dengan cukup baik. Nilai error validasi tidak terlalu jauh dari error training, yang menandakan tidak terjadi overfitting yang signifikan.
 
-#### 3.2.2. Mendapatkan Rekomendasi
+#### 3.2.3. Mendapatkan Rekomendasi
 
 Fungsi utama yang digunakan adalah `recommend_by_collaborative_filtering`, yang bertugas mengembalikan daftar tempat wisata yang direkomendasikan untuk seorang pengguna berdasarkan model Collaborative Filtering.
 
