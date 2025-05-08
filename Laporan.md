@@ -709,9 +709,84 @@ Berikut hasil rekomendasi:
 
 ### 3.2. Model Development - Collaborative Filtering
 
-Pada tahap ini, dilakukan beberapa proses awal untuk menyiapkan data sebelum dimodelkan menggunakan metode Collaborative Filtering. Data yang digunakan adalah data rating pengguna terhadap tempat wisata, yang terdiri atas tiga kolom utama: `User_Id`, `Place_Id`, dan `Rating`. Berikut adalah tahapan persiapan data yang dilakukan:
+Pada tahap ini, dilakukan pengembangan sistem rekomendasi menggunakan pendekatan Collaborative Filtering berbasis deep learning, yang bertujuan memprediksi rating tempat wisata yang belum dikunjungi oleh pengguna berdasarkan pola interaksi historis antara pengguna dan tempat wisata.
 
-#### 3.2.1. Mendapatkan Rekomendasi
+Data yang digunakan terdiri dari tiga atribut utama: `User_Id`, `Place_Id`, dan `Rating`. Sebelum dimodelkan, dilakukan proses encoding untuk mengubah ID pengguna dan ID tempat wisata menjadi representasi numerik, agar dapat digunakan sebagai input dalam model.
+
+Kemudian, dataset dibagi menjadi dua bagian:
+
+- Training set (80%) untuk melatih model.
+- Validation set (20%) untuk mengevaluasi performa model selama pelatihan.
+
+#### 3.2.1. Arsitektur Model Deep Learning - TourismRecNet
+
+Model deep learning yang digunakan bernama `TourismRecNet`, yang merupakan implementasi dari teknik `Matrix Factorization` berbasis `embedding`. Model ini dibangun menggunakan API `tf.keras.Model`.
+
+##### a. Arsitektur Model
+
+Model memiliki dua input utama: `user_id` dan `place_id`. Setiap ID akan dikonversi menjadi vektor embedding berdimensi tetap, yang merepresentasikan karakteristik pengguna dan tempat wisata dalam ruang laten.
+
+Komponen utama model meliputi:
+
+- **User Embedding Layer**: memetakan setiap `user_id` menjadi vektor.
+- **Place Embedding Layer**: memetakan setiap `place_id` menjadi vektor.
+- **User Bias & Place Bias**: scalar nilai bias untuk setiap user dan tempat.
+- **Dot Product**: menghitung skor interaksi antara user dan tempat berdasarkan hasil perkalian dot product vektor embedding-nya.
+- **Sigmoid Activation**: digunakan pada output untuk memastikan prediksi berada pada rentang [0,1], sesuai dengan rating yang telah dinormalisasi.
+
+```python
+class TourismRecNet(tf.keras.Model):
+    def __init__(self, num_users, num_places, embedding_size, **kwargs):
+        super(TourismRecNet, self).__init__(**kwargs)
+        self.user_embedding = layers.Embedding(num_users, embedding_size, embeddings_initializer='he_normal', embeddings_regularizer=keras.regularizers.l2(1e-6))
+        self.user_bias = layers.Embedding(num_users, 1)
+        self.place_embedding = layers.Embedding(num_places, embedding_size, embeddings_initializer='he_normal', embeddings_regularizer=keras.regularizers.l2(1e-6))
+        self.place_bias = layers.Embedding(num_places, 1)
+
+    def call(self, inputs):
+        user_vector = self.user_embedding(inputs[:, 0])
+        user_bias = self.user_bias(inputs[:, 0])
+        place_vector = self.place_embedding(inputs[:, 1])
+        place_bias = self.place_bias(inputs[:, 1])
+        dot_product = tf.reduce_sum(user_vector * place_vector, axis=1, keepdims=True)
+        x = dot_product + user_bias + place_bias
+        return tf.nn.sigmoid(x)
+```
+
+##### b. Kompilasi dan Pelatihan Model
+
+Model dikompilasi dengan fungsi loss `Mean Squared Error (MSE)` dan metrik evaluasi `Root Mean Squared Error (RMSE)` serta `Mean Absolute Error (MAE)`. Optimizer yang digunakan adalah `Adam` dengan learning rate `0.001`.
+
+```python
+model = TourismRecNet(num_users, num_places, 50)
+model.compile(
+    loss=tf.keras.losses.MeanSquaredError(),
+    optimizer=keras.optimizers.Adam(learning_rate=0.001),
+    metrics=[tf.keras.metrics.RootMeanSquaredError(), tf.keras.metrics.MeanAbsoluteError()]
+)
+
+history = model.fit(
+    x=x_train_cf,
+    y=y_train_cf,
+    batch_size=32,
+    epochs=100,
+    validation_data=(x_val_cf, y_val_cf)
+)
+```
+
+#### c. Hasil Pelatihan
+
+Setelah melalui `100 epoch` pelatihan, diperoleh hasil sebagai berikut:
+
+| Metrik                  | Training | Validation |
+| ----------------------- | -------- | ---------- |
+| Loss (MSE)              | 0.1068   | 0.1327     |
+| Mean Absolute Error     | 0.2784   | 0.3145     |
+| Root Mean Squared Error | 0.3266   | 0.3642     |
+
+Hasil tersebut menunjukkan bahwa model mampu mempelajari pola rating pengguna dengan cukup baik. Nilai error validasi tidak terlalu jauh dari error training, yang menandakan tidak terjadi overfitting yang signifikan.
+
+#### 3.2.2. Mendapatkan Rekomendasi
 
 Fungsi utama yang digunakan adalah `recommend_by_collaborative_filtering`, yang bertugas mengembalikan daftar tempat wisata yang direkomendasikan untuk seorang pengguna berdasarkan model Collaborative Filtering.
 
