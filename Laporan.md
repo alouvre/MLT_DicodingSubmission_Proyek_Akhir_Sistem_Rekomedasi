@@ -786,7 +786,7 @@ Setelah melalui `100 epoch` pelatihan, diperoleh hasil sebagai berikut:
 
 Hasil tersebut menunjukkan bahwa model mampu mempelajari pola rating pengguna dengan cukup baik. Nilai error validasi tidak terlalu jauh dari error training, yang menandakan tidak terjadi overfitting yang signifikan.
 
-#### 3.2.3. Mendapatkan Rekomendasi
+#### 3.2.2. Mendapatkan Rekomendasi
 
 Fungsi utama yang digunakan adalah `recommend_by_collaborative_filtering`, yang bertugas mengembalikan daftar tempat wisata yang direkomendasikan untuk seorang pengguna berdasarkan model Collaborative Filtering.
 
@@ -859,7 +859,7 @@ def recommend_by_collaborative_filtering(user_id, model, data, place_encoded_to_
     return recommended_destinations
 ```
 
-#### 3.2.2. Hasil Rekomendasi
+#### 3.2.3. Hasil Rekomendasi
 
 Penulis mengambil satu contoh `User_Id` secara acak dari dataset `df_collaborative`, yaitu `User ID: 28`.
 
