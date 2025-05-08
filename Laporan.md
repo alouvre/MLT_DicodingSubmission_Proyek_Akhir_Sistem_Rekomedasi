@@ -589,14 +589,36 @@ Dengan kombinasi dua representasi ini, sistem rekomendasi tidak hanya mengandalk
 
 #### **3.1.2. Mendapatkan Rekomendasi**
 
-Setelah mendapatkan matriks kesamaan antar destinasi wisata, langkah selanjutnya adalah membangun `sistem rekomendasi berbasis konten (content-based recommendation system)`. Penulis mengembangkan sebuah fungsi bernama `get_content_based_recommendations` yang bertujuan untuk menghasilkan daftar destinasi wisata yang paling relevan atau mirip dengan destinasi yang dipilih pengguna.
+Setelah berhasil membangun matriks kesamaan antar destinasi wisata, langkah selanjutnya adalah mengimplementasikan skema sistem rekomendasi berbasis konten (content-based recommendation system). Sistem ini bekerja dengan cara mencari kemiripan antar item (dalam hal ini destinasi wisata) berdasarkan fitur deskriptifnya, seperti kategori, deskripsi, atau kata kunci yang mewakili karakteristik suatu tempat.
 
-Fungsi ini memiliki beberapa parameter penting, yaitu:
+Fungsi `get_content_based_recommendations` dirancang untuk menghasilkan daftar rekomendasi destinasi wisata berdasarkan kemiripan konten dari suatu destinasi yang dipilih oleh pengguna. Proses kerja fungsi ini terdiri dari beberapa tahapan sebagai berikut:
+- Validasi Nama Destinasi `(place_name)`
 
-- `place_name`: Nama destinasi wisata yang dijadikan acuan pencarian rekomendasi.
-- `data`: Dataset yang berisi informasi lengkap tentang destinasi wisata.
-- `similarity_matrix`: Matriks kemiripan antar destinasi yang telah dihitung sebelumnya, menggunakan pendekatan seperti TF-IDF dan cosine similarity.
-- `top_n`: Jumlah destinasi wisata yang ingin direkomendasikan, dengan nilai default sebanyak 10.
+  Fungsi pertama-tama melakukan pengecekan apakah nama destinasi yang dimasukkan `(place_name)` terdapat dalam dataset `(data['Place_Name'])`.
+
+  Jika tidak ditemukan, fungsi akan menghentikan proses dan menampilkan pesan bahwa destinasi tidak ada dalam data.
+
+- Menentukan Indeks Destinasi
+
+  Jika nama destinasi ditemukan, fungsi akan mengambil indeks baris dari destinasi tersebut di dalam DataFrame. Indeks ini digunakan untuk mengakses baris yang sesuai dalam matriks kesamaan `(similarity_matrix)`.
+
+- Mengambil Skor Kemiripan
+
+  Matriks kesamaan adalah matriks dua dimensi di mana setiap nilai menunjukkan seberapa mirip suatu destinasi dengan destinasi lainnya.
+
+  Fungsi mengambil baris yang sesuai dengan indeks destinasi dan meratakannya menjadi vektor satu dimensi `(flatten())`, yang berisi skor kemiripan antara destinasi input dan semua destinasi lainnya.
+
+- Mengurutkan dan Menyaring Skor Kemiripan
+
+  Skor-skor dalam vektor tersebut diurutkan secara menurun (dari yang paling mirip ke yang paling tidak mirip) menggunakan `argsort()[::-1]`.
+
+  Indeks destinasi itu sendiri dihapus dari daftar hasil (karena tentunya destinasi itu 100% mirip dengan dirinya sendiri dan tidak perlu direkomendasikan).
+
+- Memilih Top-N Rekomendasi
+
+  Dari daftar destinasi yang telah diurutkan berdasarkan skor kemiripan, fungsi mengambil `top_n` destinasi teratas (secara default sebanyak 10).
+
+  Kemudian, fungsi mengambil `Place_Id` dari destinasi-destinasi yang berada pada indeks-indeks tersebut dan mengembalikannya dalam bentuk list.
 
 Rekomendasi diperoleh dengan cara mengurutkan skor kemiripan dari yang tertinggi dan mengabaikan destinasi itu sendiri dalam daftar hasil. Fungsi ini akan mengembalikan daftar `Place_Id` dari destinasi yang dianggap paling mirip dan layak direkomendasikan.
 
